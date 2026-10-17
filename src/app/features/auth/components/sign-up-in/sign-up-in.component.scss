@@ -1,40 +1,21 @@
 :host { display: block; }
 
+// Single centered column — wordmark on top, form below (no side image)
 .auth {
+  min-height: 100vh;
   display: flex;
-  min-height: 100vh;   // gives the columns something to fill
-  width: 100%;
+  flex-direction: column;
+  background: var(--color-background);
 }
 
-app-brand-panel {
-  flex: 1 1 55%;       // left column
-}
+app-brand-panel { flex: none; }
 
 .panel {
-  flex: 1 1 45%;       // right column
+  flex: 1;
   display: flex;
-  align-items: center;      // vertical centering
-  justify-content: center;  // horizontal centering
-  padding: var(--space-xl);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) clamp(16px, 5vw, 64px) var(--space-2xl);
 }
 
-app-auth-panel {
-   flex: 0 0 60%;
-   justify-content: end;
-}
-
-@media (max-width: 900px) {
-  .auth {
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  app-brand-panel {
-    flex: none;          // don't stretch to fill
-  }
-
-  .panel {
-    flex: 1 1 auto;
-    padding: var(--space-lg);
-  }
-}
+.panel__inner { width: 100%; display: flex; justify-content: center; }

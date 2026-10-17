@@ -1,173 +1,124 @@
+:host { display: block; height: 100%; }
+
+// Full-bleed photo card with a frosted info panel
 .salon-card {
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--radius-md);
+  position: relative;
+  height: 100%;
+  min-height: 360px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-base), transform var(--transition-base);
-  cursor: pointer;
+  background: #5f4a40;
+  isolation: isolate;
+  transition: transform .35s var(--ease-out);
 
-  &:hover {
+  &:hover { transform: translateY(-4px); }
+  &:hover &__photo { transform: scale(1.04); }
 
-    .salon-card__photo {
-      transform: scale(1.00);
-    }
-
-    .salon-card__cta .salon-card__arrow {
-      transform: translateX(16px);
-    }
-  }
-
-  // ── Image block ──────────────────────────────────────────
-  &__image {
-    position: relative;
-    height: 220px;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--color-accent-light), var(--color-cards));
-  }
-
-  &__image-link {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
+  &__image { position: absolute; inset: 0; }
+  &__image-link { position: absolute; inset: 0; display: block; }
   &__photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 400ms ease;
+    transition: transform .8s var(--ease-out);
   }
 
-  // Gradient overlay at the bottom of the image
   &__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(42, 42, 42, 0.55) 0%,
-      transparent 50%
-    );
-    display: flex;
-    align-items: flex-end;
-    padding: var(--space-sm) var(--space-md);
     pointer-events: none;
+    background: var(--photo-fade);
   }
 
-  &__badges {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
+  &__badges { position: absolute; top: 14px; left: 14px; display: flex; gap: 6px; }
+
+  &__price-badge, &__rating-badge {
+    padding: 7px 12px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, .55);
+    border: 1px solid rgba(255, 255, 255, .7);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    font: var(--fw-semibold) var(--fs-xs) var(--font-body);
+    color: var(--color-text);
   }
 
-  &__price-badge,
-  &__rating-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    padding: 2px 10px;
-    border-radius: 999px;
-    font-size: var(--fs-xs);
-    font-weight: var(--fw-semibold);
-    letter-spacing: 0.04em;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-  }
-
-  &__price-badge {
-    background: rgba(255, 255, 255, 0.18);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-  }
-
-  &__rating-badge {
-    background: rgba(198, 169, 106, 0.85); // --color-accent with opacity
-    color: #fff;
-    border: 1px solid rgba(198, 169, 106, 0.5);
-  }
-
-  // ── Favorite button ──────────────────────────────────────
   &__fav {
     position: absolute;
-    top: var(--space-sm);
-    right: var(--space-sm);
-    width: 36px;
-    height: 36px;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: var(--color-border);
-    font-size: 1.35rem;
+    border: 1px solid rgba(255, 255, 255, .35);
+    background: rgba(255, 255, 255, .16);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: var(--color-on-accent);
+    font-size: 18px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(42, 42, 42, 0.15);
-    transition: color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+    transition: transform .3s var(--ease-spring), background var(--dur-base) ease, color var(--dur-base) ease;
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.95);
-      transform: scale(1.1);
-    }
-
-    &.is-active {
-      color: var(--color-danger);
-      background: rgba(255, 255, 255, 0.95);
-    }
+    &:hover { transform: scale(1.08); }
+    &.is-active { background: var(--color-background); color: var(--color-accent); }
   }
 
-  // ── Body ─────────────────────────────────────────────────
   &__body {
-    padding: var(--space-md) var(--space-lg) var(--space-lg);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    flex: 1;
-    background: var(--color-surface);
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "loc cta" "title cta";
+    align-items: center;
+    column-gap: 12px;
+    padding: 16px 16px 16px 18px;
+    border-radius: var(--radius-lg);
+    background: var(--glass-dark-bg);
+    border: 1px solid var(--glass-dark-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    color: var(--color-on-accent);
   }
 
   &__location {
-    font-size: var(--fs-xs);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+    grid-area: loc;
     margin: 0;
+    font: var(--fw-semibold) 10px var(--font-body);
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: inherit;
+    opacity: .85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__title {
-    font-family: var(--font-display);
-    font-size: var(--fs-md);
-    font-weight: var(--fw-semibold);
-    color: var(--color-text);
-    margin: 0 0 var(--space-sm);
-    line-height: var(--lh-tight);
+    grid-area: title;
+    margin: 4px 0 0;
+    font: var(--fw-medium) 22px/1.15 var(--font-display);
+    letter-spacing: 0;
+    color: inherit;
   }
 
-  // ── CTA link ─────────────────────────────────────────────
+  // "View salon →" becomes a round arrow button
   &__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    margin-top: auto;
-    font-size: var(--fs-sm);
-    font-weight: var(--fw-semibold);
-    color: var(--color-secondary);
-    text-decoration: none;
-    letter-spacing: 0.03em;
-    transition: color var(--transition-fast);
-
-    &:hover {
-      color: var(--color-accent-hover);
-    }
+    grid-area: cta;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--color-background);
+    color: var(--color-accent);
+    font-size: 0;
+    transition: transform var(--dur-base) var(--ease-out);
+    &:hover { color: var(--color-accent); transform: translateX(2px); }
   }
-
-  &__arrow {
-    display: inline-block;
-    transition: transform var(--transition-fast);
-  }
+  &__arrow { font-size: 17px; }
 }

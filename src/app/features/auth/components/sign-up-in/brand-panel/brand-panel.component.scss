@@ -1,155 +1,34 @@
-:host {
-  display: flex;
-  width: 100%;
-  height: 100vh;
-}
+:host { display: block; }
 
+// Brand panel is reduced to the wordmark above the form
 .brand {
-  position: relative;
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: var(--space-2xl) var(--space-xl);
-  background: linear-gradient(155deg, #7a5c4e 0%, #5f4339 58%, #4a342d 100%);
-  color: #f3ebe1;
-  overflow: hidden;
-
-  // subtle inset frame, echoing the mockup
-  &::before {
-    content: '';
-    position: absolute;
-    inset: var(--space-md);
-    border: 1px solid rgba(243, 235, 225, 0.16);
-    border-radius: var(--radius-sm);
-    pointer-events: none;
-  }
-
-  // keep real content above the frame
-  > * {
-    position: relative;
-    z-index: 1;
-  }
-}
-
-// --- Logo ---
-.brand__logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-
-.brand__mark {
-  width: 44px;
-  height: 44px;
-  flex: none;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  border: 1px solid rgba(217, 189, 136, 0.7);
-  border-radius: 50%;
-  font-family: var(--font-display);
-  font-size: var(--fs-md);
-  color: #d9bd88;
-}
+  padding: 32px var(--space-md) 0;
 
-.brand__wordmark {
-  font-family: var(--font-display);
-  font-size: var(--fs-md);
-  font-weight: var(--fw-semibold);
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: #f6efe6;
-}
-
-// --- Hero copy (pushed toward the lower third) ---
-.brand__content {
-  margin-top: auto;
-  max-width: 30ch;
-}
-
-.brand__eyebrow {
-  font-size: var(--fs-xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(217, 189, 136, 0.9);
-  margin: 0 0 var(--space-md);
-}
-
-.brand__title {
-  font-family: var(--font-display);
-  font-size: var(--fs-2xl);
-  line-height: 1.08;
-  color: #fdfaf5;
-  margin: 0 0 var(--space-lg);
-
-  em {
-    font-style: italic;
-    color: #d9bd88;
-  }
-}
-
-.brand__desc {
-  margin: 0;
-  font-size: var(--fs-md);
-  line-height: var(--lh-loose);
-  color: rgba(243, 235, 225, 0.82);
-}
-
-// --- Services footer ---
-.brand__footer {
-  margin-top: var(--space-2xl);
-  padding-top: var(--space-lg);
-  border-top: 1px solid rgba(243, 235, 225, 0.18);
-}
-
-.brand__footer-label {
-  font-size: var(--fs-xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(243, 235, 225, 0.6);
-  margin: 0 0 var(--space-md);
-}
-
-.brand__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-}
-
-.brand__tag {
-  display: inline-block;
-  padding: 6px 14px;
-  border: 1px solid rgba(243, 235, 225, 0.35);
-  border-radius: 999px;
-  font-size: var(--fs-xs);
-  color: #f0e7dc;
-}
-
-@media (max-width: 900px) {
-  :host {
-    height: auto;        // was 100vh — let it size to the bar
-  }
-
-  .brand {
-    flex-direction: row;
+  &__logo {
+    display: flex;
     align-items: center;
-    padding: var(--space-md) var(--space-lg);
-
-    // drop the inset frame on the compact bar
-    &::before {
-      display: none;
-    }
+    gap: 12px;
+    a { color: var(--color-text); &:hover { color: var(--color-text); } }
   }
 
-  // hide everything except the logo
-  .brand__content,
-  .brand__footer {
-    display: none;
+  &__mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font: var(--fw-medium) 18px var(--font-display);
   }
 
-  // shrink the mark a touch for the bar
-  .brand__mark {
-    width: 38px;
-    height: 38px;
+  &__wordmark {
+    font: var(--fw-medium) 24px/1 var(--font-display);
+    text-transform: capitalize;
+    letter-spacing: -0.01em;
   }
+
+  &__content, &__footer { display: none; }
 }

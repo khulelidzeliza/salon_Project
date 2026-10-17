@@ -1,205 +1,175 @@
 :host { display: block; }
 
 .salon-hero {
+  margin: var(--frame);
 
-  // ── Gallery ─────────────────────────────────────────────
+  // ── Full-bleed gallery ──
   &__gallery {
-    width: 100%;
+    position: relative;
+    height: clamp(560px, 82vh, 680px);
+    border-radius: var(--radius-hero);
+    overflow: hidden;
+    background: #3b2b26;
   }
 
-  &__main-wrap {
-    position: relative;
-    width: 100%;
-    height: 360px;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--color-accent-light), var(--color-cards));
-  }
+  &__main-wrap { position: absolute; inset: 0; }
 
   &__main-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: opacity 300ms ease;
+    animation: hero-zoom 1.4s var(--ease-out) both;
   }
 
-  // Gradient overlay for title
   &__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(42, 42, 42, 0.72) 0%,
-      rgba(42, 42, 42, 0.1) 55%,
-      transparent 100%
-    );
     display: flex;
     align-items: flex-end;
+    background: linear-gradient(180deg, rgba(30, 20, 18, .25) 0%, rgba(30, 20, 18, 0) 30%, rgba(30, 20, 18, .75) 100%);
+    color: var(--color-on-accent);
   }
 
   &__overlay-content {
-    padding: var(--space-xl) var(--space-xl);
+    padding: 0 clamp(20px, 4.4vw, 56px) clamp(110px, 12vw, 130px);
+    max-width: 760px;
   }
 
   &__eyebrow {
-    font-size: var(--fs-sm);
-    color: rgba(255,255,255,0.8);
-    letter-spacing: 0.06em;
-    margin: 0 0 var(--space-xs);
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, .16);
+    border: 1px solid rgba(255, 255, 255, .28);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    font: var(--fw-semibold) var(--fs-xs) var(--font-body);
+    color: inherit;
   }
 
   &__title {
-    font-family: var(--font-display);
-    font-size: var(--fs-2xl);
-    color: #fff;
-    margin: 0;
-    line-height: var(--lh-tight);
-    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    margin: 18px 0 0;
+    font: var(--fw-regular) clamp(54px, 9vw, 108px)/.92 var(--font-display);
+    letter-spacing: -0.03em;
+    color: inherit;
+    animation: rise .7s var(--ease-out) .05s both;
 
-    &--dark {
-      color: var(--color-text);
-    }
+    &--dark { color: var(--color-text); font-size: clamp(40px, 6vw, 72px); margin-top: var(--space-md); }
   }
 
-  // Prev / next arrows
   &__arrow {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: clamp(24px, 3vw, 40px);
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: none;
-    background: rgba(255,255,255,0.7);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    color: var(--color-text);
-    font-size: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, .28);
+    background: rgba(255, 255, 255, .16);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: var(--color-on-accent);
+    font-size: 22px;
     line-height: 1;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    transition: background var(--transition-fast), transform var(--transition-fast);
+    transition: background var(--dur-fast) ease;
 
-    &:hover { background: rgba(255,255,255,0.95); transform: translateY(-50%) scale(1.05); }
-
-    &--prev { left: var(--space-md); }
-    &--next { right: var(--space-md); }
+    &:hover { background: rgba(255, 255, 255, .28); }
+    &--prev { right: calc(clamp(20px, 3vw, 40px) + 52px); }
+    &--next { right: clamp(20px, 3vw, 40px); background: var(--color-background); color: var(--color-text); }
   }
 
-  // Thumbnail strip
   &__thumbs {
+    position: absolute;
+    left: clamp(20px, 4.4vw, 56px);
+    bottom: clamp(24px, 3vw, 40px);
     display: flex;
-    gap: var(--space-sm);
-    margin-top: var(--space-sm);
+    gap: 8px;
+    max-width: calc(100% - 180px);
     overflow-x: auto;
-    padding-bottom: var(--space-xs);
     scrollbar-width: none;
     &::-webkit-scrollbar { display: none; }
   }
 
   &__thumb {
-    flex-shrink: 0;
-    width: 80px;
-    height: 60px;
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    border: 2px solid transparent;
-    cursor: pointer;
+    flex: none;
+    width: 64px;
+    height: 64px;
     padding: 0;
-    background: none;
-    transition: border-color var(--transition-fast), opacity var(--transition-fast);
-    opacity: 0.6;
+    border-radius: 16px;
+    border: 2px solid rgba(255, 255, 255, .3);
+    overflow: hidden;
+    opacity: .75;
+    cursor: pointer;
+    transition: width var(--dur-slow) var(--ease-out), opacity var(--dur-base) ease, border-color var(--dur-base) ease;
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    &.is-active {
-      border-color: var(--color-accent);
-      opacity: 1;
-    }
-
-    &:hover:not(.is-active) { opacity: 0.9; }
+    img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    &:hover { opacity: 1; }
+    &.is-active { width: 100px; opacity: 1; border-color: var(--color-background); }
   }
 
-  // Placeholder (no images)
   &__placeholder {
-    width: 100%;
-    height: 360px;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(135deg, var(--color-accent-light), var(--color-cards));
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-md);
-    color: var(--color-secondary-light);
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: clamp(20px, 4.4vw, 56px);
+    background: var(--color-cards);
+    color: var(--color-secondary);
 
-    svg { width: 52px; height: 52px; }
+    svg { width: 48px; height: 48px; }
   }
 
-  // ── Info bar ─────────────────────────────────────────────
+  // ── Info strip under the gallery ──
   &__info {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
     flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
     gap: var(--space-md);
-    margin-top: var(--space-lg);
-    padding: var(--space-md) var(--space-lg);
+    margin-top: var(--space-md);
+    padding: 10px 10px 10px 22px;
+    border-radius: var(--radius-pill);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+
+    @media (max-width: 760px) { border-radius: var(--radius-xl); padding: var(--space-md); }
   }
 
-  &__info-left {
-    display: flex;
-    align-items: center;
-    gap: var(--space-lg);
-    flex-wrap: wrap;
-  }
-
-  &__info-right {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-  }
+  &__info-left { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-lg); }
 
   &__info-item {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
+    gap: 8px;
     font-size: var(--fs-sm);
-    color: var(--color-text-muted);
-
-    svg { flex-shrink: 0; color: var(--color-accent); }
+    color: var(--color-text);
+    svg { color: var(--color-accent); flex: none; }
   }
 
-  &__price {
-    font-weight: var(--fw-semibold);
-  }
+  &__info-right { display: flex; align-items: center; gap: 6px; }
+
+  &__price.badge { background: var(--color-surface-soft); color: var(--color-secondary); padding: 10px 14px; }
 
   &__social {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
+    display: grid;
+    place-items: center;
     border: 1px solid var(--color-border);
-    color: var(--color-text-muted);
-    transition: color var(--transition-fast), border-color var(--transition-fast);
-
-    &:hover {
-      color: var(--color-accent);
-      border-color: var(--color-accent);
-    }
+    color: var(--color-text);
+    transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+    &:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
   }
+}
+
+@keyframes hero-zoom { from { transform: scale(1.06); } to { transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .salon-hero__main-img, .salon-hero__title { animation: none; }
 }

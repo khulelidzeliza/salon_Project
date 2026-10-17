@@ -94,6 +94,13 @@
   --dur-base:    250ms;
   --dur-slow:    450ms;
 
+  // ---- Legacy aliases (old component code) ----
+  --transition-fast: var(--dur-fast) ease;
+  --transition-base: var(--dur-base) ease;
+  --color-accent-light: var(--color-accent-soft);
+  --color-secondary-light: #A9897A;
+  --lh-loose: 1.7;
+
   // ---- Layers ----
   --z-sticky: 5;
   --z-nav:    10;
@@ -167,6 +174,13 @@ a {
   border-radius: var(--radius-xl);
 }
 
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+}
+
 .glass {
   background: var(--glass-light-bg);
   border: 1px solid var(--glass-light-border);
@@ -234,6 +248,11 @@ a {
   background: transparent;
   color: var(--color-danger);
   &:hover { background: var(--color-danger-soft); }
+}
+.btn-danger {
+  background: var(--color-danger);
+  color: var(--color-on-accent);
+  &:hover { background: #9c4434; }
 }
 .btn-light {                      // on photos / dark glass
   background: var(--color-background);
@@ -371,12 +390,12 @@ a {
     width: calc(100vw - 32px) !important;
     max-width: 400px !important;
   }
-  // @media (min-width: $bp-mobile + 1) {
-  //   top: auto !important;
-  //   bottom: var(--space-lg) !important;
-  //   right: var(--space-lg) !important;
-  //   left: auto !important;
-  // }
+  @media (min-width: $bp-mobile + 1) {
+    top: auto !important;
+    bottom: var(--space-lg) !important;
+    right: var(--space-lg) !important;
+    left: auto !important;
+  }
 }
 
 .ant-notification-notice.sooner-toast {

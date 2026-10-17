@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
@@ -6,7 +7,7 @@ import { UserSelectors } from '../../../store/user-state/user.selector';
 
 @Component({
   selector: 'app-user-info',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './user-info.component.html',
   styleUrl: './user-info.component.scss'
 })
@@ -19,7 +20,7 @@ export default class UserInfoComponent {
   readonly initials = computed(() => {
     const name = this.user()?.userName ?? '';
     return name
-      .split(' ')
+      .split(/[._\s-]/)
       .filter(Boolean)
       .slice(0, 2)
       .map((p) => p[0]?.toUpperCase() ?? '')

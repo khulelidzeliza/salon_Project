@@ -77,3 +77,19 @@
 
       <!-- Role -->
       <div class="field">
+        <div class="field__icon"><lucide-icon [img]="ShieldIcon" [size]="18"></lucide-icon></div>
+        <div class="field__body">
+          <label class="field__label">Account type</label>
+          <div class="field__static">{{ user()?.role === 'ORGANIZATOR' ? 'Organizer' : 'Client' }}</div>
+        </div>
+      </div>
+
+      @if (editing()) {
+        <div class="details__actions">
+          <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      }
+    </form>
+  </div>
+</section>

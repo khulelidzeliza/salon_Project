@@ -1,194 +1,110 @@
+:host { display: block; }
+
 .details {
+  padding: clamp(20px, 2vw, 26px);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+
   &__head {
     display: flex;
-    align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: var(--space-lg);
+    align-items: flex-end;
+    gap: var(--space-md);
+    margin-bottom: 18px;
   }
 
   &__eyebrow {
-    margin: 0;
-    font-size: var(--fs-xs);
-    letter-spacing: 0.12em;
+    margin: 0 0 4px;
+    font: var(--fw-semibold) 10px var(--font-body);
+    letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
-    color: var(--color-text-muted);
+    color: var(--color-secondary);
   }
 
-  &__title {
-    margin: var(--space-xs) 0 0;
-    font-family: var(--font-display);
-    font-size: var(--fs-xl);
-  }
+  &__title { font: var(--fw-medium) var(--fs-xl) var(--font-display); letter-spacing: 0; }
 
-  &__edit { gap: var(--space-xs); }
+  &__edit { height: 40px; padding: 0 16px; }
 
-  
-  &__card { padding: var(--space-lg) var(--space-xl); }
+  &__card.surface { padding: 0; border: none; border-radius: 0; background: transparent; }
 
   &__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 var(--space-lg);   // no row gap — dividers handle separation
+    grid-template-columns: minmax(0, 1fr);
+    @media (min-width: 761px) and (max-width: 1100px) { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-lg); }
   }
 
   &__actions {
     grid-column: 1 / -1;
     display: flex;
-    gap: var(--space-md);
-    margin-top: var(--space-lg);
-  }
+    justify-content: flex-end;
+    gap: var(--space-sm);
+    padding-top: var(--space-sm);
 
-  // readonly: flatten inputs
-  &__grid--readonly {
-    .field__input {
-      border-color: transparent;
-      background: transparent;
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }
-
-  // locked email while editing
-  &__grid:not(.details__grid--readonly) {
-    .field__input:disabled {
-      background: var(--color-background);
-      border-color: var(--color-border);
-      color: var(--color-text-muted);
-      cursor: not-allowed;
-    }
+    .btn { height: 50px; }
   }
 }
 
 .field {
   display: flex;
-  gap: var(--space-md);
+  flex-direction: row;
   align-items: flex-start;
-  padding: var(--space-lg) 0;
-  border-bottom: 1px solid var(--color-border);
-
-  // remove the divider on the last row of each column
-  &:nth-last-child(-n + 2) {
-    border-bottom: none;
-  }
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid var(--color-divider);
 
   &__icon {
-    flex-shrink: 0;
+    flex: none;
     width: 40px;
     height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    background: var(--color-accent-light);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--color-surface-soft);
+    color: var(--color-accent);
+  }
+
+  &__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+
+  &__label {
+    font: var(--fw-semibold) 10px var(--font-body);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
     color: var(--color-secondary);
   }
 
-  &__body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    min-width: 0;
-  }
-
-  &__label {
-    font-size: var(--fs-xs);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
-
-  &__hint {
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--color-text-muted);
-    font-weight: var(--fw-regular);
-  }
-
-  &__static {
-    padding: var(--space-sm) 0;
-    font-size: var(--fs-base);
-    color: var(--color-text);
-
-    &--empty {
-      color: var(--color-text-muted);
-      font-style: italic;
-    }
-  }
+  &__hint { font-weight: var(--fw-regular); letter-spacing: 0; text-transform: none; color: var(--color-text-muted); }
 
   &__input {
-    padding: var(--space-md);
+    height: 48px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px;
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     background: var(--color-surface);
+    font: var(--fw-regular) var(--fs-base) var(--font-body);
     color: var(--color-text);
-    font-family: var(--font-body);
-    font-size: var(--fs-base);
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, background var(--dur-fast) ease, padding var(--dur-fast) ease;
 
-    &:focus {
-      outline: none;
-      border-color: var(--color-accent);
-      box-shadow: 0 0 0 3px var(--color-accent-light);
-    }
-
+    &:focus { outline: none; border-color: var(--color-accent); box-shadow: var(--focus-ring); }
     &.is-invalid { border-color: var(--color-danger); }
+    &:disabled { background: var(--color-surface-soft); color: var(--color-text-muted); }
   }
 
-  &__error {
-    font-size: var(--fs-xs);
-    color: var(--color-danger);
+  &__static { font-size: var(--fs-base); color: var(--color-text); line-height: 1.5;
+    &--empty { margin: 0; color: var(--color-text-muted); font-style: italic; }
   }
+
+  &__error { font-size: var(--fs-xs); color: var(--color-danger); }
 }
 
-@media (max-width: 700px) {
-  .details {
-    &__head {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-md);
-    }
-
-    &__title {
-      font-size: var(--fs-lg);   // 44px→24px is too big on phone; step down
-    }
-
-    &__edit {
-      align-self: flex-start;    // Edit button sits under the title, left-aligned
-    }
-
-    &__card {
-      padding: var(--space-md);  // tighter than desktop's lg/xl
-    }
-
-    &__grid {
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
-
-    &__actions {
-      flex-direction: column;    // stack Save / Cancel full-width
-
-      .btn {
-        width: 100%;
-      }
-    }
-  }
-    .field__static,
-    .field__input {
-      word-break: break-word;
-      overflow-wrap: anywhere;   // lets long unbroken strings (emails, URLs) wrap
-    }
-  // dividers: every field gets one, last one doesn't
-  .field {
-    padding: var(--space-md) 0;
-
-    &:nth-last-child(-n + 2) {
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
+// Read-only mode: inputs look like plain text
+.details__grid--readonly .field__input {
+  height: auto;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
 }

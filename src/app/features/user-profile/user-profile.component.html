@@ -1,13 +1,19 @@
-<div class="main-div">
+<div class="profile">
   <app-user-info></app-user-info>
-  <app-user-details></app-user-details>
 
-  @if (displayRole() === UserRole.Organizator) {
-    <app-user-salons></app-user-salons>
-  }
+  <div class="profile__body">
+    <aside class="profile__aside">
+      <app-user-details></app-user-details>
+    </aside>
 
-  @if (displayRole() === UserRole.User) {
-    <app-user-favorites></app-user-favorites>
-    <app-user-reviews></app-user-reviews>
-  }
+    <div class="profile__main">
+      @if (displayRole() === UserRole.Organizator) {
+        <app-user-salons></app-user-salons>
+      }
+      @if (displayRole() === UserRole.User) {
+        <app-user-favorites id="favorites"></app-user-favorites>
+        <app-user-reviews></app-user-reviews>
+      }
+    </div>
+  </div>
 </div>

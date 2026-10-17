@@ -1,42 +1,50 @@
+:host { display: contents; }
+
+// Glass dialog — centered on desktop, bottom sheet on mobile
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(42, 42, 42, 0.45);
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-md);
-  z-index: 1000;
+  padding: var(--space-sm);
+  background: var(--scrim);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fade-in .3s ease both;
+
+  @media (max-width: 760px) { align-items: flex-end; }
 }
 
-.modal-card {
+.modal-card.card {
   width: 100%;
-  max-width: 420px;
-  box-shadow: var(--shadow-md);
+  max-width: 440px;
+  box-sizing: border-box;
+  padding: clamp(22px, 2.4vw, 30px);
+  border-radius: 34px;
+  background: var(--glass-light-bg);
+  border: 1px solid var(--glass-light-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-lg);
+  animation: pop-in .4s var(--ease-out) both;
 }
 
-.modal-title {
-  margin-bottom: var(--space-sm);
-}
+.modal-title { font: var(--fw-medium) clamp(24px, 2.6vw, 30px)/1.1 var(--font-display); letter-spacing: 0; }
 
-.modal-message {
-  margin-bottom: var(--space-lg);
-  line-height: var(--lh-normal);
-}
+.modal-message { margin: 12px 0 0; font-size: var(--fs-base); line-height: 1.55; }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: var(--space-sm);
+  margin-top: 26px;
+
+  .btn { height: 50px; }
+
+  @media (max-width: 760px) { .btn { flex: 1; } }
 }
 
-// destructive confirm — reuses your danger token
-.btn-danger {
-  background: var(--color-danger);
-  color: var(--color-surface);
-
-  &:hover {
-    background: #9d4636; // slightly darker danger
-    color: var(--color-surface);
-  }
-}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop-in { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }

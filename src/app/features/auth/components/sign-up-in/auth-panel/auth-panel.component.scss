@@ -1,69 +1,29 @@
+:host { display: flex; width: 100%; justify-content: center; }
 
-:host {
-  display: flex;
-  width: 100%;
-  min-height: 100%;   // fill the section so centering has room
-}
+.panel { display: flex; justify-content: center; width: 100%; }
 
-.panel {
-  display: flex;
-  justify-content: center;
-  align-items: center;   // was flex-start
-  width: 100%;
-  padding: var(--space-xl);
-}
-
-.panel__inner {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 440px;
-}
+.panel__inner { display: flex; flex-direction: column; width: 100%; max-width: 460px; }
 
 .tabs {
   display: flex;
-  padding: var(--space-xs);
+  gap: 4px;
+  padding: 4px;
   margin-bottom: var(--space-xl);
+  border-radius: var(--radius-pill);
   background: var(--color-cards);
-  border-radius: 999px;
 }
 
 .tabs__btn {
   flex: 1;
+  height: 44px;
   border: none;
+  border-radius: var(--radius-pill);
   background: transparent;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: 999px;
-  font-family: var(--font-body);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
+  font: var(--fw-medium) var(--fs-sm) var(--font-body);
   color: var(--color-text-muted);
   cursor: pointer;
-  transition:
-    background var(--transition-fast),
-    color var(--transition-fast),
-    box-shadow var(--transition-fast);
+  transition: background var(--dur-base) ease, color var(--dur-base) ease, box-shadow var(--dur-base) ease;
 
-  &--active {
-    background: var(--color-surface);
-    color: var(--color-text);
-    box-shadow: var(--shadow-sm);
-  }
-}
-
-
-
-@media (max-width: 900px) {
-
-  .panel {
-  padding: var(--space-xl) var(--space-lg);
-  }
-}
-@media (max-width: 820px) {
-  app-brand-panel { display: none; }
-
-  .panel {
-    flex: 1 1 100%;
-    padding: var(--space-lg);
-  }
+  &:hover { color: var(--color-text); }
+  &--active { background: var(--color-surface); color: var(--color-text); box-shadow: var(--shadow-sm); }
 }

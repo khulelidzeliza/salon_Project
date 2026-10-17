@@ -1,29 +1,33 @@
 <section class="favorites">
   <header class="favorites__head">
-    <p class="favorites__eyebrow">Saved</p>
-    <h2 class="favorites__title">Your favorites</h2>
+    <div>
+      <p class="favorites__eyebrow">Saved</p>
+      <h2 class="favorites__title">Your favorites</h2>
+    </div>
+    <a routerLink="/" class="favorites__more">Discover more →</a>
   </header>
 
   @if (favorites().length) {
     <div class="favorites__grid">
       @for (fav of favorites(); track fav.id) {
-        <article class="salon-card surface">
-          <div class="salon-card__media">
-            @if (fav.salon.pictures.length) {
-              <img [src]="fav.salon.pictures[0]" [alt]="fav.salon.name" />
-            } @else {
-              <div class="salon-card__placeholder">{{ fav.salon.name[0] }}</div>
-            }
+        <a class="fav-card" [routerLink]="['/salons', fav.salon.id]">
+          @if (fav.salon.pictures.length) {
+            <img class="fav-card__photo" [src]="serverUrl + fav.salon.pictures[0]" [alt]="fav.salon.name" />
+          } @else {
+            <div class="fav-card__placeholder">{{ fav.salon.name[0] }}</div>
+          }
+          <span class="fav-card__heart" aria-hidden="true">♥</span>
+          <div class="fav-card__body">
+            <p class="fav-card__location">{{ fav.salon.location }}</p>
+            <h3 class="fav-card__name">{{ fav.salon.name }}</h3>
           </div>
-
-          <div class="salon-card__body">
-            <h3 class="salon-card__name">{{ fav.salon.name }}</h3>
-            <p class="salon-card__location">{{ fav.salon.location }}</p>
-          </div>
-        </article>
+        </a>
       }
     </div>
   } @else {
-    <p class="favorites__empty text-muted">You haven't saved any salons yet.</p>
+    <div class="favorites__empty">
+      <p>No favorites yet — tap ♥ on any salon to save it here.</p>
+      <a routerLink="/" class="btn btn-primary btn--sm">Discover salons</a>
+    </div>
   }
 </section>

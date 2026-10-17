@@ -1,43 +1,46 @@
-:host {
-  display: block;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: var(--space-xl) var(--space-xl) var(--space-2xl);
-}
+:host { display: block; }
 
 .section-header {
-  margin-bottom: var(--space-lg);
+  margin-bottom: 28px;
 
   &__eyebrow {
-    font-size: var(--fs-xs);
-    letter-spacing: 0.12em;
+    margin: 0 0 10px;
+    font: var(--fw-semibold) var(--fs-eyebrow) var(--font-body);
+    letter-spacing: .2em;
     text-transform: uppercase;
     color: var(--color-accent);
-    font-weight: var(--fw-semibold);
-    margin: 0 0 var(--space-xs);
   }
 
   h2 {
-    margin: 0;
+    font: var(--fw-regular) var(--fs-2xl)/1 var(--font-display);
+    letter-spacing: var(--ls-display);
   }
 }
 
+// Sticky glass tab bar
 .service-section {
-  margin-top: var(--space-2xl);
-  text-align: center;
+  position: sticky;
+  top: 92px;                       // sits under the fixed header
+  z-index: var(--z-sticky);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(16px, 2.4vw, 28px) var(--space-sm) var(--space-sm);
+
+  .section-header { display: none; }  // the tabs speak for themselves
 }
 
 .results-section,
 .masters-section {
-  margin-top: var(--space-2xl);
-
-  .section-header {
-    text-align: center;
-  }
+  padding: var(--space-section) var(--gutter) 0;
 }
+
+.results-section { padding-top: clamp(24px, 3vw, 40px); }
 
 .masters-section__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: 14px;
 }
+
+:host > *:last-child { padding-bottom: var(--space-md); }

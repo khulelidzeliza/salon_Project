@@ -1,66 +1,76 @@
-<div class="filter-bar">
-  <!-- mobile toggle -->
-  <button class="filter-bar__toggle" (click)="toggleFilters()"
-          [attr.aria-expanded]="filtersOpen" aria-label="Open filters">
-    <lucide-icon [img]="FilterIcon" [size]="20"></lucide-icon>
-    <span>Filters</span>
-  </button>
-
-  <div class="filter-bar__overlay" [class.is-open]="filtersOpen"
-       (click)="closeFilters()">
-    <div class="filter-bar__fields" (click)="$event.stopPropagation()">
-
-      <!-- modal header — mobile only -->
-      <div class="filter-bar__modal-head">
-        <h3>Filters</h3>
-        <button class="filter-bar__close" (click)="closeFilters()" aria-label="Close">
-          <lucide-icon [img]="CloseIcon" [size]="20"></lucide-icon>
-        </button>
-      </div>
-
-      <!-- Procedure type -->
-      <div class="filter-bar__field">
-        <label>PROCEDURES</label>
-        <select [(ngModel)]="filters.category" (ngModelChange)="onChange()">
-          <option *ngFor="let o of categoryOptions" [value]="o.value">{{ o.label }}</option>
-        </select>
-      </div>
-
-      <!-- Price -->
-      <div class="filter-bar__field">
-        <label>PRICE</label>
-        <select [(ngModel)]="filters.price" (ngModelChange)="onChange()">
-          <option *ngFor="let o of priceOptions" [value]="o.value">{{ o.label }}</option>
-        </select>
-      </div>
-
-      <!-- Search -->
-      <div class="filter-bar__field">
-        <label for="search-input">SEARCH</label>
-        <div class="filter-bar__search-wrap">
-          <lucide-icon class="filter-bar__search-icon" [img]="SearchIcon" [size]="16"></lucide-icon>
-          <input
-            id="search-input"
-            type="text"
-            class="filter-bar__search-input"
-            placeholder="Salon name or location…"
-            [(ngModel)]="filters.search"
-            (ngModelChange)="onChange()"
-            autocomplete="off" />
-          <button
-            *ngIf="filters.search"
-            class="filter-bar__search-clear"
-            (click)="clearSearch()"
-            aria-label="Clear search">
-            <lucide-icon [img]="CloseIcon" [size]="14"></lucide-icon>
-          </button>
-        </div>
-      </div>
-
-      <!-- modal apply button — mobile only -->
-      <button class="btn btn-primary filter-bar__apply" (click)="closeFilters()">
-        Show results
+<div class="filters">
+  <label class="filters__search">
+    <lucide-icon [img]="SearchIcon" [size]="18"></lucide-icon>
+    <input
+      type="search"
+      placeholder="Salon or location…"
+      aria-label="Search salons by name or location"
+      autocomplete="off"
+      [value]="filters.search"
+      (input)="onSearch($any($event.target).value)" />
+    @if (filters.search) {
+      <button type="button" class="filters__clear" (click)="clearSearch()" aria-label="Clear search">
+        <lucide-icon [img]="CloseIcon" [size]="14"></lucide-icon>
       </button>
+    }
+  </label>
+
+  <div class="filters__chips" role="tablist" aria-label="Procedures">
+    @for (o of categoryOptions; track o.value) {
+      <button
+        type="button"
+        role="tab"
+        class="filters__chip"
+        [class.is-active]="filters.category === o.value"
+        [attr.aria-selected]="filters.category === o.value"
+        (click)="setCategory(o.value)">
+        {{ o.label }}
+      </button>
+    }
+  </div>
+
+  <button type="button" class="filters__more" [class.has-active]="activeCount > 0" (click)="openSheet()">
+    <lucide-icon [img]="FilterIcon" [size]="18"></lucide-icon>
+    @if (activeCount > 0) {
+      <span>Filters · {{ activeCount }}</span>
+    } @else {
+      <span class="filters__label-desktop">Price · For</span>
+      <span class="filters__label-mobile">Filters</span>
+    }
+  </button>
+</div>
+
+<!-- Filters sheet: centered on desktop, bottom sheet on mobile -->
+<div class="sheet-scrim" [class.is-open]="sheetOpen" (click)="closeSheet()"></div>
+<div class="sheet" [class.is-open]="sheetOpen" role="dialog" aria-modal="true" aria-labelledby="filters-title" [attr.aria-hidden]="!sheetOpen">
+  <div class="sheet__panel">
+    <span class="sheet__handle" aria-hidden="true"></span>
+
+    <div class="sheet__head">
+      <h3 id="filters-title" class="sheet__title">Filters</h3>
+      <button type="button" class="sheet__reset" (click)="resetFilters()">Reset</button>
     </div>
+
+    <p class="sheet__label">Price</p>
+    <div class="sheet__chips">
+      @for (o of priceOptions; track o.value) {
+        <button type="button" class="chip" [class.is-active]="filters.price === o.value" (click)="setPrice(o.value)">
+          {{ o.label }}
+        </button>
+      }
+    </div>
+
+    <p class="sheet__label">For</p>
+    <div class="segmented">
+      @for (o of audienceOptions; track o.value) {
+        <button type="button" class="segmented__item" [class.is-active]="filters.audience === o.value" (click)="setAudience(o.value)">
+          {{ o.label }}
+        </button>
+      }
+    </div>
+
+    <button type="button" class="btn btn-primary btn--lg sheet__submit" (click)="closeSheet()">
+      Show {{ resultCount }} {{ resultCount === 1 ? 'salon' : 'salons' }}
+    </button>
   </div>
 </div>

@@ -1,66 +1,97 @@
+:host { display: block; }
+
+// Photo banner: identity bottom-left, glass stats bottom-right
 .profile-banner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: var(--frame);
+  min-height: clamp(360px, 42vw, 400px);
+  box-sizing: border-box;
+  border-radius: var(--radius-hero);
   display: flex;
-  align-items: center;
-  gap: var(--space-lg);
-  padding: var(--space-xl);
-  background: var(--color-secondary);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 120px clamp(20px, 4vw, 48px) clamp(24px, 3.4vw, 40px);
+  color: var(--color-on-accent);
+  background:
+    linear-gradient(180deg, rgba(30, 20, 18, .35), rgba(30, 20, 18, .8)),
+    url('/images/hero.jpg') center 40% / cover no-repeat,
+    #3b2b26;
 
-  &__avatar {
-    flex-shrink: 0;
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    background: var(--color-accent);
+  &__identity {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    span {
-      font-family: var(--font-display);
-      font-size: var(--fs-xl);
-      font-weight: var(--fw-semibold);
-      color: var(--color-text);
-    }
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: clamp(14px, 2vw, 24px);
+    min-width: 0;
   }
 
-  &__info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
+  &__avatar {
+    flex: none;
+    width: clamp(84px, 9vw, 120px);
+    height: clamp(84px, 9vw, 120px);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, .16);
+    border: 1px solid rgba(255, 255, 255, .35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    font: var(--fw-regular) clamp(30px, 3.4vw, 44px) var(--font-display);
+  }
+
+  &__info { min-width: 0; padding-bottom: 6px; }
+
+  &__role {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-background);
+    color: var(--color-accent);
+    font: var(--fw-semibold) 11px var(--font-body);
+    letter-spacing: .14em;
+    text-transform: uppercase;
   }
 
   &__name {
-    font-family: var(--font-display);
-    font-size: var(--fs-2xl);
-    color: var(--color-surface);
-    margin: 0;
+    margin-top: 12px;
+    font: var(--fw-regular) clamp(36px, 5vw, 60px)/1 var(--font-display);
+    letter-spacing: -0.025em;
+    color: inherit;
+    overflow-wrap: anywhere;
   }
 
-  &__meta {
-    color: var(--color-accent-light);
-    font-size: var(--fs-sm);
-    margin: 0;
+  &__meta { margin: 8px 0 0; font-size: var(--fs-base); color: inherit; opacity: .85; }
+
+  &__stats {
+    display: flex;
+    gap: 4px;
+    padding: 8px;
+    border-radius: 30px;
+    background: rgba(250, 247, 242, .14);
+    border: 1px solid rgba(255, 255, 255, .22);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    @media (max-width: 760px) { flex: 1 1 100%; }
   }
 
-  &__role {
-    align-self: flex-start;
-    margin-top: var(--space-sm);
-    padding: var(--space-xs) var(--space-md);
-    border-radius: 999px;
-    background: var(--color-accent);
-    color: var(--color-text);
-    font-size: var(--fs-xs);
-    font-weight: var(--fw-semibold);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  &__stat {
+    flex: 1;
+    padding: 8px 22px;
+    text-align: center;
+
+    strong { display: block; font: var(--fw-regular) 30px/1 var(--font-display); }
+    span {
+      display: block;
+      margin-top: 6px;
+      font: var(--fw-medium) 11px var(--font-body);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      opacity: .8;
+    }
   }
 }

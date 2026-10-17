@@ -1,20 +1,30 @@
 @if (user(); as user) {
   <section class="profile-banner">
-    <div class="profile-banner__avatar">
-      <!-- @if (user.picture) {
-        <img [src]="user.picture" [alt]="user.userName" />
-      }  -->
-      <!-- @else { -->
-        <span>{{ initials() }}</span>
-      <!-- } -->
+    <div class="profile-banner__identity">
+      <div class="profile-banner__avatar"><span>{{ initials() }}</span></div>
+
+      <div class="profile-banner__info">
+        <span class="profile-banner__role">
+          {{ user.role === 'ORGANIZATOR' ? 'Organizer account' : 'Client account' }}
+        </span>
+        <h1 class="profile-banner__name">{{ user.userName }}</h1>
+        <p class="profile-banner__meta">{{ user.email }} · Member since {{ user.createdAt | date: 'y' }}</p>
+      </div>
     </div>
 
-    <div class="profile-banner__info">
-      <h2 class="profile-banner__name">{{ user.userName }}</h2>
-      <!-- <p class="profile-banner__meta">
-        {{ user.email }} · Member since 2023
-      </p> -->
-      <span class="profile-banner__role">{{ user.role }}</span>
+    <div class="profile-banner__stats">
+      @if (user.role === 'ORGANIZATOR') {
+        <div class="profile-banner__stat">
+          <strong>{{ user.salons.length }}</strong><span>Salons</span>
+        </div>
+      } @else {
+        <div class="profile-banner__stat">
+          <strong>{{ user.favorites.length }}</strong><span>Favorites</span>
+        </div>
+        <div class="profile-banner__stat">
+          <strong>{{ user.reviews.length }}</strong><span>Reviews</span>
+        </div>
+      }
     </div>
   </section>
 }
