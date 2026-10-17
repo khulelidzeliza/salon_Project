@@ -2,12 +2,10 @@
 
 .profile { padding-bottom: var(--space-2xl); }
 
-// Two columns: sticky details card + content
 .profile__body {
   display: grid;
   grid-template-columns: 340px minmax(0, 1fr);
   gap: clamp(28px, 3vw, 40px);
-  // padding: clamp(20px, 2.6vw, 32px) var(--gutter) 0;
   padding: clamp(20px, 2.6vw, 32px) var(--frame) 0;
 
   @media (max-width: 1100px) { grid-template-columns: minmax(0, 1fr); }
@@ -16,7 +14,7 @@
 .profile__aside {
   align-self: start;
   position: sticky;
-  top: 100px;                      // below the fixed header
+  top: 100px;                     
 
   @media (max-width: 1100px) { position: static; }
 }
