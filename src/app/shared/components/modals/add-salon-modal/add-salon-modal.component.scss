@@ -96,6 +96,161 @@
   }
 }
 
+// ── Procedures ──
+.procedures {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--color-divider);
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  &__eyebrow {
+    margin: 0 0 4px;
+    font: var(--fw-semibold) 10px var(--font-body);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-secondary);
+  }
+
+  &__title { font: var(--fw-medium) 22px var(--font-display); letter-spacing: 0; }
+
+  &__add {
+    height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-accent);
+    font: var(--fw-medium) var(--fs-sm) var(--font-body);
+    cursor: pointer;
+    transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+    &:hover { background: var(--color-accent); color: var(--color-on-accent); }
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 18px;
+    border-radius: 20px;
+    border: 1px dashed var(--color-border-strong);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+}
+
+.procedure {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  animation: pop-in .35s var(--ease-out) both;
+
+  &__top { display: flex; justify-content: space-between; align-items: center; }
+
+  &__num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font: var(--fw-semibold) 12px var(--font-body);
+  }
+
+  &__remove {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+    cursor: pointer;
+    &:hover { background: var(--color-danger-soft); color: var(--color-danger); }
+  }
+
+  .input.file { padding: 18px 14px; }
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.chip {
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text);
+  font: var(--fw-medium) 13px var(--font-body);
+  cursor: pointer;
+  transition: all var(--dur-fast) ease;
+
+  &:hover { border-color: var(--color-border-strong); }
+  &.is-active { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
+}
+
+.masters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: 50px;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+
+  &:focus-within { border-color: var(--color-accent); box-shadow: var(--focus-ring); }
+
+  &__input {
+    flex: 1 1 140px;
+    min-width: 0;
+    height: 36px;
+    border: none;
+    background: transparent;
+    padding: 0 6px;
+    font: var(--fw-regular) var(--fs-base) var(--font-body);
+    color: var(--color-text);
+    &:focus { outline: none; }
+  }
+}
+
+.master {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 6px 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-soft);
+  font: var(--fw-medium) 13px var(--font-body);
+  color: var(--color-text);
+
+  button {
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 11px;
+    cursor: pointer;
+    &:hover { background: var(--color-background); color: var(--color-accent); }
+  }
+}
+
 .err { font-size: var(--fs-xs); color: var(--color-danger); }
 p.err { margin: 12px 0 0; font-size: var(--fs-sm); }
 

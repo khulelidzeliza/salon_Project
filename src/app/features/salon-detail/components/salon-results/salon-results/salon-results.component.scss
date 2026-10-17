@@ -1,0 +1,22 @@
+:host { display: block; }
+
+.salon-results { padding: clamp(24px, 3vw, 40px) var(--gutter) 0; }
+
+.section-header {
+  margin-bottom: 28px;
+
+  &__eyebrow {
+    margin: 0 0 10px;
+    font: var(--fw-semibold) var(--fs-eyebrow) var(--font-body);
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  h2 {
+    font: var(--fw-regular) var(--fs-2xl)/1 var(--font-display);
+    letter-spacing: var(--ls-display);
+    text-transform: capitalize;
+    em { font-style: italic; color: var(--color-accent); }
+  }
+}

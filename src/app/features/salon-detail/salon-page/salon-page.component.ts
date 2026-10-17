@@ -5,16 +5,26 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SalonHeroComponent } from '../components/salon-hero/salon-hero/salon-hero.component';
-import { WorkingResultsComponent } from '../components/working-results/working-results/working-results.component';
-import { StaffCardComponent } from '../components/staff-card/staff-card/staff-card.component';
-import { ServiceTabsComponent } from '../components/service-tabs/service-tabs/service-tabs.component';
+import { SalonServicesComponent } from '../components/salon-services/salon-services/salon-services.component';
+import { SalonResultsComponent } from '../components/salon-results/salon-results/salon-results.component';
+import { SalonMastersComponent } from '../components/salon-masters/salon-masters/salon-masters.component';
+import { SalonContactComponent } from '../components/salon-contact/salon-contact/salon-contact.component';
+import { SalonActionBarComponent } from '../components/salon-action-bar/salon-action-bar/salon-action-bar.component';
 import { SalonSelectors } from '../../../store/salon-state/salon-selector';
 import { GetSalonById } from '../../../store/salon-state/salon-actions';
 
 @Component({
   selector: 'app-salon-page',
   standalone: true,
-  imports: [CommonModule, SalonHeroComponent, ServiceTabsComponent, WorkingResultsComponent, StaffCardComponent],
+  imports: [
+    CommonModule,
+    SalonHeroComponent,
+    SalonServicesComponent,
+    SalonResultsComponent,
+    SalonMastersComponent,
+    SalonContactComponent,
+    SalonActionBarComponent
+  ],
   templateUrl: './salon-page.component.html',
   styleUrl: './salon-page.component.scss'
 })

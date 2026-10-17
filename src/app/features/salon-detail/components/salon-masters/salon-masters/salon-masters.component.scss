@@ -1,0 +1,30 @@
+:host { display: block; }
+
+.salon-masters {
+  padding: var(--space-section) var(--gutter) 0;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    gap: 14px;
+  }
+}
+
+.section-header {
+  margin-bottom: 28px;
+
+  &__eyebrow {
+    margin: 0 0 10px;
+    font: var(--fw-semibold) var(--fs-eyebrow) var(--font-body);
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  h2 {
+    font: var(--fw-regular) var(--fs-2xl)/1 var(--font-display);
+    letter-spacing: var(--ls-display);
+    text-transform: capitalize;
+    em { font-style: italic; color: var(--color-accent); }
+  }
+}

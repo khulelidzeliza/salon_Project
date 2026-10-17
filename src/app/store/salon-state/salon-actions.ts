@@ -1,3 +1,4 @@
+import { ProcedureType } from '../../../generated/graphql';
 import { SalonFilterInput } from '../../../generated/graphql'; // adjust path to your actual generated file location
 
 export type SalonPayload = {
@@ -11,11 +12,18 @@ export type SalonPayload = {
   workingHours?: string;
 };
 
+export type ProcedurePayload = {
+  procedureType: ProcedureType;
+  masters: string[];
+  finishedWorks: File[];
+};
+
 export class AddSalon {
   static readonly type = '[Salon] Add Salon';
   constructor(
     public payload: SalonPayload,
-    public pictures: File[]
+    public pictures: File[],
+    public procedures: ProcedurePayload[] = []
   ) {}
 }
 

@@ -12,11 +12,13 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 })
 export class AppComponent {
   isAuthPage = false;
+  isSalonDetailsPage = false;
 
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.isAuthPage = event.urlAfterRedirects.startsWith('/auth');
+        this.isSalonDetailsPage = event.urlAfterRedirects.startsWith('/salons/');
       }
     });
   }

@@ -1,0 +1,7 @@
+<nav class="salon-services" aria-label="Services">
+  <app-service-tabs
+    [categories]="categories"
+    [active]="active"
+    (categorySelected)="categorySelected.emit($event)">
+  </app-service-tabs>
+</nav>

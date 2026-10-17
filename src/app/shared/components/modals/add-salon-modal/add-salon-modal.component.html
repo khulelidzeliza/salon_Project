@@ -66,6 +66,58 @@
         </small>
       </div>
 
+      <!-- Procedures -->
+      <section class="procedures">
+        <div class="procedures__head">
+          <div>
+            <p class="procedures__eyebrow">Services</p>
+            <h4 class="procedures__title">Procedures</h4>
+          </div>
+          <button type="button" class="procedures__add" (click)="addProcedure()">+ Add procedure</button>
+        </div>
+
+        <p class="procedures__empty" *ngIf="!procedures.length">
+          Add the services your salon offers — masters and work photos appear on the salon page.
+        </p>
+
+        <div class="procedure" *ngFor="let p of procedures; let i = index">
+          <div class="procedure__top">
+            <span class="procedure__num">{{ i + 1 }}</span>
+            <button type="button" class="procedure__remove" (click)="removeProcedure(i)" aria-label="Remove procedure">✕</button>
+          </div>
+
+          <div class="field">
+            <label>Type</label>
+            <div class="chips">
+              <button type="button" class="chip" *ngFor="let t of procedureTypes"
+                      [class.is-active]="p.procedureType === t.value"
+                      (click)="setType(i, t.value)">{{ t.label }}</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Masters</label>
+            <div class="masters">
+              <span class="master" *ngFor="let m of p.masters; let mi = index">
+                {{ m }}
+                <button type="button" (click)="removeMaster(i, mi)" [attr.aria-label]="'Remove ' + m">✕</button>
+              </span>
+              <input class="masters__input" type="text" placeholder="Type a name, press Enter"
+                     [value]="p.masterDraft"
+                     (input)="onMasterInput(i, $event)"
+                     (keydown.enter)="addMaster(i, $event)"
+                     (blur)="addMaster(i)" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Finished works</label>
+            <input class="input file" type="file" multiple accept="image/*" (change)="onWorksChange(i, $event)" />
+            <small class="text-muted" *ngIf="p.finishedWorks.length">{{ p.finishedWorks.length }} photo(s) selected</small>
+          </div>
+        </div>
+      </section>
+
       <p class="err" *ngIf="error$ | async">
         Failed to create salon. Please try again.
       </p>

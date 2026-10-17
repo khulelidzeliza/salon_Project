@@ -1,0 +1,7 @@
+<section class="salon-results" *ngIf="procedures.length">
+  <header class="section-header">
+    <p class="section-header__eyebrow">{{ category }}</p>
+    <h2>Working <em>results</em></h2>
+  </header>
+  <app-working-results [procedures]="procedures"></app-working-results>
+</section>

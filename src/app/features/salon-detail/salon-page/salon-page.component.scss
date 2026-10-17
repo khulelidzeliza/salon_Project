@@ -1,46 +1,10 @@
 :host { display: block; }
 
-.section-header {
-  margin-bottom: 28px;
-
-  &__eyebrow {
-    margin: 0 0 10px;
-    font: var(--fw-semibold) var(--fs-eyebrow) var(--font-body);
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-  }
-
-  h2 {
-    font: var(--fw-regular) var(--fs-2xl)/1 var(--font-display);
-    letter-spacing: var(--ls-display);
-  }
+.loading {
+  margin: var(--frame);
+  height: clamp(560px, 82vh, 680px);
+  border-radius: var(--radius-hero);
+  background: var(--color-cards);
+  animation: pulse 1.4s ease-in-out infinite;
 }
-
-// Sticky glass tab bar
-.service-section {
-  position: sticky;
-  top: 92px;                       // sits under the fixed header
-  z-index: var(--z-sticky);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: clamp(16px, 2.4vw, 28px) var(--space-sm) var(--space-sm);
-
-  .section-header { display: none; }  // the tabs speak for themselves
-}
-
-.results-section,
-.masters-section {
-  padding: var(--space-section) var(--gutter) 0;
-}
-
-.results-section { padding-top: clamp(24px, 3vw, 40px); }
-
-.masters-section__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
-  gap: 14px;
-}
-
-:host > *:last-child { padding-bottom: var(--space-md); }
+@keyframes pulse { 0%, 100% { opacity: .45; } 50% { opacity: .8; } }

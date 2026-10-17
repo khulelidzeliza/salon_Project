@@ -1,0 +1,36 @@
+// Mobile-only sticky bar above the nav dock
+:host {
+  display: none;
+
+  @media (max-width: 760px) {
+    display: block;
+    position: sticky;
+    bottom: 96px;
+    z-index: var(--z-sticky);
+  }
+}
+
+.action-bar {
+  display: flex;
+  gap: 8px;
+  margin: var(--space-md) var(--frame) 0;
+  padding: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--glass-light-bg);
+  border: 1px solid var(--glass-light-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-md);
+
+  a {
+    flex: 1;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    font: var(--fw-medium) var(--fs-sm) var(--font-body);
+  }
+
+  &__call { background: var(--color-surface-soft); color: var(--color-text); &:hover { color: var(--color-text); } }
+  &__msg { background: var(--color-accent); color: var(--color-on-accent); &:hover { color: var(--color-on-accent); } }
+}

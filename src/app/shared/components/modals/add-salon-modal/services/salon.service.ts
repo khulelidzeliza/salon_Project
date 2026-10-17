@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SalonPayload } from '../../../../../store/salon-state/salon-actions';
+import { ProcedurePayload, SalonPayload } from '../../../../../store/salon-state/salon-actions';
 import { SalonType } from '../../../../../store/salon-state/salon-modal';
 
 @Injectable({ providedIn: 'root' })
 export class SalonService {
   private addSalonUrl = `/Salons/add-salon`;
+  private addProcedureUrl = `/Salons/add-procedure`;
 
   constructor(private http: HttpClient) {}
 
@@ -23,5 +24,15 @@ export class SalonService {
     pictures.forEach(file => fd.append('Pictures', file)); // multiple files, same key
 
     return this.http.post<SalonType>(this.addSalonUrl, fd);
+  }
+    addProcedure(salonId: number, userId: number, p: ProcedurePayload): Observable<unknown> {
+    const fd = new FormData();
+    fd.append('userid', String(userId));
+    fd.append('SalonId', String(salonId));
+    fd.append('ProcedureType', p.procedureType);          // enum binds by name (case-insensitive)
+    p.masters.forEach(m => fd.append('Masters', m));
+    p.finishedWorks.forEach(file => fd.append('FinishedWorks', file));
+
+    return this.http.post(this.addProcedureUrl, fd);
   }
 }

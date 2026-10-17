@@ -1,0 +1,27 @@
+<section class="contact">
+  <header>
+    <p class="contact__eyebrow">Come see us</p>
+    <h2 class="contact__title">Contact</h2>
+  </header>
+
+  <div class="contact__grid">
+    <a class="contact__item contact__item--link" *ngIf="salon.phoneNumber" [href]="'tel:' + salon.phoneNumber">
+      <span class="contact__icon">✆</span>
+      <span class="contact__text"><small>Phone</small>{{ salon.phoneNumber }}</span>
+      <span class="contact__cta">Call →</span>
+    </a>
+    <div class="contact__item">
+      <span class="contact__icon">⌖</span>
+      <span class="contact__text"><small>Address</small>{{ salon.location }}</span>
+    </div>
+    <div class="contact__item" *ngIf="salon.workingHours">
+      <span class="contact__icon">◷</span>
+      <span class="contact__text"><small>Hours</small>{{ salon.workingHours }}</span>
+    </div>
+  </div>
+
+  <div class="contact__social" *ngIf="salon.instagramLink || salon.facebookLink">
+    <a *ngIf="salon.instagramLink" [href]="salon.instagramLink" target="_blank" rel="noopener">Instagram</a>
+    <a *ngIf="salon.facebookLink" [href]="salon.facebookLink" target="_blank" rel="noopener">Facebook</a>
+  </div>
+</section>

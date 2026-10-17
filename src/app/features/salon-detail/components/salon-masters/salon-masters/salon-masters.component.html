@@ -1,0 +1,9 @@
+<section class="salon-masters" *ngIf="masters.length">
+  <header class="section-header">
+    <p class="section-header__eyebrow">The people</p>
+    <h2>{{ category ?? 'Our' }} <em>masters</em></h2>
+  </header>
+  <div class="salon-masters__grid">
+    <app-staff-card *ngFor="let name of masters" [name]="name"></app-staff-card>
+  </div>
+</section>

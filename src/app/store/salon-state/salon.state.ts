@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { State, Action,  StateContext, Store } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
 import { SalonService } from '../../shared/components/modals/add-salon-modal/services/salon.service';
 import { Salon, SalonStateModel } from './salon-modal';
 import { AddSalon, GetMySalons, GetSalonById, GetSalons } from './salon-actions';
@@ -45,13 +46,23 @@ export class SalonState {
   addSalon(ctx: StateContext<SalonStateModel>, action: AddSalon) {
     ctx.patchState({ loading: true, error: null });
 
+    const user = this.store.selectSnapshot(UserSelectors.getUser);
+
     return this.salonService.addSalon(action.payload, action.pictures).pipe(
-      tap((salon) => {
-        const state = ctx.getState();
-        ctx.patchState({
-          loading: false,
-        });
-        return ctx.dispatch(new GetSalons());
+      // then create every procedure for the new salon
+      switchMap((salon: any) => {
+        const salonId = Number(salon?.id ?? salon?.salonId ?? salon);
+        if (!action.procedures.length || !salonId || !user?.id) return of(salon);
+        return forkJoin(
+          action.procedures.map(p => this.salonService.addProcedure(salonId, user.id, p))
+        ).pipe(switchMap(() => of(salon)));
+      }),
+      tap({
+        next: () => {
+          ctx.patchState({ loading: false });
+          ctx.dispatch([new GetSalons(), new GetMySalons()]);
+        },
+        error: () => ctx.patchState({ loading: false, error: 'Failed to create salon' }),
       }),
     );
   }
