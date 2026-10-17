@@ -1,58 +1,41 @@
-
 <footer class="site-footer">
-  <div class="site-footer__grid">
-    <div class="site-footer__brand">
-      <p class="site-footer__logo">
-        <span class="site-footer__logo-main">Rames</span>
-        <span class="site-footer__logo-accent">Davarkmevt</span>
-      </p>
-      <p class="site-footer__tagline">
-        Discover exceptional beauty, grooming, wellness, and self-expression — all in one place.
-      </p>
-      <div class="site-footer__socials">
-        <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
-          <lucide-icon [img]="InstagramIcon" [size]="16"></lucide-icon>
-        </a>
-        <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
-          <lucide-icon [img]="TikTokIcon" [size]="16"></lucide-icon>
-        </a>
-        <a href="https://wa.me/995555430045" target="_blank" rel="noopener" aria-label="WhatsApp">
-          <lucide-icon [img]="WhatsappIcon" [size]="16"></lucide-icon>
-        </a>
+  <div class="site-footer__card">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <p class="site-footer__eyebrow">Beauty atelier · Tbilisi</p>
+        <p class="site-footer__pitch">
+          Discover exceptional beauty, grooming, wellness and self-expression — <em>all in one place.</em>
+        </p>
+        <div class="site-footer__socials">
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+            <lucide-icon [img]="InstagramIcon" [size]="18"></lucide-icon>
+          </a>
+          <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+            <lucide-icon [img]="TikTokIcon" [size]="18"></lucide-icon>
+          </a>
+          <a href="https://wa.me/995555430045" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <lucide-icon [img]="WhatsappIcon" [size]="18"></lucide-icon>
+          </a>
+        </div>
       </div>
+
+      @for (col of columns; track col.title) {
+        <div class="site-footer__col">
+          <h5>{{ col.title }}</h5>
+          <ul>
+            @for (l of col.links; track l.label) {
+              <li><a [routerLink]="l.link" [queryParams]="l.query">{{ l.label }}</a></li>
+            }
+          </ul>
+        </div>
+      }
     </div>
 
-    <div class="site-footer__col">
-      <h5>DISCOVER</h5>
-      <ul>
-        <li><a routerLink="/salons">Salons</a></li>
-        <li><a routerLink="/barbershops">Barbershops</a></li>
-        <li><a routerLink="/tattoo">Tattoo Studios</a></li>
-        <li><a routerLink="/nails">Nail Studios</a></li>
-      </ul>
-    </div>
+    <p class="site-footer__wordmark" aria-hidden="true">Rames <em>Davarkmevt</em></p>
 
-    <div class="site-footer__col">
-      <h5>THE PLATFORM</h5>
-      <ul>
-        <li><a routerLink="/about">About us</a></li>
-        <li><a routerLink="/contact">Contact</a></li>
-      </ul>
+    <div class="site-footer__bottom">
+      <span>© {{ currentYear }} Rames Davarkmevt. All rights reserved.</span>
+      <span>Made warm, in Tbilisi.</span>
     </div>
-
-    <div class="site-footer__col">
-      <h5>SUPPORT</h5>
-      <ul>
-        <li><a routerLink="/help">Help center</a></li>
-        <li><a routerLink="/privacy">Privacy policy</a></li>
-        <li><a routerLink="/terms">Terms &amp; conditions</a></li>
-        <li><a routerLink="/contact">Contact support</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="site-footer__bottom">
-    <span>© {{ currentYear }} Maison Lueur. All rights reserved.</span>
-    <span>Made warm, in Tbilisi.</span>
   </div>
 </footer>

@@ -1,172 +1,164 @@
-:host {
-  display: block;
-}
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;    
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,.5);
-}
+:host { display: block; }
+
+// ── Floating glass bar ───────────────────────────────────────
 .site-header {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  padding: var(--space-lg) var(--space-xl);
-  background: var(--color-background);
-  position: relative;
+  position: fixed;
+  top: var(--frame);
+  left: var(--frame);
+  right: var(--frame);
+  z-index: var(--z-nav);
+  padding: clamp(10px, 1.6vw, 20px);
+  pointer-events: none;            // only the bar itself is clickable
 
-  &__menu-toggle {
-    display: none; 
-    background: none;
-    border: none;
-    color: var(--color-text);
-    cursor: pointer;
-    padding: 0;
-    order: -1;
-  }
-
-  &__nav {
+  &__bar {
+    pointer-events: auto;
+    height: 60px;
     display: flex;
     align-items: center;
-    gap: var(--space-lg);
-  }
-
-  &__nav-link {
-    font-size: var(--fs-xs);
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
-    font-weight: var(--fw-medium);
-    white-space: nowrap;
-
-    &:hover {
-      color: var(--color-secondary);
-    }
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: 0 8px 0 22px;
+    border-radius: var(--radius-pill);
+    background: var(--glass-light-bg);
+    border: 1px solid var(--glass-light-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-md);
+    color: var(--color-text);
+    transition: background var(--dur-base) ease, border-color var(--dur-base) ease,
+                box-shadow var(--dur-base) ease, color var(--dur-base) ease;
   }
 
   &__logo {
-    text-align: center;
-    color: var(--color-text);
-
-    &:hover {
-      color: var(--color-text);
-    }
-
-    h1 {
-      font-size: var(--fs-2xl);
-      letter-spacing: 0.06em;
-      margin: 0;
-      white-space: nowrap;
-    }
+    font: var(--fw-medium) clamp(18px, 2vw, 24px)/1 var(--font-display);
+    color: inherit;
+    white-space: nowrap;
+    &:hover { color: inherit; }
+    em { font-style: italic; color: var(--color-accent); transition: color var(--dur-base) ease; }
   }
 
-  &__logo-main {
-    color: var(--color-text);
+  &__nav { display: flex; gap: 4px; }
+
+  &__link {
+    padding: 10px 16px;
+    border-radius: var(--radius-pill);
+    font: var(--fw-medium) var(--fs-sm) var(--font-body);
+    color: inherit;
+    opacity: .72;
+    transition: opacity var(--dur-base) ease, background var(--dur-base) ease;
+    &:hover { opacity: 1; color: inherit; }
+    &.is-active { opacity: 1; background: var(--color-text); color: var(--color-on-accent); }
   }
 
-  &__logo-accent {
-    color: var(--color-accent);
-    margin-left: var(--space-sm);
-  }
+  &__actions { display: flex; align-items: center; gap: 6px; flex: none; }
 
-  &__tagline {
-    margin: var(--space-xs) 0 0;
-    font-size: var(--fs-xs);
-    letter-spacing: 0.25em;
-    color: var(--color-text-muted);
-  }
-
-  &__actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--space-lg);
-  }
-
-  &__icon-btn {
-    background: none;
+  &__icon {
     border: none;
+    background: transparent;
+    color: inherit;
+    display: grid;
+    place-items: center;
     cursor: pointer;
-    color: var(--color-text);
-    padding: 0;
+    transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+    &:hover { background: var(--color-surface-soft); }
+  }
+  &__logout:hover { color: var(--color-danger); }
+
+  &__account {
     display: flex;
     align-items: center;
-
-    &:hover {
-      color: var(--color-secondary);
-    }
+    gap: 10px;
+    height: 44px;
+    padding: 0 18px 0 6px;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font: var(--fw-medium) var(--fs-sm) var(--font-body);
+    transition: background var(--dur-fast) ease;
+    &:hover { background: var(--color-accent-hover); color: var(--color-on-accent); }
   }
-    &__add-salon {
-      padding: var(--space-xs) var(--space-md);
-      white-space: nowrap;
-    }
-
-    &__logout {
-      &:hover {
-        color: var(--color-danger);
-      }
-    }
-
-  @media (max-width: 1024px) {
-    padding: var(--space-md) var(--space-lg);
-
-    &__logo h1 {
-      font-size: var(--fs-xl);
-    }
-
-    &__tagline {
-      display: none;
-    }
-
-    &__nav {
-      gap: var(--space-md);
-    }
-
-    &__actions {
-      gap: var(--space-md);
-    }
-  }
-
- @media (max-width: 640px) {
-  grid-template-columns: auto 1fr;  
-
-  &__menu-toggle {
-    display: flex;
-  }
-
-  &__logo h1 {
-    font-size: var(--fs-lg);
-  }
-
-  &__actions {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 900;
-
-    justify-content: space-around; 
-    gap: var(--space-sm);
-
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    box-shadow: 0 -4px 16px rgba(42, 42, 42, 0.08);  
-    padding: var(--space-sm) var(--space-md);
-
-    // iPhone-ის home indicator-ის ზონას არ გადაეფაროს
-    padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
-  }
-
-  &__icon-btn {
-    flex-direction: column;  
-    gap: 2px;
+  &__avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: grid; place-items: center;
     font-size: var(--fs-xs);
+    background: rgba(255, 255, 255, .18);
+  }
+  &__username { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  &__signin {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    &:hover { background: var(--color-accent-hover); color: var(--color-on-accent); }
   }
 
-  &__add-salon {
-    justify-content: center;
+  // ── Over a photo hero (top of page) ──
+  &.is-overlay &__bar {
+    background: var(--glass-tint-bg);
+    border-color: var(--glass-tint-border);
+    box-shadow: none;
+    color: var(--color-on-accent);
+  }
+  &.is-overlay &__logo em { color: inherit; }
+  &.is-overlay &__link.is-active { background: rgba(255, 255, 255, .18); }
+  &.is-overlay &__icon { background: rgba(255, 255, 255, .14); &:hover { background: rgba(255, 255, 255, .24); } }
+  &.is-overlay &__account,
+  &.is-overlay &__signin { background: var(--color-background); color: var(--color-text); }
+  &.is-overlay &__avatar { background: var(--color-accent); color: var(--color-on-accent); }
+
+  @media (max-width: 1100px) {
+    &__nav { display: none; }
+  }
+  @media (max-width: 760px) {
+    &__bar { padding-left: 18px; }
+    &__icon, &__add, &__logout, &__username { display: none; }
+    &__account { padding: 0 6px; }
   }
 }
+
+// ── Mobile dock ──────────────────────────────────────────────
+.dock { display: none; }
+
+@media (max-width: 760px) {
+  .dock {
+    position: fixed;
+    left: 50%;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: var(--z-nav);
+    display: flex;
+    gap: 4px;
+    padding: 6px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, .66);
+    border: 1px solid var(--glass-light-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-md);
+
+    &__item {
+      height: 48px;
+      min-width: 48px;
+      padding: 0 14px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--color-text);
+      font: var(--fw-medium) var(--fs-sm) var(--font-body);
+      cursor: pointer;
+      transition: background var(--dur-base) var(--ease-out), padding var(--dur-base) var(--ease-out);
+      span { display: none; }
+      &:hover { color: var(--color-text); }
+      &.is-active {
+        padding: 0 20px;
+        background: var(--color-accent);
+        color: var(--color-on-accent);
+        span { display: inline; }
+      }
+    }
+  }
 }

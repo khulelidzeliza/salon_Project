@@ -1,62 +1,53 @@
-:host {
-  display: block;
-}
+:host { display: block; }
 
 .site-footer {
-  background: var(--color-background);
-  border-top: 1px solid var(--color-border);
-  padding: var(--space-2xl) var(--space-xl) var(--space-lg);
+  padding: var(--space-section) var(--frame) var(--frame);
 
-  // ── Main grid ────────────────────────────────────────────
-  &__grid {
+  &__card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-hero);
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgba(107, 39, 55, .35), transparent 60%),
+      var(--color-text);
+    color: var(--color-on-accent);
+    padding: clamp(40px, 5vw, 64px) var(--gutter) clamp(20px, 2.4vw, 28px);
+  }
+
+  // ── Top grid ──
+  &__top {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
     gap: var(--space-xl);
-    max-width: 1100px;
-    margin: 0 auto;
-    padding-bottom: var(--space-xl);
 
-    // Tablet: 2 columns
-    @media (max-width: 860px) {
-      grid-template-columns: 1fr 1fr;
+    @media (max-width: 1100px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-
-    // Mobile: single column
-    @media (max-width: 520px) {
-      grid-template-columns: 1fr;
+    @media (max-width: 760px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-xl) var(--space-lg);
     }
   }
 
-  // ── Brand column ─────────────────────────────────────────
   &__brand {
-    // On tablet, brand spans full width on its own row
-    @media (max-width: 860px) {
-      grid-column: 1 / -1;
-    }
+    @media (max-width: 1100px) { grid-column: 1 / -1; }
   }
 
-  &__logo {
-    font-family: var(--font-display);
-    font-size: var(--fs-lg);
-    letter-spacing: 0.06em;
+  &__eyebrow {
+    font: var(--fw-semibold) var(--fs-eyebrow) var(--font-body);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    opacity: .7;
     margin: 0 0 var(--space-md);
   }
 
-  &__logo-main {
-    color: var(--color-text);
-  }
-
-  &__logo-accent {
-    color: var(--color-accent);
-    margin-left: var(--space-xs);
-  }
-
-  &__tagline {
-    font-size: var(--fs-sm);
-    line-height: var(--lh-loose);
-    color: var(--color-text-muted);
-    max-width: 300px;
+  &__pitch {
+    font: var(--fw-regular) clamp(22px, 2.2vw, 28px)/1.25 var(--font-display);
+    letter-spacing: -0.01em;
+    max-width: 420px;
     margin: 0 0 var(--space-lg);
+    color: var(--color-on-accent);
+    em { font-style: italic; }
   }
 
   &__socials {
@@ -64,70 +55,74 @@
     gap: var(--space-sm);
 
     a {
-      width: 34px;
-      height: 34px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      border: 1px solid var(--color-accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-secondary);
-      transition: background var(--transition-fast), color var(--transition-fast);
+      display: grid;
+      place-items: center;
+      color: var(--color-on-accent);
+      background: rgba(255, 255, 255, .1);
+      border: 1px solid rgba(255, 255, 255, .18);
+      backdrop-filter: blur(12px);
+      transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
 
-      &:hover {
-        background: var(--color-accent);
-        color: var(--color-surface);
-      }
+      &:hover { background: var(--color-on-accent); color: var(--color-accent); }
     }
   }
 
-  // ── Link columns ─────────────────────────────────────────
+  // ── Link columns ──
   &__col {
     h5 {
-      font-family: var(--font-body);
-      font-size: var(--fs-xs);
-      letter-spacing: 0.1em;
-      color: var(--color-accent);
-      font-weight: var(--fw-semibold);
+      font: var(--fw-semibold) var(--fs-eyebrow) var(--font-body);
+      letter-spacing: var(--ls-eyebrow);
+      text-transform: uppercase;
+      opacity: .6;
       margin: 0 0 var(--space-md);
+      color: inherit;
     }
-
     ul {
       list-style: none;
       margin: 0;
       padding: 0;
       display: flex;
       flex-direction: column;
-      gap: var(--space-sm);
+      gap: 10px;
     }
-
     a {
-      font-size: var(--fs-sm);
-      color: var(--color-text-muted);
-      transition: color var(--transition-fast);
-
-      &:hover {
-        color: var(--color-accent);
-      }
+      font-size: var(--fs-base);
+      color: var(--color-on-accent);
+      opacity: .85;
+      transition: opacity var(--dur-fast) ease;
+      &:hover { opacity: 1; color: var(--color-on-accent); }
     }
   }
 
-  // ── Bottom bar ───────────────────────────────────────────
-  &__bottom {
-    max-width: 1100px;
-    margin: 0 auto;
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-lg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: var(--fs-xs);
-    color: var(--color-text-muted);
+  // ── Oversized wordmark ──
+  &__wordmark {
+    margin: clamp(40px, 6vw, 72px) 0 0;
+    font: var(--fw-regular) clamp(48px, 11.5vw, 190px)/.85 var(--font-display);
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    color: rgba(250, 247, 242, .92);
+    em { font-style: italic; }
+  }
 
-    @media (max-width: 520px) {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-xs);
-    }
+  // ── Bottom bar ──
+  &__bottom {
+    margin-top: clamp(20px, 2.4vw, 28px);
+    padding-top: var(--space-md);
+    border-top: 1px solid rgba(255, 255, 255, .14);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-xs) var(--space-lg);
+    font-size: var(--fs-xs);
+    opacity: .7;
+  }
+
+  // keep clear of the mobile dock
+  @media (max-width: 760px) {
+    padding-bottom: calc(var(--frame) + 88px);
   }
 }

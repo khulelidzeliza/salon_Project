@@ -1,58 +1,82 @@
-<header class="site-header">
+<header class="site-header" [class.is-overlay]="overlay() && !scrolled()">
+  <div class="site-header__bar">
+    <a routerLink="/" class="site-header__logo">Rames <em>Davarkmevt</em></a>
 
+    <nav class="site-header__nav" aria-label="Main">
+      @for (link of links; track link.label) {
+        <a
+          routerLink="/"
+          [queryParams]="link.category ? { category: link.category } : {}"
+          class="site-header__link"
+          [class.is-active]="isHome() && activeCategory() === link.category">
+          {{ link.label }}
+        </a>
+      }
+    </nav>
 
-  <nav class="site-header__nav" [class.is-open]="isMenuOpen">
-  </nav>
+    <div class="site-header__actions">
+      @if (!isOrganizer()) {
+        <button type="button" class="btn-icon site-header__icon" (click)="goFavorites()" aria-label="Favorites">
+          <lucide-icon [img]="HeartIcon" [size]="20"></lucide-icon>
+        </button>
+      }
 
-  <a routerLink="/" class="site-header__logo">
-    <h1>
-      <span class="site-header__logo-main">Rames</span>
-      <span class="site-header__logo-accent">Davarkmevt</span>
-    </h1>
-    <p class="site-header__tagline">BEAUTY ATELIER</p>
-  </a>
-
-  <div class="site-header__actions">
-    @if (!isOrganizer()) {
-
-    <button  (click)="askLogin()" class="site-header__icon-btn" routerLink="/favorites" aria-label="Favorites">
-      <lucide-icon [img]="HeartIcon" [size]="20"></lucide-icon>
-    </button>
-    }
-    @if (user(); as user) {
-    @if (isOrganizer()) {
-    <button class="btn btn-primary site-header__add-salon" (click)="showAddSalon = true">
-      <lucide-icon [img]="PlusIcon" [size]="16"></lucide-icon>
-      Add salon
-    </button>
-    }
-
-    <button class="site-header__icon-btn" routerLink="/profile" aria-label="Account">
-      {{ user.userName }}
-    </button>
-
-    <button class="site-header__icon-btn site-header__logout" (click)="askLogout()" aria-label="Log out">
-      <lucide-icon [img]="LogOutIcon" [size]="20"></lucide-icon>
-    </button>
-    } @else {
-    <button (click)="askLogin()" class="site-header__icon-btn" aria-label="Sign in">
-      <lucide-icon [img]="UserIcon" [size]="20"></lucide-icon>
-    </button>
-    }
-
+      @if (user(); as u) {
+        @if (isOrganizer()) {
+          <button type="button" class="btn btn-primary btn--sm site-header__add" (click)="showAddSalon = true">
+            <lucide-icon [img]="PlusIcon" [size]="16"></lucide-icon>
+            Add salon
+          </button>
+        }
+        <a routerLink="/profile" class="site-header__account">
+          <span class="site-header__avatar">{{ initials() }}</span>
+          <span class="site-header__username">{{ u.userName }}</span>
+        </a>
+        <button type="button" class="btn-icon site-header__icon site-header__logout" (click)="showLogoutConfirm = true" aria-label="Log out">
+          <lucide-icon [img]="LogOutIcon" [size]="18"></lucide-icon>
+        </button>
+      } @else {
+        <a routerLink="/auth/sign-in" class="btn btn--sm site-header__signin">Sign in</a>
+      }
+    </div>
   </div>
 </header>
+
+<!-- Mobile dock (≤760px) -->
+<nav class="dock" aria-label="Mobile navigation">
+  <a routerLink="/" class="dock__item" [class.is-active]="isHome()">
+    <lucide-icon [img]="HomeIcon" [size]="20"></lucide-icon><span>Discover</span>
+  </a>
+  @if (!isOrganizer()) {
+    <button type="button" class="dock__item" (click)="goFavorites()">
+      <lucide-icon [img]="HeartIcon" [size]="20"></lucide-icon><span>Saved</span>
+    </button>
+  } @else {
+    <button type="button" class="dock__item" (click)="showAddSalon = true">
+      <lucide-icon [img]="PlusIcon" [size]="20"></lucide-icon><span>Add salon</span>
+    </button>
+  }
+  @if (user()) {
+    <a routerLink="/profile" class="dock__item" [class.is-active]="isProfile()">
+      <lucide-icon [img]="UserIcon" [size]="20"></lucide-icon><span>Profile</span>
+    </a>
+  } @else {
+    <a routerLink="/auth/sign-in" class="dock__item">
+      <lucide-icon [img]="UserIcon" [size]="20"></lucide-icon><span>Sign in</span>
+    </a>
+  }
+</nav>
 
 <app-add-salon-modal
   [open]="showAddSalon"
   (closed)="showAddSalon = false"
-  (created)="onSalonCreated($event)"
-></app-add-salon-modal>
+  (created)="onSalonCreated($event)">
+</app-add-salon-modal>
 
 <app-confirm-modal
   [open]="showLogoutConfirm"
   title="Log out?"
-  message="Are you sure you want to log out?"
+  message="You’ll need to sign in again to see your favorites and reviews."
   confirmText="Log out"
   cancelText="Stay"
   (confirmed)="logout()"
@@ -60,11 +84,11 @@
 </app-confirm-modal>
 
 <app-confirm-modal
-  [open]="notloggedin"
-  title="not logged in"
-  message="u need to log in to add items in favorites"
+  [open]="showLoginRequired"
+  title="Sign in to save salons"
+  message="Create a free account or sign in to keep your favorite salons in one place."
   confirmText="Sign in"
-  cancelText="Cancel"
+  cancelText="Not now"
   (confirmed)="login()"
-  (cancelled)="notloggedin = false">
+  (cancelled)="showLoginRequired = false">
 </app-confirm-modal>

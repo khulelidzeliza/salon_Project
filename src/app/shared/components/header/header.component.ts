@@ -1,17 +1,19 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, HostListener, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { LucideAngularModule, Heart, User, MapPin, Menu, X, Plus , LogOut } from 'lucide-angular';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map } from 'rxjs';
+import { LucideAngularModule, Heart, User, Plus, LogOut, House } from 'lucide-angular';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
 
-import { LogOut as LogOutAction  } from '../../../store/user-state/user.actions';
-// import { Salon } from '../../../../generated/graphql';
-import { AddSalonModalComponent } from "../modals/add-salon-modal/add-salon-modal.component";
+import { LogOut as LogOutAction } from '../../../store/user-state/user.actions';
 import { UserSelectors } from '../../../store/user-state/user.selector';
-import { IUser } from '../../../store/user-state/user.model';
 import { SalonType } from '../../../store/salon-state/salon-modal';
-import { ConfirmModalComponent } from "../modals/confirm-modal/confirm-modal.component";
+import { AddSalonModalComponent } from '../modals/add-salon-modal/add-salon-modal.component';
+import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+
+/** Pages whose first block is a full-bleed photo hero → header starts as tinted glass. */
+const HERO_ROUTES = ['/', '/profile', '/salons'];
 
 @Component({
   selector: 'app-header',
@@ -20,61 +22,83 @@ import { ConfirmModalComponent } from "../modals/confirm-modal/confirm-modal.com
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   private store = inject(Store);
   private router = inject(Router);
-  readonly user = this.store.selectSignal(UserSelectors.getUser);
-  readonly isOrganizer = computed(() => this.user()?.role === 'ORGANIZATOR');
-
-  user$!: Observable<IUser | null>;
 
   readonly HeartIcon = Heart;
   readonly UserIcon = User;
-  readonly CloseIcon = X;
-  readonly LogOutIcon = LogOut;
   readonly PlusIcon = Plus;
-  
-  isMenuOpen = false;
+  readonly LogOutIcon = LogOut;
+  readonly HomeIcon = House;
+
+  readonly links = [
+    { label: 'Salons', category: '' },
+    { label: 'Barbershops', category: 'BARBER' },
+    { label: 'Tattoo', category: 'TATTOO' },
+    { label: 'Nails', category: 'NAIL' },
+  ];
+
+  readonly user = this.store.selectSignal(UserSelectors.getUser);
+  readonly isOrganizer = computed(() => this.user()?.role === 'ORGANIZATOR');
+  readonly initials = computed(() =>
+    (this.user()?.userName ?? '')
+      .split(/[._\s-]/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(w => w[0].toUpperCase())
+      .join('')
+  );
+
+  private readonly url = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map(e => e.urlAfterRedirects)
+    ),
+    { initialValue: this.router.url }
+  );
+  private readonly path = computed(() => this.url().split(/[?#]/)[0]);
+
+  readonly isHome = computed(() => this.path() === '/');
+  readonly isProfile = computed(() => this.path().startsWith('/profile'));
+  readonly overlay = computed(() =>
+    HERO_ROUTES.some(r => (r === '/' ? this.path() === '/' : this.path().startsWith(r)))
+  );
+  readonly activeCategory = computed(
+    () => new URLSearchParams(this.url().split('?')[1] ?? '').get('category') ?? ''
+  );
+
+  readonly scrolled = signal(false);
+  @HostListener('window:scroll')
+  onScroll(): void {
+    this.scrolled.set(window.scrollY > 24);
+  }
+
   showAddSalon = false;
-  notloggedin = false;
   showLogoutConfirm = false;
+  showLoginRequired = false;
   salons: SalonType[] = [];
 
-  ngOnInit(): void {
-    this.user$ = this.store.select(UserSelectors.getUser);
+  goFavorites(): void {
+    if (!this.user()) {
+      this.showLoginRequired = true;
+      return;
+    }
+    this.router.navigate(['/profile'], { fragment: 'favorites' });
   }
 
-  askLogout(): void {
-    this.showLogoutConfirm = true;
-  }
-
-  logout() {
-    this.showLogoutConfirm = false;
-    this.store.dispatch(new LogOutAction());
-    this.router.navigate(['/']);
-
-  }
-  
-  askLogin(): void {
-    this.notloggedin = true;
-    console.log("opened modaal");
-  }
-  login() {
-    this.notloggedin = false;
+  login(): void {
+    this.showLoginRequired = false;
     this.router.navigate(['/auth/sign-in']);
   }
 
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
+  logout(): void {
+    this.showLogoutConfirm = false;
+    this.store.dispatch(new LogOutAction());
+    this.router.navigate(['/']);
   }
 
-  closeMenu(): void {
-    this.isMenuOpen = false;
+  onSalonCreated(salon: SalonType): void {
+    this.salons = [salon, ...this.salons];
   }
-  openSalonModal(): void{
-    this.showAddSalon = true;
-  }
-  onSalonCreated(salon: SalonType) {
-  this.salons = [salon, ...this.salons]; // shows instantly, no refresh
-}
 }
