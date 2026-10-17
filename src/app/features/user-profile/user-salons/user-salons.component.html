@@ -1,0 +1,27 @@
+<section class="catalog">
+  <header class="catalog__header">
+    <div>
+      <p class="catalog__eyebrow">THE BOUTIQUE</p>
+      <h1>Find your salon</h1>
+    </div>
+    <!-- @if (totalCount$ | async; as count) {
+      <p class="catalog__count text-muted">{{ count }} salons</p>
+    } -->
+  </header>
+
+  @if ((loading$ | async) === false) {
+    <div class="catalog__grid">
+      @for (salon of salons$ | async; track salon.id) {
+        <app-mysalon-card
+          [salon]="salon"
+        ></app-mysalon-card>
+      }
+    </div>
+  } @else {
+    <div class="catalog__grid">
+      @for (i of [1,2,3,4,5,6]; track i) {
+        <div class="card salon-card salon-card--skeleton"></div>
+      }
+    </div>
+  }
+</section>

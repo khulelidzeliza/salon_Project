@@ -1,0 +1,37 @@
+<section class="reviews">
+  <header class="reviews__head">
+    <p class="reviews__eyebrow">Feedback</p>
+    <h2 class="reviews__title">Your reviews</h2>
+  </header>
+
+  @if (reviews().length) {
+    <div class="reviews__list">
+      @for (review of reviews(); track review.id) {
+        <article class="card review-card">
+          <div class="review-card__top">
+            <div>
+              <!-- <h3 class="review-card__salon">{{ review.salon?.name ?? 'Salon' }}</h3> -->
+              <div class="review-card__stars" [attr.aria-label]="starCount(review.star) + ' out of 5'">
+                @for (s of stars; track s) {
+                  <span class="review-card__star" [class.is-filled]="s <= starCount(review.star)">★</span>
+                }
+              </div>
+            </div>
+            <!-- <span class="review-card__date">{{ review.createdAt | date: 'MMM y' }}</span> -->
+          </div>
+
+          @if (review.comment) {
+            <p class="review-card__text">{{ review.comment }}</p>
+          }
+
+          <!-- <div class="review-card__actions">
+            <button type="button" class="btn btn-secondary" (click)="onEdit(review)">✎ Edit</button>
+            <button type="button" class="btn review-card__delete" (click)="onDelete(review)">Delete</button>
+          </div> -->
+        </article>
+      }
+    </div>
+  } @else {
+    <p class="reviews__empty text-muted">You haven't written any reviews yet.</p>
+  }
+</section>

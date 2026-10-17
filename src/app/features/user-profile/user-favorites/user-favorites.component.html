@@ -1,0 +1,29 @@
+<section class="favorites">
+  <header class="favorites__head">
+    <p class="favorites__eyebrow">Saved</p>
+    <h2 class="favorites__title">Your favorites</h2>
+  </header>
+
+  @if (favorites().length) {
+    <div class="favorites__grid">
+      @for (fav of favorites(); track fav.id) {
+        <article class="salon-card surface">
+          <div class="salon-card__media">
+            @if (fav.salon.pictures.length) {
+              <img [src]="fav.salon.pictures[0]" [alt]="fav.salon.name" />
+            } @else {
+              <div class="salon-card__placeholder">{{ fav.salon.name[0] }}</div>
+            }
+          </div>
+
+          <div class="salon-card__body">
+            <h3 class="salon-card__name">{{ fav.salon.name }}</h3>
+            <p class="salon-card__location">{{ fav.salon.location }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  } @else {
+    <p class="favorites__empty text-muted">You haven't saved any salons yet.</p>
+  }
+</section>

@@ -1,0 +1,28 @@
+<aside class="brand">
+  <div class="brand__logo">
+    <a routerLink="/">
+    <span class="brand__mark">L</span>
+    </a>
+    <a routerLink="/">
+      <span class="brand__wordmark">rames davarkmevt</span>
+    </a>
+  </div>
+
+  <div class="brand__content">
+    <p class="brand__eyebrow">Beauty Atelier &middot; Est. 2026</p>
+    <h1 class="brand__title">Your quiet ritual, <em>kept just so.</em></h1>
+    <p class="brand__desc">
+      Sign in to hold your chair, revisit past treatments, and book with the
+      stylist who already knows you.
+    </p>
+  </div>
+
+  <div class="brand__footer">
+    <p class="brand__footer-label">In the house</p>
+    <div class="brand__tags">
+      @for (service of services; track service) {
+        <span class="brand__tag">{{ service }}</span>
+      }
+    </div>
+  </div>
+</aside>

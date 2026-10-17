@@ -1,0 +1,13 @@
+<div class="main-div">
+  <app-user-info></app-user-info>
+  <app-user-details></app-user-details>
+
+  @if (displayRole() === UserRole.Organizator) {
+    <app-user-salons></app-user-salons>
+  }
+
+  @if (displayRole() === UserRole.User) {
+    <app-user-favorites></app-user-favorites>
+    <app-user-reviews></app-user-reviews>
+  }
+</div>

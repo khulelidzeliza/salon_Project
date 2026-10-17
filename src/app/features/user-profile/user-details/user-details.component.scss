@@ -1,0 +1,194 @@
+.details {
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--space-lg);
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  &__title {
+    margin: var(--space-xs) 0 0;
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+  }
+
+  &__edit { gap: var(--space-xs); }
+
+  
+  &__card { padding: var(--space-lg) var(--space-xl); }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 var(--space-lg);   // no row gap — dividers handle separation
+  }
+
+  &__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+
+  // readonly: flatten inputs
+  &__grid--readonly {
+    .field__input {
+      border-color: transparent;
+      background: transparent;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  // locked email while editing
+  &__grid:not(.details__grid--readonly) {
+    .field__input:disabled {
+      background: var(--color-background);
+      border-color: var(--color-border);
+      color: var(--color-text-muted);
+      cursor: not-allowed;
+    }
+  }
+}
+
+.field {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--color-border);
+
+  // remove the divider on the last row of each column
+  &:nth-last-child(-n + 2) {
+    border-bottom: none;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent-light);
+    color: var(--color-secondary);
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  &__hint {
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-text-muted);
+    font-weight: var(--fw-regular);
+  }
+
+  &__static {
+    padding: var(--space-sm) 0;
+    font-size: var(--fs-base);
+    color: var(--color-text);
+
+    &--empty {
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+  }
+
+  &__input {
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px var(--color-accent-light);
+    }
+
+    &.is-invalid { border-color: var(--color-danger); }
+  }
+
+  &__error {
+    font-size: var(--fs-xs);
+    color: var(--color-danger);
+  }
+}
+
+@media (max-width: 700px) {
+  .details {
+    &__head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-md);
+    }
+
+    &__title {
+      font-size: var(--fs-lg);   // 44px→24px is too big on phone; step down
+    }
+
+    &__edit {
+      align-self: flex-start;    // Edit button sits under the title, left-aligned
+    }
+
+    &__card {
+      padding: var(--space-md);  // tighter than desktop's lg/xl
+    }
+
+    &__grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    &__actions {
+      flex-direction: column;    // stack Save / Cancel full-width
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+    .field__static,
+    .field__input {
+      word-break: break-word;
+      overflow-wrap: anywhere;   // lets long unbroken strings (emails, URLs) wrap
+    }
+  // dividers: every field gets one, last one doesn't
+  .field {
+    padding: var(--space-md) 0;
+
+    &:nth-last-child(-n + 2) {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

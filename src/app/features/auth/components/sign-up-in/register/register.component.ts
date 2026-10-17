@@ -1,0 +1,56 @@
+import { Component, computed, inject, output } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Store } from '@ngxs/store';
+
+import { IRegisterRequest, Roles } from '../../../models/auth.models';
+import { UserSelectors } from '../../../../../store/user-state/user.selector';
+import { RegisterUser } from '../../../../../store/user-state/user.actions';
+
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss',
+})
+export default class RegisterComponent {
+  readonly switchToLogin = output<void>();
+
+  protected readonly Roles = Roles;
+
+  private readonly fb = inject(FormBuilder);
+  private readonly store = inject(Store);
+
+  readonly loading = this.store.selectSignal(UserSelectors.isLoading);
+  readonly form = this.fb.group({
+    userName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+    email: ['', [Validators.required, Validators.email, Validators.minLength(2), Validators.maxLength(500)]],
+    phoneNumber: [''],
+    password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(50)]],
+    role: [Roles.User, [Validators.required]],
+    agree: [false, [Validators.requiredTrue]],
+  });
+
+  isInvalid(control: string): boolean {
+    const c = this.form.get(control);
+    return !!c && c.invalid && (c.touched || c.dirty);
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const v = this.form.getRawValue();
+    const request: IRegisterRequest = {
+      userName: v.userName!,
+      email: v.email!,
+      password: v.password!,
+      phoneNumber: v.phoneNumber?.trim() || undefined,
+      role: v.role!,
+    };
+
+    this.store.dispatch(new RegisterUser(request));
+  }
+}

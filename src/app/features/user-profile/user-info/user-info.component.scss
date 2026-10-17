@@ -1,0 +1,66 @@
+.profile-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+  background: var(--color-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+
+  &__avatar {
+    flex-shrink: 0;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    span {
+      font-family: var(--font-display);
+      font-size: var(--fs-xl);
+      font-weight: var(--fw-semibold);
+      color: var(--color-text);
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  &__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl);
+    color: var(--color-surface);
+    margin: 0;
+  }
+
+  &__meta {
+    color: var(--color-accent-light);
+    font-size: var(--fs-sm);
+    margin: 0;
+  }
+
+  &__role {
+    align-self: flex-start;
+    margin-top: var(--space-sm);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: var(--color-text);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}

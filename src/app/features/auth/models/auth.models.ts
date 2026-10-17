@@ -1,0 +1,45 @@
+export interface ITokenResponse {
+  accessToken: string;
+}
+
+
+export enum Roles {
+  User = 0,
+  Organizator = 2,
+}
+
+export interface IRegisterRequest {
+  age?: number;
+  email: string;
+  userName: string;
+  password: string;
+  phoneNumber?: string;
+  role: Roles;
+}
+export interface ILoginRequest {
+  email: string;
+  password: string;
+}
+export interface IResetPassword {
+  password: string;
+  confirmPassword: string;
+}
+
+export interface IVerifyEmailRequest {
+  email: string;
+  code: string;
+}
+export interface IVerifyEmailResponse {
+  accessToken: string;
+}
+
+export interface IResendCodeRequest {
+  email: string;
+}
+export interface ISendPasswordResetRequest {
+  email: string;
+}
+export interface IChangePasswordRequest {
+  email: string;
+  newPassword: string;
+}

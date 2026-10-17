@@ -1,0 +1,10 @@
+<div class="working-results">
+  <ng-container *ngFor="let procedure of procedures">
+    <div
+      class="working-results__card"
+      *ngFor="let img of procedure.finishedWorks">
+      <img [src]="serverUrl + img" [alt]="procedure.procedureType" />
+      <div class="working-results__label">{{ procedure.procedureType }}</div>
+    </div>
+  </ng-container>
+</div>

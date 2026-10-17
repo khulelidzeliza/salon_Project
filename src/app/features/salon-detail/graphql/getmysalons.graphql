@@ -1,0 +1,11 @@
+query  getMySalons{
+  getMySalons {
+    id
+    userId
+    pictures
+    price
+    name
+    location
+  }
+}
+ 

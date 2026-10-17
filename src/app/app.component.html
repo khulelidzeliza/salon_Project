@@ -1,0 +1,15 @@
+
+@if(!isAuthPage && !IsSalonDetails){
+<header>
+<app-header></app-header>
+</header>
+}
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+
+@if(!isAuthPage && !IsSalonDetails){
+  <app-footer></app-footer>
+}

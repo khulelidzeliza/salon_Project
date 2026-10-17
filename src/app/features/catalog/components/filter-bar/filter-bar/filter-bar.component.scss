@@ -1,0 +1,206 @@
+:host { display: block; }
+
+.filter-bar {
+  display: flex;
+  gap: var(--space-lg);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xl);
+
+  &__toggle { display: none; }      
+  &__modal-head { display: none; }   
+  &__apply { display: none; }        
+
+  // დესკტოპზე overlay/fields ქრება layout-იდან → fields პირდაპირ flex children-ია
+  &__overlay { display: contents; }
+  &__fields  { display: contents; }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    flex: 1 1 220px;
+    max-width: 260px;
+    min-width: 0;
+
+    label {
+      font-size: var(--fs-xs);
+      letter-spacing: 0.08em;
+      color: var(--color-secondary);
+      font-weight: var(--fw-semibold);
+    }
+
+    select {
+      box-sizing: border-box;
+      width: 100%;
+      appearance: none;
+      background: var(--color-background)
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236E6660' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")
+        no-repeat right var(--space-sm) center;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-sm) var(--space-xl) var(--space-sm) var(--space-md);
+      font-family: var(--font-body);
+      font-size: var(--fs-base);
+      color: var(--color-text);
+      cursor: pointer;
+      outline: none;
+
+      &:focus, &:focus-visible {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 2px var(--color-accent-light);
+      }
+    }
+  }
+
+  &__search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: var(--space-md);
+    color: var(--color-text-muted);
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  &__search-input {
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm) var(--space-xl) var(--space-sm) calc(var(--space-md) + 16px + var(--space-xs));
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    color: var(--color-text);
+    background: var(--color-background);
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+    &::placeholder { color: var(--color-text-muted); }
+
+    &:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 2px var(--color-accent-light);
+    }
+  }
+
+  &__search-clear {
+    position: absolute;
+    right: var(--space-sm);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    padding: 0;
+    transition: color var(--transition-fast);
+
+    &:hover { color: var(--color-danger); }
+  }
+}
+
+// ---- Tablet: 2 per row (რჩება inline) ----
+@media (max-width: 768px) and (min-width: 641px) {
+  .filter-bar {
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+
+    &__field {
+      flex: 1 1 calc(50% - var(--space-md));
+      max-width: none;
+    }
+  }
+}
+
+// ---- Mobile: ღილაკი + მოდალი ----
+@media (max-width: 640px) {
+  .filter-bar {
+    justify-content: flex-end;
+    padding: var(--space-md);
+
+    &__toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      background: none;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-sm) var(--space-md);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      cursor: pointer;
+
+      &:hover { color: var(--color-secondary); }
+    }
+
+    // overlay ხდება ნამდვილი fixed მოდალი
+    &__overlay {
+      display: none;             // დახურული default-ად
+
+      &.is-open {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        align-items: flex-end;   // card ეკრანის ბოლოდან ამოდის (bottom sheet)
+        justify-content: center;
+        background: rgba(42, 42, 42, 0.45);
+      }
+    }
+
+    &__fields {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      background: var(--color-background);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      padding: var(--space-lg);
+      padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
+      box-shadow: var(--shadow-md);
+    }
+
+    &__modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-sm);
+
+      h3 { margin: 0; }
+    }
+
+    &__close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      padding: 0;
+      display: flex;
+
+      &:hover { color: var(--color-danger); }
+    }
+
+    &__field {
+      flex: 1 1 auto;
+      width: 100%;
+      max-width: none;
+    }
+
+    &__apply {
+      display: inline-flex;
+      width: 100%;
+      justify-content: center;
+      margin-top: var(--space-sm);
+    }
+  }
+}

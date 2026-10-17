@@ -1,0 +1,39 @@
+<article class="salon-card">
+  <!-- Image -->
+  <div class="salon-card__image">
+    <a class="salon-card__image-link" [routerLink]="['/salons', salon.id]">
+      @if (salon.pictures.length) {
+        <img class="salon-card__photo" [src]="serverUrl + salon.pictures![0]" [alt]="salon.name" />
+      }
+    </a>
+
+    <!-- Gradient overlay with badges -->
+    <div class="salon-card__overlay">
+      <div class="salon-card__badges">
+        <span class="salon-card__price-badge">{{ budgetSigns }}</span>
+        <span class="salon-card__rating-badge" *ngIf="salon.AverageRating && salon.AverageRating > 0">
+          ★ {{ salon.AverageRating | number:'1.1-1' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Favorite button -->
+    <button
+      class="salon-card__fav"
+      [class.is-active]="salon.isFavoritedByCurrentUser"
+      (click)="onFavoriteClick($event)"
+      [attr.aria-label]="salon.isFavoritedByCurrentUser ? 'Remove from favorites' : 'Add to favorites'">
+      ♥
+    </button>
+  </div>
+
+  <!-- Body -->
+  <div class="salon-card__body">
+    <p class="salon-card__location">{{ salon.location }}</p>
+    <h3 class="salon-card__title">{{ salon.name }}</h3>
+
+    <a class="salon-card__cta" [routerLink]="['/salons', salon.id]">
+      View salon <span class="salon-card__arrow">→</span>
+    </a>
+  </div>
+</article>

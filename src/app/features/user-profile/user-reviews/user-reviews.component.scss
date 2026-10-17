@@ -1,0 +1,92 @@
+.reviews {
+  &__head {
+    margin-bottom: var(--space-lg);
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  &__title {
+    margin: var(--space-xs) 0 0;
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  &__empty {
+    padding: var(--space-xl);
+    text-align: center;
+  }
+}
+
+.review-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+
+  &__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+
+  &__salon {
+    margin: 0 0 var(--space-xs);
+    font-family: var(--font-display);
+    font-size: var(--fs-md);
+  }
+
+  &__stars {
+    display: inline-flex;
+    gap: 2px;
+    font-size: var(--fs-sm);
+  }
+
+  &__star {
+    color: var(--color-border);
+
+    &.is-filled {
+      color: var(--color-accent);
+    }
+  }
+
+  &__date {
+    flex-shrink: 0;
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  &__text {
+    margin: 0 0 var(--space-lg);
+    color: var(--color-text);
+    line-height: var(--lh-loose);
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  &__delete {
+    background: transparent;
+    color: var(--color-danger);
+    border: 1px solid var(--color-border);
+
+    &:hover {
+      background: var(--color-danger);
+      color: var(--color-surface);
+      border-color: var(--color-danger);
+    }
+  }
+}

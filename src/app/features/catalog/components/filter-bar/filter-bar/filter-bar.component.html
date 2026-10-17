@@ -1,0 +1,66 @@
+<div class="filter-bar">
+  <!-- mobile toggle -->
+  <button class="filter-bar__toggle" (click)="toggleFilters()"
+          [attr.aria-expanded]="filtersOpen" aria-label="Open filters">
+    <lucide-icon [img]="FilterIcon" [size]="20"></lucide-icon>
+    <span>Filters</span>
+  </button>
+
+  <div class="filter-bar__overlay" [class.is-open]="filtersOpen"
+       (click)="closeFilters()">
+    <div class="filter-bar__fields" (click)="$event.stopPropagation()">
+
+      <!-- modal header — mobile only -->
+      <div class="filter-bar__modal-head">
+        <h3>Filters</h3>
+        <button class="filter-bar__close" (click)="closeFilters()" aria-label="Close">
+          <lucide-icon [img]="CloseIcon" [size]="20"></lucide-icon>
+        </button>
+      </div>
+
+      <!-- Procedure type -->
+      <div class="filter-bar__field">
+        <label>PROCEDURES</label>
+        <select [(ngModel)]="filters.category" (ngModelChange)="onChange()">
+          <option *ngFor="let o of categoryOptions" [value]="o.value">{{ o.label }}</option>
+        </select>
+      </div>
+
+      <!-- Price -->
+      <div class="filter-bar__field">
+        <label>PRICE</label>
+        <select [(ngModel)]="filters.price" (ngModelChange)="onChange()">
+          <option *ngFor="let o of priceOptions" [value]="o.value">{{ o.label }}</option>
+        </select>
+      </div>
+
+      <!-- Search -->
+      <div class="filter-bar__field">
+        <label for="search-input">SEARCH</label>
+        <div class="filter-bar__search-wrap">
+          <lucide-icon class="filter-bar__search-icon" [img]="SearchIcon" [size]="16"></lucide-icon>
+          <input
+            id="search-input"
+            type="text"
+            class="filter-bar__search-input"
+            placeholder="Salon name or location…"
+            [(ngModel)]="filters.search"
+            (ngModelChange)="onChange()"
+            autocomplete="off" />
+          <button
+            *ngIf="filters.search"
+            class="filter-bar__search-clear"
+            (click)="clearSearch()"
+            aria-label="Clear search">
+            <lucide-icon [img]="CloseIcon" [size]="14"></lucide-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- modal apply button — mobile only -->
+      <button class="btn btn-primary filter-bar__apply" (click)="closeFilters()">
+        Show results
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<section class="catalog">
+
+    <header class="catalog__header">
+      <div>
+        <p class="catalog__eyebrow">THE BOUTIQUE</p>
+        <h1>Find your salon</h1>
+      </div>
+      <p class="catalog__count text-muted" *ngIf="totalCount$ | async as count">
+        {{ count }} salons
+      </p>
+    </header>
+    <app-filter-bar (filtersChange)="onFiltersChange($event)"></app-filter-bar>
+  <div class="catalog__grid" *ngIf="(loading$ | async) === false; else loadingTpl">
+    <app-salon-card *ngFor="let salon of salons$ | async" [salon]="salon" (toggleFavorite)="onToggleFavorite($event)">
+    </app-salon-card>
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="catalog__grid">
+      <div class="card salon-card salon-card--skeleton" *ngFor="let i of [1,2,3,4,5,6]"></div>
+    </div>
+  </ng-template>
+</section>

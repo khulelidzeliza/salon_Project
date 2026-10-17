@@ -1,0 +1,42 @@
+<ng-container *ngIf="salon$ | async as salon; else loadingTpl">
+
+  <app-salon-hero [salon]="salon"></app-salon-hero>
+
+  <!-- Services -->
+  <section class="service-section">
+    <div class="section-header">
+      <p class="section-header__eyebrow">Choose a service</p>
+      <h2>What are you here for?</h2>
+    </div>
+    <app-service-tabs
+      [categories]="(categories$ | async) ?? []"
+      [active]="(activeCategory$ | async) ?? ((categories$ | async)?.[0] ?? null)"
+      (categorySelected)="onSelectCategory($event)">
+    </app-service-tabs>
+  </section>
+
+  <!-- Working results -->
+  <section class="results-section" *ngIf="(workingResultProcedures$ | async)?.length">
+    <div class="section-header">
+      <p class="section-header__eyebrow">Portfolio</p>
+      <h2>Working results</h2>
+    </div>
+    <app-working-results [procedures]="(workingResultProcedures$ | async) ?? []"></app-working-results>
+  </section>
+
+  <!-- Masters -->
+  <section class="masters-section" *ngIf="(masters$ | async)?.length">
+    <div class="section-header">
+      <p class="section-header__eyebrow">The people</p>
+      <h2>{{ (activeCategory$ | async) || 'Our' }} masters</h2>
+    </div>
+    <div class="masters-section__grid">
+      <app-staff-card *ngFor="let name of masters$ | async" [name]="name"></app-staff-card>
+    </div>
+  </section>
+
+</ng-container>
+
+<ng-template #loadingTpl>
+  <p class="text-muted" style="padding: var(--space-2xl); text-align: center;">Loading salon…</p>
+</ng-template>

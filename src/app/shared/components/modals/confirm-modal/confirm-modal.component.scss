@@ -1,0 +1,42 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(42, 42, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  z-index: 1000;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-md);
+}
+
+.modal-title {
+  margin-bottom: var(--space-sm);
+}
+
+.modal-message {
+  margin-bottom: var(--space-lg);
+  line-height: var(--lh-normal);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+}
+
+// destructive confirm — reuses your danger token
+.btn-danger {
+  background: var(--color-danger);
+  color: var(--color-surface);
+
+  &:hover {
+    background: #9d4636; // slightly darker danger
+    color: var(--color-surface);
+  }
+}

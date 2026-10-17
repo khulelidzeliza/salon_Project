@@ -1,0 +1,24 @@
+query getSalonById($id: Int!) {
+  getSalonById(id: $id) {
+    id
+    name
+    email
+    location
+    phoneNumber
+    workingHours
+    facebookLink
+    instagramLink
+    isFavoritedByCurrentUser
+    pictures
+    price
+    AverageRating
+    userId
+    procedures {
+      id
+      salonId
+      masters
+      procedureType
+      finishedWorks
+    }
+  }
+}

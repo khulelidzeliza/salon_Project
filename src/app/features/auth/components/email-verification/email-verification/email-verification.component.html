@@ -1,0 +1,47 @@
+<div class="auth-view verify">
+  <p class="eyebrow">Check your inbox</p>
+  <h2 class="form-heading">Enter the code</h2>
+  <p class="form-sub">
+    We sent a six-digit code to <strong>{{ email() || 'your email' }}</strong>.
+  </p>
+
+  <div class="code-row" (paste)="onPaste($event)">
+    @for (d of digits(); track $index) {
+      <input
+        #codeInput
+        class="code-box"
+        type="text"
+        inputmode="numeric"
+        maxlength="1"
+        [value]="d"
+        (input)="onInput($event, $index)"
+        (keydown)="onKeydown($event, $index)"
+        [attr.aria-label]="'Digit ' + ($index + 1)"
+      />
+    }
+  </div>
+
+
+
+  <p class="resend">
+    @if (secondsLeft() > 0) {
+      Didn't get it? <strong>Resend in {{ countdownLabel() }}</strong>
+    } @else {
+      Didn't get it?
+      <button type="button" class="link" (click)="resend()">Resend code</button>
+    }
+  </p>
+
+  <button
+    type="button"
+    class="submit"
+    [disabled]="!canSubmit() || loading()"
+    (click)="onSubmit()"
+  >
+    {{ loading() ? 'Verifying…' : 'Verify code' }}
+  </button>
+
+  <p class="form-footer">
+    <button type="button" class="link" (click)="onChangeEmail()">← Change email</button>
+  </p>
+</div>

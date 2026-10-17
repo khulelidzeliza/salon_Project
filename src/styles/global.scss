@@ -1,0 +1,246 @@
+:root {
+  // ---- Color palette  ----
+  --color-background: #FAF7F2;
+  --color-cards:      #E7DDD0;
+  --color-text:       #2A2A2A;
+  --color-secondary:  #8B6B5C;
+  --color-accent:     #C6A96A;
+
+  // hover/border 
+  --color-accent-hover:   #B7975A;
+  --color-accent-light:   #EFE3C9;
+  --color-secondary-light:#A9897A;
+  --color-border:         #DCD0BF;
+  --color-text-muted:     #6E6660;
+  --color-surface:        #FFFFFF;
+  --color-danger:         #B4523F;
+  --color-success:        #5C7A5A;
+
+  // ---- Typography ----
+  --font-display: 'Fraunces', serif;   
+  --font-body:    'Work Sans', sans-serif; 
+
+  --fs-xs:   0.75rem;   // 12px
+  --fs-sm:   0.875rem;  // 14px
+  --fs-base: 1rem;      // 16px
+  --fs-md:   1.125rem;  // 18px
+  --fs-lg:   1.5rem;    // 24px
+  --fs-xl:   2rem;      // 32px
+  --fs-2xl:  2.75rem;   // 44px
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semibold:600;
+
+  --lh-tight: 1.2;
+  --lh-normal:1.5;
+  --lh-loose: 1.7;
+
+  // ---- Spacing scale ----
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl:64px;
+
+  // ---- Radius & shadow ----
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 3px rgba(42, 42, 42, 0.06);
+  --shadow-md: 0 6px 20px rgba(42, 42, 42, 0.08);
+
+  // ---- Motion ----
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+// =============================================================
+// GLOBAL BASE STYLES
+// =============================================================
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--color-text);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-sm);
+  font-weight: var(--fw-semibold);
+}
+
+h1 { font-size: var(--fs-2xl); }
+h2 { font-size: var(--fs-xl); }
+h3 { font-size: var(--fs-lg); }
+h4 { font-size: var(--fs-md); }
+
+p {
+  margin: 0 0 var(--space-md);
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-accent-hover);
+  }
+}
+
+
+// --- Surfaces ---
+.card {
+  background: var(--color-cards);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.surface {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+// --- Buttons ---
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  border: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+
+  &:active { transform: scale(0.98); }
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-text);
+
+  &:hover {
+    background: var(--color-accent-hover);
+    color: var(--color-text); 
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+
+  &:hover {
+    background: var(--color-secondary);
+    color: var(--color-surface);
+  }
+}
+
+// --- Text helpers ---
+.text-muted   { color: var(--color-text-muted); }
+.text-accent  { color: var(--color-accent); }
+.text-secondary { color: var(--color-secondary); }
+
+// --- Badges / tags ---
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--color-accent-light);
+  color: var(--color-secondary);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+}
+
+// --- Dividers ---
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-lg) 0;
+}
+
+// messages
+// =============================================================
+// NG-ZORRO NOTIFICATION / SOONER TOAST STYLING & POSITIONING
+// =============================================================
+
+// Container positioning overrides
+.ant-notification {
+  // Mobile first: Top Center
+  @media (max-width: 767px) {
+    top: var(--space-md) !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translateX(-50%) !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 400px !important;
+  }
+
+  // Tablet & Desktop: Bottom Right
+  @media (min-width: 768px) {
+    top: auto !important;
+    bottom: var(--space-lg) !important;
+    right: var(--space-lg) !important;
+    left: auto !important;
+  }
+}
+
+// Toast styling aligned with your design system
+.ant-notification-notice.sooner-toast {
+  background: var(--color-surface) !important;
+  border-radius: var(--radius-md) !important;
+  padding: var(--space-md) var(--space-lg) !important;
+  box-shadow: var(--shadow-md) !important;
+  border: 1px solid var(--color-border) !important;
+  font-family: var(--font-body) !important;
+
+  .ant-notification-notice-message {
+    font-family: var(--font-display) !important;
+    font-size: var(--fs-md) !important;
+    font-weight: var(--fw-semibold) !important;
+    color: var(--color-text) !important;
+    margin-bottom: var(--space-xs) !important;
+  }
+
+  .ant-notification-notice-description {
+    font-size: var(--fs-sm) !important;
+    color: var(--color-text-muted) !important;
+  }
+
+  &.sooner-success {
+    border-left: 5px solid var(--color-success) !important;
+    .ant-notification-notice-icon { 
+      color: var(--color-success) !important; 
+    }
+  }
+
+  &.sooner-error {
+    border-left: 5px solid var(--color-danger) !important;
+    .ant-notification-notice-icon { 
+      color: var(--color-danger) !important; 
+    }
+  }
+
+  &.sooner-warning {
+    border-left: 5px solid var(--color-accent) !important;
+    .ant-notification-notice-icon { 
+      color: var(--color-accent) !important; 
+    }
+  }
+}

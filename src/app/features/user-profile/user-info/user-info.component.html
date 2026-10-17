@@ -1,0 +1,20 @@
+@if (user(); as user) {
+  <section class="profile-banner">
+    <div class="profile-banner__avatar">
+      <!-- @if (user.picture) {
+        <img [src]="user.picture" [alt]="user.userName" />
+      }  -->
+      <!-- @else { -->
+        <span>{{ initials() }}</span>
+      <!-- } -->
+    </div>
+
+    <div class="profile-banner__info">
+      <h2 class="profile-banner__name">{{ user.userName }}</h2>
+      <!-- <p class="profile-banner__meta">
+        {{ user.email }} · Member since 2023
+      </p> -->
+      <span class="profile-banner__role">{{ user.role }}</span>
+    </div>
+  </section>
+}

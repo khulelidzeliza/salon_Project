@@ -1,0 +1,9 @@
+.main-div {
+  width: 80%;
+//   max-width: 1100px;
+  margin-inline: auto;
+  padding-block: var(--space-xl);   // space above and below the whole column
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}

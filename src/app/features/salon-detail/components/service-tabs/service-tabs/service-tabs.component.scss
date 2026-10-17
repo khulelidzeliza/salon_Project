@@ -1,0 +1,29 @@
+:host { display: block; }
+
+.service-tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+
+  &__pill {
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    font-size: var(--fs-sm);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
+
+    &.is-active {
+      background: var(--color-accent);
+      color: var(--color-text);
+      border-color: var(--color-accent);
+    }
+
+    &:hover:not(.is-active) {
+      border-color: var(--color-accent);
+    }
+  }
+}

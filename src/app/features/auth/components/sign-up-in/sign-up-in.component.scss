@@ -1,0 +1,40 @@
+:host { display: block; }
+
+.auth {
+  display: flex;
+  min-height: 100vh;   // gives the columns something to fill
+  width: 100%;
+}
+
+app-brand-panel {
+  flex: 1 1 55%;       // left column
+}
+
+.panel {
+  flex: 1 1 45%;       // right column
+  display: flex;
+  align-items: center;      // vertical centering
+  justify-content: center;  // horizontal centering
+  padding: var(--space-xl);
+}
+
+app-auth-panel {
+   flex: 0 0 60%;
+   justify-content: end;
+}
+
+@media (max-width: 900px) {
+  .auth {
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  app-brand-panel {
+    flex: none;          // don't stretch to fill
+  }
+
+  .panel {
+    flex: 1 1 auto;
+    padding: var(--space-lg);
+  }
+}

@@ -1,0 +1,64 @@
+<div class="auth-view">
+  <p class="eyebrow">Welcome back</p>
+  <h2 class="form-heading">Sign in to your salon</h2>
+  <p class="form-sub">Pick up right where you left off.</p>
+
+  <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label class="field__label" for="login-email">Email</label>
+      <input
+        id="login-email"
+        type="email"
+        class="field__input"
+        placeholder="you@example.com"
+        formControlName="email"
+        [class.is-invalid]="isInvalid('email')"
+        autocomplete="email"
+      />
+      @if (isInvalid('email')) {
+        <span class="field__error">Enter a valid email address.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="login-password">Password</label>
+      <input
+        id="login-password"
+        type="password"
+        class="field__input"
+        placeholder="••••••••"
+        formControlName="password"
+        [class.is-invalid]="isInvalid('password')"
+        autocomplete="current-password"
+      />
+      @if (isInvalid('password')) {
+        <span class="field__error">Password is required.</span>
+      }
+    </div>
+
+    <div class="form-row">
+      <label class="check">
+        <input type="checkbox" formControlName="keepSignedIn" />
+        Keep me signed in
+      </label>
+      <button type="button" class="link">Forgot password?</button>
+    </div>
+
+<button type="submit" class="submit" [disabled]="loading()">
+  {{ loading() ? 'Signing in…' : 'Sign in' }}
+</button>  </form>
+
+<!--  <div class="divider-text">or continue with</div>-->
+
+<!--  <div class="social-row">-->
+<!--    <button type="button" class="social-btn">Apple</button>-->
+<!--    <button type="button" class="social-btn">Google</button>-->
+<!--  </div>-->
+
+  <p class="form-footer">
+    New to Maison Lueur?
+    <button type="button" class="link" (click)="switchToRegister.emit()">
+      Create an account
+    </button>
+  </p>
+</div>

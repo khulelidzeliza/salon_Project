@@ -1,0 +1,80 @@
+<div class="modal-overlay" *ngIf="open" (click)="close()">
+  <div class="modal-card card" (click)="$event.stopPropagation()">
+    <h3 class="modal-title">Add salon</h3>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="grid">
+        <div class="field">
+          <label>Salon name</label>
+          <input class="input" type="text" formControlName="name"
+                 placeholder="Maison Lueur — Vake" />
+          <small class="err" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+            Name is required
+          </small>
+        </div>
+
+        <div class="field">
+          <label>City / Location</label>
+          <input class="input" type="text" formControlName="location" placeholder="Tbilisi" />
+          <small class="err" *ngIf="form.get('location')?.touched && form.get('location')?.invalid">
+            Location is required
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Starting price</label>
+          <input class="input" type="number" formControlName="price" placeholder="25" />
+          <small class="err" *ngIf="form.get('price')?.touched && form.get('price')?.invalid">
+            Enter a valid price
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Phone number</label>
+          <input class="input" type="text" formControlName="phoneNumber" placeholder="+995 ..." />
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input class="input" type="email" formControlName="email" placeholder="salon@mail.com" />
+          <small class="err" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+            Enter a valid email
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Working hours</label>
+          <input class="input" type="text" formControlName="workingHours" placeholder="Mon–Sat 10:00–20:00" />
+        </div>
+
+        <div class="field">
+          <label>Facebook link</label>
+          <input class="input" type="text" formControlName="facebookLink" placeholder="https://facebook.com/..." />
+        </div>
+
+        <div class="field">
+          <label>Instagram link</label>
+          <input class="input" type="text" formControlName="instagramLink" placeholder="https://instagram.com/..." />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Pictures</label>
+        <input class="input file" type="file" multiple accept="image/*" (change)="onFileChange($event)" />
+        <small class="text-muted" *ngIf="pictures.length">
+          {{ pictures.length }} file(s) selected
+        </small>
+      </div>
+
+      <p class="err" *ngIf="error$ | async">
+        Failed to create salon. Please try again.
+      </p>
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary" [disabled]="loading$ | async">
+          {{ (loading$ | async) ? 'Saving...' : 'Create salon' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+ 
+query GetUser {
+  me {
+    id
+    userName
+    email
+    role
+    phoneNumber
+    createdAt
+    updatedAt
+    favorites {
+      id
+      userId
+      salonId
+      salon {
+        id
+        name
+        pictures
+        location
+      }
+    }
+    salons {
+      id
+      name
+      isFavoritedByCurrentUser
+      pictures
+    }
+    reviews {
+      id
+      star
+      createdAt
+      comment
+      
+    }
+  }
+}
+ 

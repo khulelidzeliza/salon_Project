@@ -1,0 +1,9 @@
+<div class="service-tabs">
+  <button
+    *ngFor="let category of categories"
+    class="service-tabs__pill"
+    [class.is-active]="category === active"
+    (click)="categorySelected.emit(category)">
+    {{ category }}
+  </button>
+</div>

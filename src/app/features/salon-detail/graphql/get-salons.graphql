@@ -1,0 +1,15 @@
+query getSalons($where: SalonFilterInput) {
+  getSalons(where: $where) {
+    id
+    name
+    location
+    pictures
+    facebookLink
+    instagramLink
+    userId
+    isFavoritedByCurrentUser
+    phoneNumber
+    price
+    AverageRating
+  }
+}

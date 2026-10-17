@@ -1,0 +1,79 @@
+<section class="details">
+  <header class="details__head">
+    <div>
+      <p class="details__eyebrow">Account</p>
+      <h2 class="details__title">Your details</h2>
+    </div>
+
+    @if (!editing()) {
+      <button type="button" class="btn btn-secondary details__edit" (click)="startEdit()">
+        ✎ Edit
+      </button>
+    }
+  </header>
+
+  <div class="surface details__card">
+    <form
+      class="details__grid"
+      [class.details__grid--readonly]="!editing()"
+      [formGroup]="form"
+      (ngSubmit)="save()"
+    >
+      <!-- Full name -->
+      <div class="field">
+        <div class="field__icon"><lucide-icon [img]="UserIcon" [size]="18"></lucide-icon></div>
+        <div class="field__body">
+          <label class="field__label" for="fullName">Full name</label>
+          <input id="fullName" type="text" class="field__input" formControlName="name"
+            [class.is-invalid]="isInvalid('name')" />
+          @if (isInvalid('name')) { <span class="field__error">Please enter your name.</span> }
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <div class="field__icon"><lucide-icon [img]="MailIcon" [size]="18"></lucide-icon></div>
+        <div class="field__body">
+          <label class="field__label" for="email">Email <span class="field__hint">— can't be changed</span></label>
+          <input id="email" type="email" class="field__input" formControlName="email"
+            [class.is-invalid]="isInvalid('email')" />
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="field">
+        <div class="field__icon"><lucide-icon [img]="PhoneIcon" [size]="18"></lucide-icon></div>
+        <div class="field__body">
+          <label class="field__label" for="phone">Phone</label>
+          @if (!editing() && !user()?.phoneNumber) {
+            <p class="field__static field__static--empty">Not added yet</p>
+          } @else {
+            <input id="phone" type="tel" class="field__input" formControlName="phoneNumber" />
+          }
+        </div>
+      </div>
+
+      <!-- City -->
+      <div class="field">
+        <div class="field__icon"><lucide-icon [img]="MapPinIcon" [size]="18"></lucide-icon></div>
+        <div class="field__body">
+          <label class="field__label" for="city">City</label>
+          @if (!editing() && !form.get('city')?.value) {
+            <p class="field__static field__static--empty">Not added yet</p>
+          } @else {
+            <input id="city" type="text" class="field__input" formControlName="city" />
+          }
+        </div>
+      </div>
+
+      <!-- Member since -->
+      <div class="field">
+        <div class="field__icon"><lucide-icon [img]="CalendarIcon" [size]="18"></lucide-icon></div>
+        <div class="field__body">
+          <label class="field__label">Member since</label>
+          <div class="field__static">{{ user()?.createdAt | date: 'MMMM y' }}</div>
+        </div>
+      </div>
+
+      <!-- Role -->
+      <div class="field">

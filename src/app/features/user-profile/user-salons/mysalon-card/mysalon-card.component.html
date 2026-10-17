@@ -1,0 +1,40 @@
+<article class="card salon-card">
+  <div class="salon-card__image">
+    <span class="salon-card__badge">Published</span>
+
+    @if (salon.pictures.length) {
+      <img
+        class="salon-card__photo"
+        [src]="serverUrl + salon.pictures![0]"
+        [alt]="salon.name" />
+    }
+   @else {
+      <svg class="salon-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="6" y="8" width="12" height="13" rx="2" />
+        <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+      </svg>
+    }
+  </div>
+
+  <div class="salon-card__body">
+    <p class="salon-card__label">{{ salon.location }}</p>
+    <h3 class="salon-card__title">{{ salon.name }}</h3>
+
+    <div class="salon-card__actions">
+      <button type="button" class="btn btn-secondary" (click)="onEdit()">✎ Edit</button>
+      <button type="button" class="btn salon-card__remove" (click)="askDelete()">Remove</button>
+    </div>
+  </div>
+</article>
+
+<app-confirm-modal
+  [open]="showDeleteConfirm"
+  variant="danger"
+  [loading]="deleting"
+  title="Delete salon?"
+  [message]="'Delete ' + salon.name + '? This can’t be undone.'"
+  confirmText="Delete"
+  cancelText="Keep it"
+  (confirmed)="onRemove()"
+  (cancelled)="showDeleteConfirm = false">
+</app-confirm-modal>
