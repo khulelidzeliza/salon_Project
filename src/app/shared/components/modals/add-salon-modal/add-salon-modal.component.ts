@@ -1,11 +1,14 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Store } from '@ngxs/store';
 import { ProcedureType } from '../../../../../generated/graphql';
 import { SalonSelectors } from '../../../../store/salon-state/salon-selector';
-import { Store } from '@ngxs/store';
-import { AddSalon, ProcedurePayload, SalonPayload } from '../../../../store/salon-state/salon-actions';
-import { SalonType } from '../../../../store/salon-state/salon-modal';
+import { AddSalon, SalonPayload } from '../../../../store/salon-state/salon-actions';
+import { PROCEDURE_TYPES, ProcedureDraft } from '../../../../store/procedure-state/procedure-model';
+import { ProcedureSelectors } from '../../../../store/procedure-state/procedure-selector';
+import { AddMaster, AddProcedureDraft, RemoveMaster, RemoveProcedureDraft, SetFinishedWorks, SetMasterDraft, SetProcedureType } from '../../../../store/procedure-state/procedure-actions';
+
 @Component({
   selector: 'app-add-salon-modal',
   standalone: true,
@@ -17,24 +20,17 @@ export class AddSalonModalComponent {
   private readonly fb = inject(FormBuilder);
   private readonly store = inject(Store);
 
+  readonly procedureTypes = PROCEDURE_TYPES;
+
   loading$ = this.store.select(SalonSelectors.loading);
   error$ = this.store.select(SalonSelectors.error);
+  procedures$ = this.store.select(ProcedureSelectors.drafts);
+
   pictures: File[] = [];
-
-  readonly procedureTypes: { value: ProcedureType; label: string }[] = [
-    { value: 'HAIR', label: 'Hair' },
-    { value: 'NAIL', label: 'Nails' },
-    { value: 'BARBER', label: 'Barber' },
-    { value: 'COSMETIC', label: 'Cosmetic' },
-    { value: 'LASER', label: 'Laser' },
-    { value: 'TATTOO', label: 'Tattoo' },
-  ];
-
-  procedures: (ProcedurePayload & { masterDraft: string })[] = [];
 
   @Input() open = false;
   @Output() closed = new EventEmitter<void>();
-  @Output() created = new EventEmitter<SalonType>();
+  @Output() created = new EventEmitter<void>();
 
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -47,46 +43,40 @@ export class AddSalonModalComponent {
     workingHours: [''],
   });
 
+  trackById = (_: number, p: ProcedureDraft) => p.id;
 
   onFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.pictures = input.files ? Array.from(input.files) : [];
+    this.pictures = this.filesFrom(event);
   }
 
-  // ── Procedures ──
+  // ── Procedures (all state lives in ProcedureState) ──
   addProcedure(): void {
-    const used = new Set(this.procedures.map(p => p.procedureType));
-    const next = this.procedureTypes.find(t => !used.has(t.value))?.value ?? 'HAIR';
-    this.procedures.push({ procedureType: next, masters: [], finishedWorks: [], masterDraft: '' });
+    this.store.dispatch(new AddProcedureDraft());
   }
 
-  removeProcedure(i: number): void {
-    this.procedures.splice(i, 1);
+  removeProcedure(id: number): void {
+    this.store.dispatch(new RemoveProcedureDraft(id));
   }
 
-  setType(i: number, type: ProcedureType): void {
-    this.procedures[i].procedureType = type;
+  setType(id: number, type: ProcedureType): void {
+    this.store.dispatch(new SetProcedureType(id, type));
   }
 
-  addMaster(i: number, event?: Event): void {
+  onMasterInput(id: number, event: Event): void {
+    this.store.dispatch(new SetMasterDraft(id, (event.target as HTMLInputElement).value));
+  }
+
+  addMaster(id: number, event?: Event): void {
     event?.preventDefault();
-    const p = this.procedures[i];
-    const name = p.masterDraft.trim();
-    if (name && !p.masters.includes(name)) p.masters.push(name);
-    p.masterDraft = '';
+    this.store.dispatch(new AddMaster(id));
   }
 
-  onMasterInput(i: number, event: Event): void {
-    this.procedures[i].masterDraft = (event.target as HTMLInputElement).value;
+  removeMaster(id: number, name: string): void {
+    this.store.dispatch(new RemoveMaster(id, name));
   }
 
-  removeMaster(i: number, m: number): void {
-    this.procedures[i].masters.splice(m, 1);
-  }
-
-  onWorksChange(i: number, event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.procedures[i].finishedWorks = input.files ? Array.from(input.files) : [];
+  onWorksChange(id: number, event: Event): void {
+    this.store.dispatch(new SetFinishedWorks(id, this.filesFrom(event)));
   }
 
   submit(): void {
@@ -97,26 +87,23 @@ export class AddSalonModalComponent {
 
     const payload = this.form.getRawValue() as SalonPayload;
 
-    const procedures: ProcedurePayload[] = this.procedures.map(({ masterDraft, ...p }) => ({
-      ...p,
-      masters: masterDraft.trim() && !p.masters.includes(masterDraft.trim()) ? [...p.masters, masterDraft.trim()] : p.masters,
-    }));
-
-    this.store.dispatch(new AddSalon(payload, this.pictures, procedures)).subscribe({
+    this.store.dispatch(new AddSalon(payload, this.pictures)).subscribe({
       next: () => {
-        const salons = this.store.selectSnapshot(SalonSelectors.salons);
-        const salon = salons[salons.length - 1];   // the one just added
-
         this.form.reset();
         this.pictures = [];
-        this.procedures = [];
         this.created.emit();
         this.close();
       },
-      error: (err) => console.error('Add salon failed', err),
+      error: err => console.error('Add salon failed', err),
     });
   }
+
   close(): void {
     this.closed.emit();
+  }
+
+  private filesFrom(event: Event): File[] {
+    const input = event.target as HTMLInputElement;
+    return input.files ? Array.from(input.files) : [];
   }
 }

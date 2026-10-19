@@ -32,13 +32,6 @@ export class HeaderComponent {
   readonly LogOutIcon = LogOut;
   readonly HomeIcon = House;
 
-  readonly links = [
-    { label: 'Salons', category: '' },
-    { label: 'Barbershops', category: 'BARBER' },
-    { label: 'Tattoo', category: 'TATTOO' },
-    { label: 'Nails', category: 'NAIL' },
-  ];
-
   readonly user = this.store.selectSignal(UserSelectors.getUser);
   readonly isOrganizer = computed(() => this.user()?.role === 'ORGANIZATOR');
   readonly initials = computed(() =>

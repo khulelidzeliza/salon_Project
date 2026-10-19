@@ -19,10 +19,12 @@
 .modal-card.card {
   width: 100%;
   max-width: 640px;
-  max-height: calc(100vh - 16px);
-  overflow-y: auto;
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   box-sizing: border-box;
-  padding: clamp(22px, 3vw, 32px);
+  padding: 0;
   border-radius: 38px;
   background: var(--glass-light-bg);
   border: 1px solid var(--glass-light-border);
@@ -30,12 +32,59 @@
   -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-lg);
   animation: pop-in .45s var(--ease-out) both;
+
+  @media (max-width: 760px) {
+    max-height: calc(100vh - 16px);
+    border-radius: 32px 32px 24px 24px;
+  }
+}
+
+// Fixed header / scrolling body / fixed footer
+.modal-head {
+  flex: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: clamp(22px, 3vw, 30px) clamp(22px, 3vw, 32px) 16px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.modal-eyebrow {
+  margin: 0 0 6px;
+  font: var(--fw-semibold) 10px var(--font-body);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-accent);
 }
 
 .modal-title {
-  margin-bottom: 22px;
-  font: var(--fw-medium) clamp(26px, 3vw, 32px)/1.1 var(--font-display);
+  font: var(--fw-medium) clamp(26px, 3vw, 32px)/1.05 var(--font-display);
   letter-spacing: 0;
+}
+
+.modal-close {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background var(--dur-fast) ease, transform var(--dur-fast) ease;
+  &:hover { background: var(--color-surface-soft); transform: rotate(90deg); }
+}
+
+.modal-form { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+.modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 22px clamp(22px, 3vw, 32px) 24px;
 }
 
 .grid {
@@ -98,8 +147,8 @@
 
 // ── Procedures ──
 .procedures {
-  margin-top: 22px;
-  padding-top: 22px;
+  margin-top: 24px;
+  padding-top: 20px;
   border-top: 1px solid var(--color-divider);
 
   &__head {
@@ -134,13 +183,17 @@
   }
 
   &__empty {
+    width: 100%;
     margin: 0;
-    padding: 18px;
+    padding: 16px;
     border-radius: 20px;
     border: 1px dashed var(--color-border-strong);
-    font-size: var(--fs-sm);
+    background: transparent;
+    font: var(--fw-regular) var(--fs-sm) var(--font-body);
     color: var(--color-text-muted);
     text-align: center;
+    cursor: pointer;
+    &:hover { border-color: var(--color-accent); color: var(--color-accent); }
   }
 }
 
@@ -179,7 +232,6 @@
     &:hover { background: var(--color-danger-soft); color: var(--color-danger); }
   }
 
-  .input.file { padding: 18px 14px; }
 }
 
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -255,12 +307,78 @@
 p.err { margin: 12px 0 0; font-size: var(--fs-sm); }
 
 .actions {
+  flex: none;
   display: flex;
   justify-content: flex-end;
-  margin-top: 26px;
+  gap: 8px;
+  padding: 14px clamp(22px, 3vw, 32px) clamp(18px, 2.4vw, 24px);
+  border-top: 1px solid var(--color-divider);
+  background: rgba(250, 247, 242, .6);
 
-  .btn { height: 52px; padding: 0 28px; }
-  @media (max-width: 760px) { .btn { width: 100%; } }
+  .btn { height: 52px; padding: 0 26px; }
+  @media (max-width: 760px) { .btn { flex: 1; padding: 0 16px; } }
+}
+
+// ₾ prefix on price
+.input-prefix {
+  position: relative;
+  span {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+  }
+  .input { padding-left: 34px; }
+}
+
+// Custom upload area (native input hidden)
+.dropzone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1.5px dashed var(--color-border-strong);
+  border-radius: 22px;
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) ease, background var(--dur-fast) ease;
+
+  input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+  &:hover, &:focus-within { border-color: var(--color-accent); }
+
+  &__icon {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--color-surface-soft);
+    color: var(--color-accent);
+    font-size: 18px;
+    transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    strong { font: var(--fw-medium) var(--fs-base) var(--font-body); color: var(--color-text); }
+    small { font-size: var(--fs-xs); color: var(--color-text-muted); }
+  }
+
+  &.has-files {
+    border-style: solid;
+    border-color: var(--color-accent);
+    .dropzone__icon { background: var(--color-accent); color: var(--color-on-accent); }
+  }
+
+  &--sm { padding: 10px 12px; .dropzone__icon { width: 36px; height: 36px; font-size: 15px; } }
 }
 
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }

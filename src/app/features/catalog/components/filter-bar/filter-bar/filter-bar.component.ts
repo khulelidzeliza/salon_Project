@@ -28,7 +28,6 @@ export class FilterBarComponent implements OnInit, OnDestroy {
   private destroyRef = inject(DestroyRef);
   private document = inject(DOCUMENT);
 
-  /** Shown on the sheet's submit button ("Show 12 salons"). */
   @Input() resultCount = 0;
   @Output() filtersChange = new EventEmitter<CatalogFilters>();
 
@@ -65,13 +64,11 @@ export class FilterBarComponent implements OnInit, OnDestroy {
     { label: 'Men', value: 'MEN' },
   ];
 
-  /** Number of filters hidden inside the sheet (price + audience). */
   get activeCount(): number {
     return (this.filters.price ? 1 : 0) + (this.filters.audience ? 1 : 0);
   }
 
   ngOnInit(): void {
-    // Category lives in the URL (?category=BARBER) so header/footer links and back/forward work.
     this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
       const category = (params.get('category') ?? '') as ProcedureType | '';
       if (category !== this.filters.category) this.update({ category });

@@ -4,6 +4,8 @@ import { map } from 'rxjs/operators';
 import { SalonCardComponent } from '../../components/salon-card/salon-card/salon-card.component';
 import { CatalogFilters, FilterBarComponent } from '../../components/filter-bar/filter-bar/filter-bar.component';
 import { GetSalonsGQL, SalonFilterInput } from '../../../../../generated/graphql';
+import { GetMySalons, GetSalons } from '../../../../store/salon-state/salon-actions';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-catalog-page',
@@ -19,7 +21,11 @@ export class CatalogPageComponent {
   salons$  = this.query.valueChanges.pipe(map(r => r.data?.getSalons ?? []));
   loading$ = this.query.valueChanges.pipe(map(r => r.loading));
   totalCount$ = this.salons$.pipe(map(s => s.length));
+private readonly store = inject(Store);
 
+  ngOnInit() {
+  this.store.dispatch([new GetSalons(), new GetMySalons()]); // or just the one that page needs
+}
   onFiltersChange(filters: CatalogFilters): void {
     const where = this.buildWhere(filters);
     this.query.refetch({ where });
@@ -29,7 +35,6 @@ export class CatalogPageComponent {
   private buildWhere(filters: CatalogFilters): SalonFilterInput | null {
     const conditions: SalonFilterInput[] = [];
 
-    // Search: match name OR location (case-insensitive contains)
     if (filters.search.trim()) {
       const term = filters.search.trim();
       conditions.push({
@@ -40,12 +45,10 @@ export class CatalogPageComponent {
       });
     }
 
-    // Price: exact enum match
     if (filters.price) {
       conditions.push({ price: { eq: filters.price } });
     }
 
-    // Procedure type: salon must have at least one procedure of this type
     if (filters.category) {
       conditions.push({
         procedures: {

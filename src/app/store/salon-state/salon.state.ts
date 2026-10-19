@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
-import { State, Action,  StateContext, Store } from '@ngxs/store';
-import { switchMap, tap } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
+import { State, Action, StateContext, Store } from '@ngxs/store';
+import { Observable, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { SalonService } from '../../shared/components/modals/add-salon-modal/services/salon.service';
-import { Salon, SalonStateModel } from './salon-modal';
+import { SalonStateModel } from './salon-modal';
 import { AddSalon, GetMySalons, GetSalonById, GetSalons } from './salon-actions';
-import { GetSalonsGQL } from '../../../generated/graphql';
-import { GetSalonByIdGQL } from '../../../generated/graphql';
-import { GetMySalonsGQL } from '../../../generated/graphql';
-import { Observable } from '@apollo/client/utilities';
-import { IUser } from '../user-state/user.model';
+import { GetMySalonsGQL, GetSalonByIdGQL, GetSalonsGQL } from '../../../generated/graphql';
 import { UserSelectors } from '../user-state/user.selector';
+import { ResetProcedureDrafts, SaveProcedures } from '../procedure-state/procedure-actions';
 
 @State<SalonStateModel>({
   name: 'salon',
   defaults: {
     items: [],
     mysalons: [],
-    activeFilter : null,
+    activeFilter: null,
     selectedSalon: null,
     loading: false,
     error: null,
@@ -25,108 +22,91 @@ import { UserSelectors } from '../user-state/user.selector';
 })
 @Injectable()
 export class SalonState {
-  static salons(state: SalonStateModel): Salon[] {
-  return state.items;
-}
-  static loading(loading: any): import("rxjs").Observable<boolean> {
-    throw new Error('Method not implemented.');
-  }
-  user!: Observable<IUser | null>;
-
   constructor(
     private salonService: SalonService,
-    private GetSalonsGQL: GetSalonsGQL,
-    private GetSalonByIdGQL: GetSalonByIdGQL,
-    private GetMySalonsGQL: GetMySalonsGQL,
+    private getSalonsGQL: GetSalonsGQL,
+    private getSalonByIdGQL: GetSalonByIdGQL,
+    private getMySalonsGQL: GetMySalonsGQL,
     private store: Store,
+  ) {}
 
-  ) { }
-
+ 
   @Action(AddSalon)
   addSalon(ctx: StateContext<SalonStateModel>, action: AddSalon) {
     ctx.patchState({ loading: true, error: null });
 
-    const user = this.store.selectSnapshot(UserSelectors.getUser);
-
     return this.salonService.addSalon(action.payload, action.pictures).pipe(
-      // then create every procedure for the new salon
-      switchMap((salon: any) => {
-        const salonId = Number(salon?.id ?? salon?.salonId ?? salon);
-        if (!action.procedures.length || !salonId || !user?.id) return of(salon);
-        return forkJoin(
-          action.procedures.map(p => this.salonService.addProcedure(salonId, user.id, p))
-        ).pipe(switchMap(() => of(salon)));
-      }),
-      tap({
-        next: () => {
-          ctx.patchState({ loading: false });
-          ctx.dispatch([new GetSalons(), new GetMySalons()]);
-        },
-        error: () => ctx.patchState({ loading: false, error: 'Failed to create salon' }),
+      tap((salon) => {
+        const state = ctx.getState();
+        ctx.patchState({
+          loading: false,
+        });
+        return ctx.dispatch(new GetSalons());
       }),
     );
   }
-
- @Action(GetSalons)
-GetSalons(ctx: StateContext<SalonStateModel>, action: GetSalons) {
-  ctx.patchState({ loading: true });
-  return this.GetSalonsGQL
-    .fetch({ where: action.where }, { fetchPolicy: 'network-only' })
-    .pipe(
-      tap((result) => {
-        ctx.patchState({
-          items: result.data?.getSalons ?? [],
-          activeFilter: action.where ?? null,
-          loading: false,
-        });
-      })
-    );
-}
+  
+  @Action(GetSalons)
+  getSalons(ctx: StateContext<SalonStateModel>, action: GetSalons) {
+    ctx.patchState({ loading: true });
+    return this.getSalonsGQL
+      .fetch({ where: action.where }, { fetchPolicy: 'network-only' })
+      .pipe(
+        tap(result => {
+          ctx.patchState({
+            items: result.data?.getSalons ?? [],
+            activeFilter: action.where ?? null,
+            loading: false,
+          });
+        }),
+      );
+  }
 
   @Action(GetSalonById)
-  GetSalonById(ctx: StateContext<SalonStateModel>, action: GetSalonById) {
+  getSalonById(ctx: StateContext<SalonStateModel>, action: GetSalonById) {
     ctx.patchState({ loading: true, error: null });
-
-    return this.GetSalonByIdGQL.fetch({ id: action.salonid }).pipe(
-      tap((result) => {
-        const data = result.data.getSalonById;
-        const salon = data?.[0] ?? null
-        if (!data) {
-          ctx.patchState({
-            selectedSalon: null,
-            loading: false,
-            error: 'salon not found'
-          });
-        }
-        else {
+    return this.getSalonByIdGQL
+      .fetch({ id: action.salonid }, { fetchPolicy: 'network-only' })
+      .pipe(
+        tap(result => {
+          const salon = result.data?.getSalonById?.[0] ?? null;
           ctx.patchState({
             selectedSalon: salon,
             loading: false,
-            error: null
+            error: salon ? null : 'salon not found',
           });
-        }
-      })
-    );
+        }),
+      );
   }
 
   @Action(GetMySalons)
-  GetMySalons(ctx: StateContext<SalonStateModel>) {
+  getMySalons(ctx: StateContext<SalonStateModel>) {
     const user = this.store.selectSnapshot(UserSelectors.getUser);
-    if (!user || !user.id) return;
+    if (!user?.id) return;
 
     ctx.patchState({ loading: true, error: null });
-
-    return this.GetMySalonsGQL.fetch({}, { fetchPolicy: 'network-only' }).pipe(
-      tap((result) => {
-        const data = result.data.getMySalons;
+    return this.getMySalonsGQL.fetch({}, { fetchPolicy: 'network-only' }).pipe(
+      tap(result => {
         ctx.patchState({
           mysalons: result.data?.getMySalons ?? [],
           loading: false,
-          error: null
+          error: null,
         });
-
-      })
+      }),
     );
   }
 
+  /** Reads the id from the add-salon response; if missing, takes the newest of "my salons" */
+  private resolveSalonId(res: any): Observable<number> {
+    const id = Number(res?.id ?? res?.salonId ?? res?.data?.id ?? res);
+    if (id) return of(id);
+
+    return this.getMySalonsGQL.fetch({}, { fetchPolicy: 'network-only' }).pipe(
+      map(r => {
+        const ids = (r.data?.getMySalons ?? []).map((s: any) => Number(s.id)).filter(Boolean);
+        if (!ids.length) throw new Error('Could not determine the new salon id');
+        return Math.max(...ids);
+      }),
+    );
+  }
 }

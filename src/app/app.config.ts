@@ -17,6 +17,7 @@ import { apiInterceptor } from './core/interceptors/api-interceptor';
 import { FetchUser } from './store/user-state/user.actions';
 import { UserState } from './store/user-state/user.state';
 import { SalonState } from './store/salon-state/salon.state';
+import { ProcedureState } from './store/procedure-state/procedure-state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -40,7 +41,7 @@ export const appConfig: ApplicationConfig = {
       }),
 
      provideStore(
-      [UserState , SalonState ], 
+      [UserState , SalonState , ProcedureState, ], 
       withNgxsReduxDevtoolsPlugin({ disabled: !isDevMode() })
     ),
   ],

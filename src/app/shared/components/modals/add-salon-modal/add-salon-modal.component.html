@@ -1,132 +1,153 @@
 <div class="modal-overlay" *ngIf="open" (click)="close()">
   <div class="modal-card card" (click)="$event.stopPropagation()">
-    <h3 class="modal-title">Add salon</h3>
-
-    <form [formGroup]="form" (ngSubmit)="submit()">
-      <div class="grid">
-        <div class="field">
-          <label>Salon name</label>
-          <input class="input" type="text" formControlName="name"
-                 placeholder="Maison Lueur — Vake" />
-          <small class="err" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
-            Name is required
-          </small>
-        </div>
-
-        <div class="field">
-          <label>City / Location</label>
-          <input class="input" type="text" formControlName="location" placeholder="Tbilisi" />
-          <small class="err" *ngIf="form.get('location')?.touched && form.get('location')?.invalid">
-            Location is required
-          </small>
-        </div>
-
-        <div class="field">
-          <label>Starting price</label>
-          <input class="input" type="number" formControlName="price" placeholder="25" />
-          <small class="err" *ngIf="form.get('price')?.touched && form.get('price')?.invalid">
-            Enter a valid price
-          </small>
-        </div>
-
-        <div class="field">
-          <label>Phone number</label>
-          <input class="input" type="text" formControlName="phoneNumber" placeholder="+995 ..." />
-        </div>
-
-        <div class="field">
-          <label>Email</label>
-          <input class="input" type="email" formControlName="email" placeholder="salon@mail.com" />
-          <small class="err" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
-            Enter a valid email
-          </small>
-        </div>
-
-        <div class="field">
-          <label>Working hours</label>
-          <input class="input" type="text" formControlName="workingHours" placeholder="Mon–Sat 10:00–20:00" />
-        </div>
-
-        <div class="field">
-          <label>Facebook link</label>
-          <input class="input" type="text" formControlName="facebookLink" placeholder="https://facebook.com/..." />
-        </div>
-
-        <div class="field">
-          <label>Instagram link</label>
-          <input class="input" type="text" formControlName="instagramLink" placeholder="https://instagram.com/..." />
-        </div>
+    <header class="modal-head">
+      <div>
+        <p class="modal-eyebrow">New listing</p>
+        <h3 class="modal-title">Add salon</h3>
       </div>
+      <button type="button" class="modal-close" (click)="close()" aria-label="Close">✕</button>
+    </header>
 
-      <div class="field">
-        <label>Pictures</label>
-        <input class="input file" type="file" multiple accept="image/*" (change)="onFileChange($event)" />
-        <small class="text-muted" *ngIf="pictures.length">
-          {{ pictures.length }} file(s) selected
-        </small>
-      </div>
-
-      <!-- Procedures -->
-      <section class="procedures">
-        <div class="procedures__head">
-          <div>
-            <p class="procedures__eyebrow">Services</p>
-            <h4 class="procedures__title">Procedures</h4>
+    <form class="modal-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="modal-body">
+        <div class="grid">
+          <div class="field">
+            <label>Salon name</label>
+            <input class="input" type="text" formControlName="name" placeholder="Maison Lueur — Vake" />
+            <small class="err" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+              Name is required
+            </small>
           </div>
-          <button type="button" class="procedures__add" (click)="addProcedure()">+ Add procedure</button>
+
+          <div class="field">
+            <label>City / Location</label>
+            <input class="input" type="text" formControlName="location" placeholder="Tbilisi" />
+            <small class="err" *ngIf="form.get('location')?.touched && form.get('location')?.invalid">
+              Location is required
+            </small>
+          </div>
+
+          <div class="field">
+            <label>Starting price</label>
+            <div class="input-prefix">
+              <span>₾</span>
+              <input class="input" type="number" min="0" formControlName="price" placeholder="25" />
+            </div>
+            <small class="err" *ngIf="form.get('price')?.touched && form.get('price')?.invalid">
+              Enter a valid price
+            </small>
+          </div>
+
+          <div class="field">
+            <label>Phone number</label>
+            <input class="input" type="text" formControlName="phoneNumber" placeholder="+995 ..." />
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input class="input" type="email" formControlName="email" placeholder="salon@mail.com" />
+            <small class="err" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+              Enter a valid email
+            </small>
+          </div>
+
+          <div class="field">
+            <label>Working hours</label>
+            <input class="input" type="text" formControlName="workingHours" placeholder="Mon–Sat 10:00–20:00" />
+          </div>
+
+          <div class="field">
+            <label>Facebook link</label>
+            <input class="input" type="text" formControlName="facebookLink" placeholder="https://facebook.com/..." />
+          </div>
+
+          <div class="field">
+            <label>Instagram link</label>
+            <input class="input" type="text" formControlName="instagramLink" placeholder="https://instagram.com/..." />
+          </div>
         </div>
 
-        <p class="procedures__empty" *ngIf="!procedures.length">
-          Add the services your salon offers — masters and work photos appear on the salon page.
+        <div class="field">
+          <label>Pictures</label>
+          <label class="dropzone" [class.has-files]="pictures.length">
+            <input type="file" multiple accept="image/*" (change)="onFileChange($event)" />
+            <span class="dropzone__icon">＋</span>
+            <span class="dropzone__text">
+              <strong>{{ pictures.length ? pictures.length + ' photo(s) selected' : 'Upload salon photos' }}</strong>
+              <small>{{ pictures.length ? 'Click to choose again' : 'JPG or PNG · the first one is the cover' }}</small>
+            </span>
+          </label>
+        </div>
+
+        <!-- Procedures -->
+        <!-- Procedures -->
+        <section class="procedures" *ngIf="procedures$ | async as procedures">
+          <div class="procedures__head">
+            <div>
+              <p class="procedures__eyebrow">Services</p>
+              <h4 class="procedures__title">Procedures</h4>
+            </div>
+            <button type="button" class="procedures__add" (click)="addProcedure()">+ Add procedure</button>
+          </div>
+
+          <button type="button" class="procedures__empty" *ngIf="!procedures.length" (click)="addProcedure()">
+            No procedures yet — add services, masters and work photos.
+          </button>
+
+          <div class="procedure" *ngFor="let p of procedures; let i = index; trackBy: trackById">
+            <div class="procedure__top">
+              <span class="procedure__num">{{ i + 1 }}</span>
+              <button type="button" class="procedure__remove" (click)="removeProcedure(p.id)"
+                aria-label="Remove procedure">✕</button>
+            </div>
+
+            <div class="field">
+              <label>Type</label>
+              <div class="chips">
+                <button type="button" class="chip" *ngFor="let t of procedureTypes"
+                  [class.is-active]="p.procedureType === t.value" (click)="setType(p.id, t.value)">{{ t.label
+                  }}</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Masters</label>
+              <div class="masters">
+                <span class="master" *ngFor="let m of p.masters">
+                  {{ m }}
+                  <button type="button" (click)="removeMaster(p.id, m)" [attr.aria-label]="'Remove ' + m">✕</button>
+                </span>
+                <input class="masters__input" type="text" placeholder="Type a name, press Enter" [value]="p.masterDraft"
+                  (input)="onMasterInput(p.id, $event)" (keydown.enter)="addMaster(p.id, $event)"
+                  (blur)="addMaster(p.id)" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Finished works</label>
+              <label class="dropzone dropzone--sm" [class.has-files]="p.finishedWorks.length">
+                <input type="file" multiple accept="image/*" (change)="onWorksChange(p.id, $event)" />
+                <span class="dropzone__icon">＋</span>
+                <span class="dropzone__text">
+                  <strong>{{ p.finishedWorks.length ? p.finishedWorks.length + ' photo(s) selected' : 'Add work photos'
+                    }}</strong>
+                </span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <p class="err" *ngIf="error$ | async">
+          Failed to create salon. Please try again.
         </p>
-
-        <div class="procedure" *ngFor="let p of procedures; let i = index">
-          <div class="procedure__top">
-            <span class="procedure__num">{{ i + 1 }}</span>
-            <button type="button" class="procedure__remove" (click)="removeProcedure(i)" aria-label="Remove procedure">✕</button>
-          </div>
-
-          <div class="field">
-            <label>Type</label>
-            <div class="chips">
-              <button type="button" class="chip" *ngFor="let t of procedureTypes"
-                      [class.is-active]="p.procedureType === t.value"
-                      (click)="setType(i, t.value)">{{ t.label }}</button>
-            </div>
-          </div>
-
-          <div class="field">
-            <label>Masters</label>
-            <div class="masters">
-              <span class="master" *ngFor="let m of p.masters; let mi = index">
-                {{ m }}
-                <button type="button" (click)="removeMaster(i, mi)" [attr.aria-label]="'Remove ' + m">✕</button>
-              </span>
-              <input class="masters__input" type="text" placeholder="Type a name, press Enter"
-                     [value]="p.masterDraft"
-                     (input)="onMasterInput(i, $event)"
-                     (keydown.enter)="addMaster(i, $event)"
-                     (blur)="addMaster(i)" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label>Finished works</label>
-            <input class="input file" type="file" multiple accept="image/*" (change)="onWorksChange(i, $event)" />
-            <small class="text-muted" *ngIf="p.finishedWorks.length">{{ p.finishedWorks.length }} photo(s) selected</small>
-          </div>
-        </div>
-      </section>
-
-      <p class="err" *ngIf="error$ | async">
-        Failed to create salon. Please try again.
-      </p>
-
-      <div class="actions">
-        <button type="submit" class="btn btn-primary" [disabled]="loading$ | async">
-          {{ (loading$ | async) ? 'Saving...' : 'Create salon' }}
-        </button>
       </div>
+
+      <footer class="actions">
+        <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="loading$ | async">
+          {{ (loading$ | async) ? 'Saving…' : 'Create salon' }}
+        </button>
+      </footer>
     </form>
   </div>
 </div>

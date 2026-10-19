@@ -29,7 +29,7 @@ export class SalonService {
     const fd = new FormData();
     fd.append('userid', String(userId));
     fd.append('SalonId', String(salonId));
-    fd.append('ProcedureType', p.procedureType);          // enum binds by name (case-insensitive)
+    fd.append('ProcedureType', p.procedureType);          
     p.masters.forEach(m => fd.append('Masters', m));
     p.finishedWorks.forEach(file => fd.append('FinishedWorks', file));
 
