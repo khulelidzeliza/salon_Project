@@ -91,7 +91,7 @@ export class HeaderComponent {
     this.router.navigate(['/']);
   }
 
-  onSalonCreated(salon: SalonType): void {
-    this.salons = [salon, ...this.salons];
+  onSalonCreated(): void {
+    this.salons = [ ...this.salons];
   }
 }
