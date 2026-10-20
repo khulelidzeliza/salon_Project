@@ -1,29 +1,71 @@
-:host { display: flex; width: 100%; justify-content: center; }
+@use '../../../../../../styles/auth.style.scss';
 
-.panel { display: flex; justify-content: center; width: 100%; }
+:host { 
+  display: flex; 
+  width: 100%; 
+  justify-content: center; 
+}
 
-.panel__inner { display: flex; flex-direction: column; width: 100%; max-width: 460px; }
+.panel { 
+  display: flex; 
+  justify-content: center; 
+  width: 100%; 
+}
+
+.panel__inner { 
+  display: flex; 
+  flex-direction: column; 
+  width: 100%; 
+  max-width: 460px; 
+}
 
 .tabs {
   display: flex;
-  gap: 4px;
+  position: relative; 
   padding: 4px;
   margin-bottom: var(--space-xl);
   border-radius: var(--radius-pill);
   background: var(--color-cards);
 }
 
+.tabs__indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  background: var(--color-surface);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  
+  /* SLOW, smooth sliding glide (0.7 seconds) */
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(0%); 
+
+  &--right {
+    transform: translateX(100%); 
+  }
+}
+
 .tabs__btn {
   flex: 1;
   height: 44px;
   border: none;
-  border-radius: var(--radius-pill);
   background: transparent;
   font: var(--fw-medium) var(--fs-sm) var(--font-body);
   color: var(--color-text-muted);
   cursor: pointer;
-  transition: background var(--dur-base) ease, color var(--dur-base) ease, box-shadow var(--dur-base) ease;
+  position: relative;
+  z-index: 1; 
+  
+  /* Text color fades smoothly to match the sliding speed */
+  transition: color 0.5s ease;
 
-  &:hover { color: var(--color-text); }
-  &--active { background: var(--color-surface); color: var(--color-text); box-shadow: var(--shadow-sm); }
+  &:hover { 
+    color: var(--color-text); 
+  }
+  
+  &--active { 
+    color: var(--color-text); 
+  }
 }

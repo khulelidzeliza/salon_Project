@@ -1,14 +1,50 @@
-:host { display: block; }
+:host {
+  display: block;
+  min-height: 100vh;
+  position: relative;
+  background-color: transparent;
+  overflow-x: hidden;
+}
 
-// Single centered column — wordmark on top, form below (no side image)
+.bg-video-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(253, 251, 247, 0.65) 0%,
+    rgba(253, 251, 247, 0.35) 60%,
+    rgba(100, 40, 52, 0.1) 100%
+  );
+  backdrop-filter: blur(2px);
+}
+
 .auth {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-background);
 }
 
-app-brand-panel { flex: none; }
+app-brand-panel { 
+  flex: none; 
+}
 
 .panel {
   flex: 1;
@@ -18,4 +54,8 @@ app-brand-panel { flex: none; }
   padding: var(--space-lg) clamp(16px, 5vw, 64px) var(--space-2xl);
 }
 
-.panel__inner { width: 100%; display: flex; justify-content: center; }
+.panel__inner { 
+  width: 100%; 
+  display: flex; 
+  justify-content: center; 
+}
