@@ -5,7 +5,7 @@ import { MySalons, Salon, SalonDetail, SalonStateModel } from './salon-modal';
 export class SalonSelectors {
 
   @Selector([SalonState])
-  static salons(state: SalonStateModel): Salon[] {
+  static items(state: SalonStateModel): Salon[] {
     return state.items;
   }
   @Selector([SalonState])

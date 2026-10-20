@@ -31,36 +31,36 @@ export class SalonState {
   ) {}
 
  
-  @Action(AddSalon)
-  addSalon(ctx: StateContext<SalonStateModel>, action: AddSalon) {
-    ctx.patchState({ loading: true, error: null });
+@Action(AddSalon)
+addSalon(ctx: StateContext<SalonStateModel>, { payload, pictures }: AddSalon) {
+  ctx.patchState({ loading: true, error: null });
 
-    return this.salonService.addSalon(action.payload, action.pictures).pipe(
-      tap((salon) => {
-        const state = ctx.getState();
-        ctx.patchState({
-          loading: false,
-        });
-        return ctx.dispatch(new GetSalons());
-      }),
+  return this.salonService.addSalon(payload, pictures).pipe(
+    switchMap(res => this.resolveSalonId(res)),                       
+    switchMap(salonId => ctx.dispatch(new SaveProcedures(salonId))),  
+    switchMap(() => ctx.dispatch([
+      new ResetProcedureDrafts(),
+      new GetSalons(ctx.getState().activeFilter),                     
+      new GetMySalons(),
+    ])),
+    tap(() => ctx.patchState({ loading: false })),
+   
+  );
+}
+
+@Action(GetSalons)
+getSalons(ctx: StateContext<SalonStateModel>, action: GetSalons) {
+  ctx.patchState({ loading: true });
+  return this.getSalonsGQL
+    .fetch({ where: action.where }, { fetchPolicy: 'network-only' })
+    .pipe(
+      tap(result => ctx.patchState({
+        items: result.data?.getSalons ?? [],
+        activeFilter: action.where ?? null,
+        loading: false,
+      })),
     );
-  }
-  
-  @Action(GetSalons)
-  getSalons(ctx: StateContext<SalonStateModel>, action: GetSalons) {
-    ctx.patchState({ loading: true });
-    return this.getSalonsGQL
-      .fetch({ where: action.where }, { fetchPolicy: 'network-only' })
-      .pipe(
-        tap(result => {
-          ctx.patchState({
-            items: result.data?.getSalons ?? [],
-            activeFilter: action.where ?? null,
-            loading: false,
-          });
-        }),
-      );
-  }
+}
 
   @Action(GetSalonById)
   getSalonById(ctx: StateContext<SalonStateModel>, action: GetSalonById) {

@@ -6,6 +6,7 @@ import { CatalogFilters, FilterBarComponent } from '../../components/filter-bar/
 import { GetSalonsGQL, SalonFilterInput } from '../../../../../generated/graphql';
 import { GetMySalons, GetSalons } from '../../../../store/salon-state/salon-actions';
 import { Store } from '@ngxs/store';
+import { SalonSelectors } from '../../../../store/salon-state/salon-selector';
 
 @Component({
   selector: 'app-catalog-page',
@@ -15,20 +16,19 @@ import { Store } from '@ngxs/store';
   styleUrl: './catalog-page.component.scss'
 })
 export class CatalogPageComponent {
-  private getSalonsGQL = inject(GetSalonsGQL);
-  private query = this.getSalonsGQL.watch({ where: null });
 
-  salons$  = this.query.valueChanges.pipe(map(r => r.data?.getSalons ?? []));
-  loading$ = this.query.valueChanges.pipe(map(r => r.loading));
+  private readonly store = inject(Store);
+
+  salons$     = this.store.select(SalonSelectors.items);
+  loading$    = this.store.select(SalonSelectors.loading);
   totalCount$ = this.salons$.pipe(map(s => s.length));
-private readonly store = inject(Store);
 
   ngOnInit() {
-  this.store.dispatch([new GetSalons(), new GetMySalons()]); // or just the one that page needs
-}
+    this.store.dispatch([new GetSalons(), new GetMySalons()]);
+
+  }
   onFiltersChange(filters: CatalogFilters): void {
-    const where = this.buildWhere(filters);
-    this.query.refetch({ where });
+    this.store.dispatch(new GetSalons(this.buildWhere(filters)));
   }
 
 
@@ -39,7 +39,7 @@ private readonly store = inject(Store);
       const term = filters.search.trim();
       conditions.push({
         or: [
-          { name:     { contains: term } },
+          { name: { contains: term } },
           { location: { contains: term } },
         ]
       });

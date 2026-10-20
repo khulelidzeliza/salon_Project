@@ -21,10 +21,10 @@ export class AddSalon {
 
 export class GetSalons {
   static readonly type = '[Salon] Get Salons';
-  constructor(public where?: SalonFilterInput) {}
+  constructor(public where?: SalonFilterInput | null) {}
 }
 
-export class GetSalonById {
+export class GetSalonById { 
   static readonly type = '[Salon] Get Salon By Id';
   constructor(public salonid: number) {}
 }

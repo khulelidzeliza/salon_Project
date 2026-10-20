@@ -529,6 +529,9 @@ export const GetSalonsDocument = gql`
     providedIn: 'root'
   })
   export class GetSalonsGQL extends Apollo.Query<GetSalonsQuery, GetSalonsQueryVariables> {
+    static watch(arg0: { where: null; }) {
+      throw new Error('Method not implemented.');
+    }
     document = GetSalonsDocument;
     
     constructor(apollo: Apollo.Apollo) {
