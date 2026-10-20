@@ -1,6 +1,7 @@
 <section class="panel">
   <div class="panel__inner">
     <div class="tabs" role="tablist" aria-label="Authentication">
+      <div class="tabs__indicator" [class.tabs__indicator--right]="activeTab() === 'register'"></div>
       <button
         type="button"
         role="tab"

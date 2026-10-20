@@ -1,7 +1,6 @@
-:host { display: block; }
-
-// Brand panel is reduced to the wordmark above the form
 .brand {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
   padding: 32px var(--space-md) 0;
