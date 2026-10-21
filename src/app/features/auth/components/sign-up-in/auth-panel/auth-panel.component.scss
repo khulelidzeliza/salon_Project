@@ -38,7 +38,6 @@
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-sm);
   
-  /* SLOW, smooth sliding glide (0.7 seconds) */
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   transform: translateX(0%); 
 
@@ -58,7 +57,6 @@
   position: relative;
   z-index: 1; 
   
-  /* Text color fades smoothly to match the sliding speed */
   transition: color 0.5s ease;
 
   &:hover { 
