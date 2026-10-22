@@ -40,6 +40,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  animation: popUpFromBottom 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
 app-brand-panel { 
@@ -57,5 +59,22 @@ app-brand-panel {
 .panel__inner { 
   width: 100%; 
   display: flex; 
-  justify-content: center; 
+  justify-content: center;
+  animation: popUpFromBottom 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity; 
+}
+
+@keyframes popUpFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.96);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
