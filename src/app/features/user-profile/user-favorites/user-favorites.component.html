@@ -12,14 +12,14 @@
       @for (fav of favorites(); track fav.id) {
         <a class="fav-card" [routerLink]="['/salons', fav.salon.id]">
           @if (fav.salon.pictures.length) {
-            <img class="fav-card__photo" [src]="serverUrl + fav.salon.pictures[0]" [alt]="fav.salon.name" />
+            <img class="fav-card__photo" [src]="serverUrl + fav.salon.pictures[0]" [alt]="fav.salon.englishName" />
           } @else {
-            <div class="fav-card__placeholder">{{ fav.salon.name[0] }}</div>
+            <div class="fav-card__placeholder">{{ fav.salon.englishName[0] }}</div>
           }
           <span class="fav-card__heart" aria-hidden="true">♥</span>
           <div class="fav-card__body">
             <p class="fav-card__location">{{ fav.salon.location }}</p>
-            <h3 class="fav-card__name">{{ fav.salon.name }}</h3>
+            <h3 class="fav-card__name">{{ fav.salon.englishName }}</h3>
           </div>
         </a>
       }

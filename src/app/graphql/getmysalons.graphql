@@ -4,7 +4,8 @@ query  getMySalons{
     userId
     pictures
     price
-    name
+    englishName,
+    georgianName
     location
   }
 }

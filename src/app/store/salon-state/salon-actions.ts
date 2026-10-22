@@ -1,7 +1,8 @@
 import { SalonFilterInput } from '../../../generated/graphql';
 
 export type SalonPayload = {
-  name: string;
+  englishName: string;
+  georgianName: string;
   location: string;
   phoneNumber?: string;
   email?: string;
@@ -9,6 +10,20 @@ export type SalonPayload = {
   facebookLink?: string;
   instagramLink?: string;
   workingHours?: string;
+};
+
+export type UpdateSalonPayload = {
+  salonId: number;
+  userId: number;
+  englishName: string;
+  georgianName: string;
+  location: string;
+  price: number;
+  email: string | null;
+  phoneNumber: string | null;
+  workingHours: string | null;
+  facebookLink: string | null;
+  instagramLink: string | null;
 };
 
 export class AddSalon {
@@ -19,12 +34,22 @@ export class AddSalon {
   ) {}
 }
 
+export class UpdateSalon {
+  static readonly type = '[Salon] Update Salon';
+  constructor(public payload: UpdateSalonPayload) {}
+}
+
+export class DeleteSalon {
+  static readonly type = '[Salon] Delete Salon';
+  constructor(public salonId: number) {}
+}
+
 export class GetSalons {
   static readonly type = '[Salon] Get Salons';
   constructor(public where?: SalonFilterInput | null) {}
 }
 
-export class GetSalonById { 
+export class GetSalonById {
   static readonly type = '[Salon] Get Salon By Id';
   constructor(public salonid: number) {}
 }

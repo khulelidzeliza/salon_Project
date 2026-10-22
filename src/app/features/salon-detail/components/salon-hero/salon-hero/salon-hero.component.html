@@ -7,7 +7,7 @@
         <img
           class="salon-hero__main-img"
           [src]="serverUrl + pictures[activeSlide]"
-          [alt]="salon.name" />
+          [alt]="salon.englishName" />
 
         <!-- Gradient overlay with title info -->
         <div class="salon-hero__overlay">
@@ -18,7 +18,7 @@
                 &nbsp;·&nbsp; ★ {{ salon.AverageRating }}
               </span>
             </p>
-            <h1 class="salon-hero__title">{{ salon.name }}</h1>
+            <h1 class="salon-hero__title">{{ salon.englishName }}</h1>
           </div>
         </div>
 
@@ -37,7 +37,7 @@
           [class.is-active]="i === activeSlide"
           (click)="setSlide(i)"
           [attr.aria-label]="'View image ' + (i + 1)">
-          <img [src]="serverUrl + pic" [alt]="salon.name + ' photo ' + (i + 1)" />
+          <img [src]="serverUrl + pic" [alt]="salon.englishName + ' photo ' + (i + 1)" />
         </button>
       </div>
     } @else {
@@ -47,7 +47,7 @@
           <rect x="4" y="4" width="16" height="16" rx="2" />
           <path d="M8 14l3-3 2 2 4-4" />
         </svg>
-        <h1 class="salon-hero__title salon-hero__title--dark">{{ salon.name }}</h1>
+        <h1 class="salon-hero__title salon-hero__title--dark">{{ salon.englishName }}</h1>
       </div>
     }
   </div>

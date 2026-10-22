@@ -1,7 +1,8 @@
 query getSalons($where: SalonFilterInput) {
   getSalons(where: $where) {
     id
-    name
+    englishName,
+    georgianName
     location
     pictures
     facebookLink

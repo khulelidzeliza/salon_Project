@@ -12,7 +12,6 @@ import { SalonType } from '../../../store/salon-state/salon-modal';
 import { AddSalonModalComponent } from '../modals/add-salon-modal/add-salon-modal.component';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
 
-/** Pages whose first block is a full-bleed photo hero → header starts as tinted glass. */
 const HERO_ROUTES = ['/', '/profile', '/salons'];
 
 @Component({

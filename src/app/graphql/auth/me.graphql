@@ -14,14 +14,16 @@ query GetUser {
       salonId
       salon {
         id
-        name
+        englishName,
+  georgianName
         pictures
         location
       }
     }
     salons {
       id
-      name
+      englishName,
+  georgianName
       isFavoritedByCurrentUser
       pictures
     }

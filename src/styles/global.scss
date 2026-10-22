@@ -390,12 +390,12 @@ a {
     width: calc(100vw - 32px) !important;
     max-width: 400px !important;
   }
-  @media (min-width: $bp-mobile + 1) {
-    top: auto !important;
-    bottom: var(--space-lg) !important;
-    right: var(--space-lg) !important;
-    left: auto !important;
-  }
+  // @media (min-width: $bp-mobile + 1) {
+  //   top: auto !important;
+  //   bottom: var(--space-lg) !important;
+  //   right: var(--space-lg) !important;
+  //   left: auto !important;
+  // }
 }
 
 .ant-notification-notice.sooner-toast {

@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Store } from '@ngxs/store';
-import { Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { SalonService } from '../../shared/components/modals/add-salon-modal/services/salon.service';
 import { SalonStateModel } from './salon-modal';
-import { AddSalon, GetMySalons, GetSalonById, GetSalons } from './salon-actions';
+import { AddSalon, DeleteSalon, GetMySalons, GetSalonById, GetSalons, UpdateSalon } from './salon-actions';
 import { GetMySalonsGQL, GetSalonByIdGQL, GetSalonsGQL } from '../../../generated/graphql';
 import { UserSelectors } from '../user-state/user.selector';
 import { ResetProcedureDrafts, SaveProcedures } from '../procedure-state/procedure-actions';
+
+type Ctx = StateContext<SalonStateModel>;
 
 @State<SalonStateModel>({
   name: 'salon',
@@ -17,6 +19,8 @@ import { ResetProcedureDrafts, SaveProcedures } from '../procedure-state/procedu
     activeFilter: null,
     selectedSalon: null,
     loading: false,
+    saving: false,
+    deleting: false,
     error: null,
   },
 })
@@ -30,40 +34,96 @@ export class SalonState {
     private store: Store,
   ) {}
 
- 
-@Action(AddSalon)
-addSalon(ctx: StateContext<SalonStateModel>, { payload, pictures }: AddSalon) {
-  ctx.patchState({ loading: true, error: null });
+  // ------------------------------------------------------------------ add
 
-  return this.salonService.addSalon(payload, pictures).pipe(
-    switchMap(res => this.resolveSalonId(res)),                       
-    switchMap(salonId => ctx.dispatch(new SaveProcedures(salonId))),  
-    switchMap(() => ctx.dispatch([
-      new ResetProcedureDrafts(),
-      new GetSalons(ctx.getState().activeFilter),                     
-      new GetMySalons(),
-    ])),
-    tap(() => ctx.patchState({ loading: false })),
-   
-  );
-}
+  @Action(AddSalon)
+  addSalon(ctx: Ctx, { payload, pictures }: AddSalon) {
+    ctx.patchState({ saving: true, error: null });
 
-@Action(GetSalons)
-getSalons(ctx: StateContext<SalonStateModel>, action: GetSalons) {
-  ctx.patchState({ loading: true });
-  return this.getSalonsGQL
-    .fetch({ where: action.where }, { fetchPolicy: 'network-only' })
-    .pipe(
-      tap(result => ctx.patchState({
-        items: result.data?.getSalons ?? [],
-        activeFilter: action.where ?? null,
-        loading: false,
-      })),
+    return this.salonService.addSalon(payload, pictures).pipe(
+      switchMap(res => this.resolveSalonId(res)),
+      switchMap(salonId => ctx.dispatch(new SaveProcedures(salonId))),
+      switchMap(() => ctx.dispatch([
+        new ResetProcedureDrafts(),
+        new GetSalons(ctx.getState().activeFilter),
+        new GetMySalons(),
+      ])),
+      tap(() => ctx.patchState({ saving: false })),
+      catchError(err => this.fail(ctx, err, 'Failed to create salon')),
     );
-}
+  }
+
+  // ------------------------------------------------------------------ update
+
+  @Action(UpdateSalon)
+  updateSalon(ctx: Ctx, { payload }: UpdateSalon) {
+    if (ctx.getState().saving) return;
+    ctx.patchState({ saving: true, error: null });
+
+    return this.salonService.updateSalon(payload).pipe(
+      switchMap(() => {
+        const refresh: object[] = [
+          new GetSalons(ctx.getState().activeFilter),
+          new GetMySalons(),
+        ];
+        // Refetch the detail only if a page is showing this exact salon
+        if (ctx.getState().selectedSalon?.id === payload.salonId) {
+          refresh.push(new GetSalonById(payload.salonId));
+        }
+        return ctx.dispatch(refresh);
+      }),
+      tap(() => ctx.patchState({ saving: false })),
+      catchError(err => this.fail(ctx, err, 'Failed to update salon')),
+    );
+  }
+
+  // ------------------------------------------------------------------ delete
+
+  @Action(DeleteSalon)
+  deleteSalon(ctx: Ctx, { salonId }: DeleteSalon) {
+    if (ctx.getState().deleting) return;
+
+    const user = this.store.selectSnapshot(UserSelectors.getUser);
+    if (!user?.id) {
+      ctx.patchState({ error: 'You need to be logged in.' });
+      return throwError(() => new Error('Not logged in'));
+    }
+
+    ctx.patchState({ deleting: true, error: null });
+
+    return this.salonService.deleteSalon(Number(user.id), salonId).pipe(
+      tap(() => {
+        // Remove it locally right away — no extra request needed
+        const s = ctx.getState();
+        ctx.patchState({
+          items: s.items.filter(x => x.id !== salonId),
+          mysalons: s.mysalons.filter(x => x.id !== salonId),
+          selectedSalon: s.selectedSalon?.id === salonId ? null : s.selectedSalon,
+          deleting: false,
+        });
+      }),
+      catchError(err => this.fail(ctx, err, 'Failed to delete salon')),
+    );
+  }
+
+  // ------------------------------------------------------------------ queries
+
+  @Action(GetSalons)
+  getSalons(ctx: Ctx, action: GetSalons) {
+    ctx.patchState({ loading: true });
+    return this.getSalonsGQL
+      .fetch({ where: action.where }, { fetchPolicy: 'network-only' })
+      .pipe(
+        tap(result => ctx.patchState({
+          items: result.data?.getSalons ?? [],
+          activeFilter: action.where ?? null,
+          loading: false,
+        })),
+      );
+  }
 
   @Action(GetSalonById)
-  getSalonById(ctx: StateContext<SalonStateModel>, action: GetSalonById) {
+  getSalonById(ctx: Ctx, action: GetSalonById) {
     ctx.patchState({ loading: true, error: null });
     return this.getSalonByIdGQL
       .fetch({ id: action.salonid }, { fetchPolicy: 'network-only' })
@@ -80,7 +140,7 @@ getSalons(ctx: StateContext<SalonStateModel>, action: GetSalons) {
   }
 
   @Action(GetMySalons)
-  getMySalons(ctx: StateContext<SalonStateModel>) {
+  getMySalons(ctx: Ctx) {
     const user = this.store.selectSnapshot(UserSelectors.getUser);
     if (!user?.id) return;
 
@@ -94,6 +154,19 @@ getSalons(ctx: StateContext<SalonStateModel>, action: GetSalons) {
         });
       }),
     );
+  }
+
+  // ------------------------------------------------------------------ helpers
+
+  /** Resets the busy flags, stores a readable error, and rethrows so the component can react (keep modal open). */
+  private fail(ctx: Ctx, err: any, fallback: string) {
+    ctx.patchState({
+      loading: false,
+      saving: false,
+      deleting: false,
+      error: err?.error?.title ?? fallback,
+    });
+    return throwError(() => err);
   }
 
   /** Reads the id from the add-salon response; if missing, takes the newest of "my salons" */

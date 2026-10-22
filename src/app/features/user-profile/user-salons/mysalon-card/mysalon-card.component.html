@@ -6,7 +6,7 @@
       <img
         class="salon-card__photo"
         [src]="serverUrl + salon.pictures![0]"
-        [alt]="salon.name" />
+        [alt]="salon.englishName" />
     }
    @else {
       <svg class="salon-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
@@ -18,7 +18,7 @@
 
   <div class="salon-card__body">
     <p class="salon-card__label">{{ salon.location }}</p>
-    <h3 class="salon-card__title">{{ salon.name }}</h3>
+    <h3 class="salon-card__title">{{ salon.englishName }}</h3>
 
     <div class="salon-card__actions">
       <button type="button" class="btn btn-secondary" (click)="onEdit()">✎ Edit</button>
@@ -32,9 +32,16 @@
   variant="danger"
   [loading]="deleting"
   title="Delete salon?"
-  [message]="'Delete ' + salon.name + '? This can’t be undone.'"
+  [message]="'Delete ' + salon.englishName + '? This can’t be undone.'"
   confirmText="Delete"
   cancelText="Keep it"
   (confirmed)="onRemove()"
   (cancelled)="showDeleteConfirm = false">
 </app-confirm-modal>
+
+
+<app-edit-salon-modal
+  [open]="showEditSalon"
+  [salonId]="editingSalonId"
+  (closed)="showEditSalon = false">
+</app-edit-salon-modal>

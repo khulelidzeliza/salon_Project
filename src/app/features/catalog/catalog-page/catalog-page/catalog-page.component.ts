@@ -39,7 +39,7 @@ export class CatalogPageComponent {
       const term = filters.search.trim();
       conditions.push({
         or: [
-          { name: { contains: term } },
+          { englishName: { contains: term } },
           { location: { contains: term } },
         ]
       });

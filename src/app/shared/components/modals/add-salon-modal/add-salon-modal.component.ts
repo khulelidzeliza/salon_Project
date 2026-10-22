@@ -33,8 +33,9 @@ export class AddSalonModalComponent {
   @Output() created = new EventEmitter<void>();
 
   form = this.fb.nonNullable.group({
-    name: ['', Validators.required],
-    location: ['', Validators.required],
+  englishName: ['', Validators.required],
+  georgianName: ['', Validators.required],
+      location: ['', Validators.required],
     price: [0, [Validators.required, Validators.min(0)]],
     phoneNumber: [''],
     email: ['', Validators.email],

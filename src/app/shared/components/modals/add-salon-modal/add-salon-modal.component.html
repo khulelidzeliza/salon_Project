@@ -12,13 +12,20 @@
       <div class="modal-body">
         <div class="grid">
           <div class="field">
-            <label>Salon name</label>
-            <input class="input" type="text" formControlName="name" placeholder="Maison Lueur — Vake" />
-            <small class="err" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
-              Name is required
+            <label>Name (English)</label>
+            <input class="input" type="text" formControlName="englishName" placeholder="Maison Lueur — Vake" />
+            <small class="err" *ngIf="form.get('englishName')?.touched && form.get('englishName')?.invalid">
+              English name is required
             </small>
           </div>
 
+          <div class="field">
+            <label>Name (Georgian)</label>
+            <input class="input" type="text" formControlName="georgianName" placeholder="მეზონ ლუერი — ვაკე" />
+            <small class="err" *ngIf="form.get('georgianName')?.touched && form.get('georgianName')?.invalid">
+              Georgian name is required
+            </small>
+          </div>
           <div class="field">
             <label>City / Location</label>
             <input class="input" type="text" formControlName="location" placeholder="Tbilisi" />

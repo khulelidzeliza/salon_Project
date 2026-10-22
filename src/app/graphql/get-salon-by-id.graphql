@@ -1,7 +1,8 @@
 query getSalonById($id: Int!) {
   getSalonById(id: $id) {
     id
-    name
+    englishName,
+    georgianName
     email
     location
     phoneNumber

@@ -1,13 +1,14 @@
-import { GetMySalonsQuery, GetSalonByIdQuery, GetSalonsQuery } from "../../../generated/graphql";
-import { SalonFilterInput } from '../../../generated/graphql'; // adjust path to your actual generated file location
+import { GetMySalonsQuery, GetSalonByIdQuery, GetSalonsQuery, SalonFilterInput } from '../../../generated/graphql';
 
 export type Salon = GetSalonsQuery['getSalons'][number];
-export type SalonDetail = GetSalonByIdQuery['getSalonById'][number];  // Add this
+export type SalonDetail = GetSalonByIdQuery['getSalonById'][number];
 export type MySalons = GetMySalonsQuery['getMySalons'][number];
 
+/** REST response of add-salon. .NET sends JSON in camelCase, so these are lowercase. */
 export interface SalonType {
   id: string;
-  name: string;
+  georgianName: string;
+  englishName: string;
   location: string;
   price: number;
   phoneNumber?: string;
@@ -20,11 +21,13 @@ export interface SalonType {
   createdAt?: string;
 }
 
-export interface SalonStateModel{
+export interface SalonStateModel {
   items: Salon[];
-  mysalons : MySalons[],
-  activeFilter: SalonFilterInput | null; // add this
+  mysalons: MySalons[];
+  activeFilter: SalonFilterInput | null;
   selectedSalon: SalonDetail | null;
   loading: boolean;
-  error : string | null
+  saving: boolean;
+  deleting: boolean;
+  error: string | null;
 }

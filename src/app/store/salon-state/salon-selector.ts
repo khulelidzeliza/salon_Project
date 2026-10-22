@@ -31,6 +31,10 @@ export class SalonSelectors {
   static count(state: SalonStateModel): number {
     return state.items.length;
   }
+  @Selector([SalonState])
+  static saving(state: SalonStateModel): boolean { return state.saving; }
 
+  @Selector([SalonState])
+  static deleting(state: SalonStateModel): boolean { return state.deleting; }
 
 }
