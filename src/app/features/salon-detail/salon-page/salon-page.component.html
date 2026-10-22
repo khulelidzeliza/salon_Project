@@ -4,19 +4,19 @@
 
     <app-salon-services
       [categories]="vm.cats"
-      [active]="vm.active ?? vm.cats[0] ?? null"
+      [active]="vm.active ?? vm.cats[0]"
       (categorySelected)="onSelectCategory($event)">
     </app-salon-services>
 
     <app-salon-results
-      [category]="vm.active ?? vm.cats[0] ?? null"
+      [category]="vm.active ?? vm.cats[0]"
       [procedures]="(workingResultProcedures$ | async) ?? []">
     </app-salon-results>
 
     <app-salon-masters
-      [category]="vm.active ?? vm.cats[0] ?? null"
+      [category]="vm.active ?? vm.cats[0]"
       [masters]="(masters$ | async) ?? []">
-    </app-salon-masters>
+    </app-salon-masters>  
 
     <app-salon-contact [salon]="salon"></app-salon-contact>
 

@@ -7,7 +7,6 @@ import { SalonType } from '../../../../../store/salon-state/salon-modal';
 @Injectable({ providedIn: 'root' })
 export class SalonService {
   private addSalonUrl = `/Salons/add-salon`;
-  private addProcedureUrl = `/Salons/add-procedure`;
 
   constructor(private http: HttpClient) {}
 
