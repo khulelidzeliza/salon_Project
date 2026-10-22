@@ -106,19 +106,5 @@
     color: inherit;
   }
 
-  // "View salon →" becomes a round arrow button
-  &__cta {
-    grid-area: cta;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: var(--color-background);
-    color: var(--color-accent);
-    font-size: 0;
-    transition: transform var(--dur-base) var(--ease-out);
-    &:hover { color: var(--color-accent); transform: translateX(2px); }
-  }
-  &__arrow { font-size: 17px; }
+
 }

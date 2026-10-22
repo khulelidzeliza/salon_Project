@@ -6,16 +6,18 @@ import { Store } from '@ngxs/store';
 import { SalonSelectors } from '../../../store/salon-state/salon-selector';
 import { GetMySalons } from '../../../store/salon-state/salon-actions';
 import { Observable } from 'rxjs';
-import { MySalons } from '../../../store/salon-state/salon-modal';
-
+import { MySalons, SalonType } from '../../../store/salon-state/salon-modal';
+import { AddSalonModalComponent } from '../../../shared/components/modals/add-salon-modal/add-salon-modal.component'; 
 @Component({
   selector: 'app-user-salons',
-  imports: [CommonModule, MysalonCardComponent],
+  imports: [CommonModule, MysalonCardComponent, AddSalonModalComponent],
   templateUrl: './user-salons.component.html',
   styleUrl: './user-salons.component.scss'
 })
 export default class UserSalonsComponent {
   private store = inject(Store);
+    showAddSalon = false;
+  salons: SalonType[] = [];
 
   salons$ : Observable<MySalons[]> = this.store.select(SalonSelectors.mySalons);
   loading$ = this.store.select(SalonSelectors.loading);
@@ -25,7 +27,12 @@ export default class UserSalonsComponent {
   }
 
 
-
+  openAddSalonModal(): void {
+    this.showAddSalon = true;
+  }
+  onSalonCreated(): void {
+    this.salons = [ ...this.salons];
+  }
   onFiltersChange(filters: CatalogFilters): void {
     console.log('filters changed', filters);
   }

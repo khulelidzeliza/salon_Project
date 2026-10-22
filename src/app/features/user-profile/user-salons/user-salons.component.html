@@ -4,24 +4,35 @@
       <p class="catalog__eyebrow">Business</p>
       <h1>Your salons</h1>
     </div>
-    <!-- @if (totalCount$ | async; as count) {
-      <p class="catalog__count text-muted">{{ count }} salons</p>
-    } -->
   </header>
 
-  @if ((loading$ | async) === false) {
+  @if (loading$ | async) {
     <div class="catalog__grid">
-      @for (salon of salons$ | async; track salon.id) {
-        <app-mysalon-card
-          [salon]="salon"
-        ></app-mysalon-card>
+      @for (i of [1,2,3]; track i) {
+        <div class="catalog__skeleton"></div>
       }
     </div>
   } @else {
-    <div class="catalog__grid">
-      @for (i of [1,2,3,4,5,6]; track i) {
-        <div class="card salon-card salon-card--skeleton"></div>
+    @if (salons$ | async; as salons) {
+      @if (salons.length) {
+        <div class="catalog__grid">
+          @for (salon of salons; track salon.id) {
+            <app-mysalon-card [salon]="salon"></app-mysalon-card>
+          }
+        </div>
+      } @else {
+        <div class="catalog__empty">
+          <p>You haven't added a salon yet.</p>
+          <button type="button" class="btn btn-primary btn--sm" (click)="openAddSalonModal()">Add your salon</button>
+        </div>
       }
-    </div>
+    }
   }
 </section>
+
+
+<app-add-salon-modal
+  [open]="showAddSalon"
+  (closed)="showAddSalon = false"
+  (created)="onSalonCreated()">
+</app-add-salon-modal>
