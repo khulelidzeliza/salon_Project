@@ -6,20 +6,12 @@
   overflow-x: hidden;
 }
 
-.bg-video-wrapper {
+.bg-wrapper {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-}
-
-.bg-video {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  transform: translateZ(0);
-  will-change: transform;
 }
 
 .bg-overlay {
@@ -44,8 +36,8 @@
   will-change: transform, opacity;
 }
 
-app-brand-panel { 
-  flex: none; 
+app-brand-panel {
+  flex: none;
 }
 
 .panel {
@@ -56,12 +48,12 @@ app-brand-panel {
   padding: var(--space-lg) clamp(16px, 5vw, 64px) var(--space-2xl);
 }
 
-.panel__inner { 
-  width: 100%; 
-  display: flex; 
+.panel__inner {
+  width: 100%;
+  display: flex;
   justify-content: center;
   animation: popUpFromBottom 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: transform, opacity; 
+  will-change: transform, opacity;
 }
 
 @keyframes popUpFromBottom {
