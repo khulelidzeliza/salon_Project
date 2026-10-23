@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, ElementRef, Inject, Input, NgZone,
+  AfterViewInit, Component, ElementRef, inject, Input, NgZone,
   OnDestroy, PLATFORM_ID, ViewChild,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
@@ -82,7 +82,6 @@ type Program = { prog: WebGLProgram; u: Record<string, WebGLUniformLocation | nu
   styleUrls: ['./liquid-background.component.scss'],
 })
 export class LiquidBackgroundComponent implements AfterViewInit, OnDestroy {
-  /** Image URL, e.g. 'assets/background.jpg' */
   @Input() src = '';
 
   @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -103,13 +102,10 @@ export class LiquidBackgroundComponent implements AfterViewInit, OnDestroy {
   private readonly onResize = () => this.resize();
   private readonly onPointer = (e: PointerEvent) => this.onPoint(e.clientX, e.clientY);
 
-  constructor(
-    private zone: NgZone,
-    @Inject(PLATFORM_ID) private platformId: object,
-  ) {}
+ private readonly zone = inject(NgZone);
+private readonly platformId = inject(PLATFORM_ID);
 
   ngAfterViewInit(): void {
-    // WebGL only exists in the browser, so skip this during server-side rendering
     if (!isPlatformBrowser(this.platformId)) return;
     this.zone.runOutsideAngular(() => this.init());
   }
@@ -291,7 +287,6 @@ export class LiquidBackgroundComponent implements AfterViewInit, OnDestroy {
     if (!this.ready) return;
     const P = this.programs;
 
-    // 1. touch adds force to the velocity field
     if (this.pointer.moved) {
       this.run(P.splat, this.velPair[1], { uVel: this.velPair[0].tex }, {
         uPoint: [this.pointer.x, this.pointer.y],
@@ -305,11 +300,9 @@ export class LiquidBackgroundComponent implements AfterViewInit, OnDestroy {
       this.pointer.moved = false;
     }
 
-    // 2. velocity moves itself and slowly dissipates
     this.run(P.advVel, this.velPair[1], { uVel: this.velPair[0].tex }, { uDt: 0.9, uDiss: 0.985 });
     this.swap(this.velPair);
 
-    // 3. colors ride the flow, blend with neighbors, and relax back toward the photo
     this.run(P.advDye, this.dyePair[1], {
       uDye: this.dyePair[0].tex,
       uVel: this.velPair[0].tex,
@@ -323,7 +316,6 @@ export class LiquidBackgroundComponent implements AfterViewInit, OnDestroy {
     });
     this.swap(this.dyePair);
 
-    // 4. draw to the screen
     this.run(P.display, null, { uDye: this.dyePair[0].tex, uVel: this.velPair[0].tex }, {});
   }
 }
