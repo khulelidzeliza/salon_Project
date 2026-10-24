@@ -1,33 +1,47 @@
 <section class="panel">
   <div class="panel__inner">
-    <div class="tabs" role="tablist" aria-label="Authentication">
-      <div class="tabs__indicator" [class.tabs__indicator--right]="activeTab() === 'register'"></div>
-      <button
-        type="button"
-        role="tab"
-        class="tabs__btn"
-        [class.tabs__btn--active]="activeTab() === 'login'"
-        [attr.aria-selected]="activeTab() === 'login'"
-        (click)="select('login')"
-      >
-        Sign in
-      </button>
-      <button
-        type="button"
-        role="tab"
-        class="tabs__btn"
-        [class.tabs__btn--active]="activeTab() === 'register'"
-        [attr.aria-selected]="activeTab() === 'register'"
-        (click)="select('register')"
-      >
-        Create account
-      </button>
-    </div>
+    <div class="auth-card">
+      <div class="tabs" role="tablist" aria-label="Authentication">
+        <div class="tabs__indicator" [class.tabs__indicator--right]="activeTab() === 'register'"></div>
+        <button
+          type="button"
+          role="tab"
+          class="tabs__btn"
+          [class.tabs__btn--active]="activeTab() === 'login'"
+          [attr.aria-selected]="activeTab() === 'login'"
+          (click)="select('login')"
+        >
+          Sign in
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="tabs__btn"
+          [class.tabs__btn--active]="activeTab() === 'register'"
+          [attr.aria-selected]="activeTab() === 'register'"
+          (click)="select('register')"
+        >
+          Create account
+        </button>
+      </div>
 
-    @if (activeTab() === 'login') {
-      <app-login (switchToRegister)="select('register')" />
-    } @else {
-      <app-register (switchToLogin)="select('login')" />
-    }
+      @if (activeTab() === 'login') {
+        <app-login
+          (switchToRegister)="select('register')"
+          (forgotRequested)="openForgot($event)"
+        />
+      } @else {
+        <app-register (switchToLogin)="select('login')" />
+      }
+
+      <div
+        class="fp-overlay"
+        #overlay
+        [class.open]="showForgot()"
+        [attr.inert]="showForgot() ? null : ''"
+      >
+        <app-forgot-password (backToLogin)="closeForgot()" />
+      </div>
+    </div>
   </div>
 </section>

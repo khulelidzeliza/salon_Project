@@ -67,3 +67,50 @@
     color: var(--color-text); 
   }
 }
+.auth-card {
+  position: relative;
+  width: min(460px, 100%);
+  margin: 0 auto;
+}
+
+.fp-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 36px;
+  background: #fdfbf7;
+  border-radius: 28px;
+  clip-path: circle(0px at var(--x, 50%) var(--y, 50%));
+  transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+@media (max-width: 480px) {
+  .fp-overlay {
+    border-radius: 22px;
+  }
+}
+
+.fp-overlay.open {
+  clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+  pointer-events: auto;
+}
+
+app-forgot-password {
+  opacity: 0;
+  transition: opacity 0.4s ease 0.35s;
+}
+
+.fp-overlay.open app-forgot-password {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fp-overlay,
+  app-forgot-password {
+    transition: none;
+  }
+}
