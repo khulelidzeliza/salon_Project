@@ -6,6 +6,7 @@ export type SalonPayload = {
   location: string;
   phoneNumber?: string;
   email?: string;
+  description?: string;
   price: number;
   facebookLink?: string;
   instagramLink?: string;
@@ -24,6 +25,7 @@ export type UpdateSalonPayload = {
   workingHours: string | null;
   facebookLink: string | null;
   instagramLink: string | null;
+  description?: string | null;
 };
 
 export class AddSalon {

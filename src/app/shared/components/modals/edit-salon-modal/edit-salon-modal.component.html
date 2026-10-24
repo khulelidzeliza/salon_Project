@@ -52,7 +52,10 @@
                 Enter a valid email
               </small>
             </div>
-
+            <div class="field">
+              <label>Description</label>
+              <input class="input" type="text" formControlName="description" placeholder="Describe your salon..." />
+            </div>
             <div class="field">
               <label>Working hours</label>
               <input class="input" type="text" formControlName="workingHours" placeholder="Mon–Sat 10:00–20:00" />
@@ -65,23 +68,18 @@
 
             <div class="field">
               <label>Instagram link</label>
-              <input class="input" type="text" formControlName="instagramLink" placeholder="https://instagram.com/..." />
+              <input class="input" type="text" formControlName="instagramLink"
+                placeholder="https://instagram.com/..." />
             </div>
           </div>
 
           <div class="field">
             <label>Price level</label>
             <div class="segmented" role="radiogroup" aria-label="Price level">
-              <button
-                type="button"
-                class="segmented__item"
-                *ngFor="let b of budgetLevels"
-                role="radio"
-                [attr.aria-checked]="form.controls.price.value === b.value"
-                [attr.title]="b.name"
-                [class.is-active]="form.controls.price.value === b.value"
-                (click)="setPrice(b.value)"
-              >{{ b.label }}</button>
+              <button type="button" class="segmented__item" *ngFor="let b of budgetLevels" role="radio"
+                [attr.aria-checked]="form.controls.price.value === b.value" [attr.title]="b.name"
+                [class.is-active]="form.controls.price.value === b.value" (click)="setPrice(b.value)">{{ b.label
+                }}</button>
             </div>
           </div>
 

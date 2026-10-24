@@ -5,6 +5,7 @@ query getSalons($where: SalonFilterInput) {
     georgianName
     location
     pictures
+    description
     facebookLink
     instagramLink
     userId

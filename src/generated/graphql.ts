@@ -34,7 +34,6 @@ export type EmailSortInput = {
 };
 
 
-
 export type EmailVerificationSortInput = {
   attempts?: InputMaybe<SortEnumType>;
   code?: InputMaybe<SortEnumType>;
@@ -110,12 +109,12 @@ export type Review = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-
 export type Salon = {
   __typename?: 'Salon';
   AverageRating?: Maybe<Scalars['Float']['output']>;
   createdAt: Scalars['DateTime']['output'];
-  email: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   englishName: Scalars['String']['output'];
   facebookLink?: Maybe<Scalars['String']['output']>;
   favorites: Array<Favorite>;
@@ -137,9 +136,9 @@ export type Salon = {
 };
 
 
-
 export type SalonSortInput = {
   createdAt?: InputMaybe<SortEnumType>;
+  description?: InputMaybe<SortEnumType>;
   email?: InputMaybe<SortEnumType>;
   englishName?: InputMaybe<SortEnumType>;
   facebookLink?: InputMaybe<SortEnumType>;
@@ -159,8 +158,6 @@ export type SortEnumType =
   | 'ASC'
   | 'DESC';
 
-
-
 export type User = {
   __typename?: 'User';
   age: Scalars['Int']['output'];
@@ -178,7 +175,6 @@ export type User = {
   updatedAt: Scalars['DateTime']['output'];
   userName: Scalars['String']['output'];
 };
-
 
 export type UserSortInput = {
   age?: InputMaybe<SortEnumType>;
@@ -397,6 +393,7 @@ export type RolesOperationFilterInput = {
 export type SalonFilterInput = {
   and?: Array<SalonFilterInput> | null | undefined;
   createdAt?: DateTimeOperationFilterInput | null | undefined;
+  description?: StringOperationFilterInput | null | undefined;
   email?: StringOperationFilterInput | null | undefined;
   englishName?: StringOperationFilterInput | null | undefined;
   facebookLink?: StringOperationFilterInput | null | undefined;
@@ -478,19 +475,19 @@ export type GetSalonByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetSalonByIdQuery = { getSalonById: Array<{ id: number, englishName: string, georgianName: string, email: string, location: string, phoneNumber: string, workingHours: string, facebookLink: string | null, instagramLink: string | null, isFavoritedByCurrentUser: boolean | null, pictures: Array<string>, price: BudgetLevel, AverageRating: number | null, userId: number, procedures: Array<{ id: number, salonId: number, masters: Array<string>, procedureType: ProcedureType, finishedWorks: Array<string> }> }> };
+export type GetSalonByIdQuery = { getSalonById: Array<{ id: number, englishName: string, georgianName: string, email: string | null, location: string, phoneNumber: string, workingHours: string, description: string | null, facebookLink: string | null, instagramLink: string | null, isFavoritedByCurrentUser: boolean | null, pictures: Array<string>, price: BudgetLevel, AverageRating: number | null, userId: number, procedures: Array<{ id: number, salonId: number, masters: Array<string>, procedureType: ProcedureType, finishedWorks: Array<string> }> }> };
 
 export type GetSalonsQueryVariables = Exact<{
   where?: SalonFilterInput | null | undefined;
 }>;
 
 
-export type GetSalonsQuery = { getSalons: Array<{ id: number, englishName: string, georgianName: string, location: string, pictures: Array<string>, facebookLink: string | null, instagramLink: string | null, userId: number, isFavoritedByCurrentUser: boolean | null, phoneNumber: string, price: BudgetLevel, AverageRating: number | null }> };
+export type GetSalonsQuery = { getSalons: Array<{ id: number, englishName: string, georgianName: string, location: string, pictures: Array<string>, description: string | null, facebookLink: string | null, instagramLink: string | null, userId: number, isFavoritedByCurrentUser: boolean | null, phoneNumber: string, price: BudgetLevel, AverageRating: number | null }> };
 
 export type GetMySalonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMySalonsQuery = { getMySalons: Array<{ id: number, userId: number, pictures: Array<string>, price: BudgetLevel, englishName: string, georgianName: string, location: string }> };
+export type GetMySalonsQuery = { getMySalons: Array<{ id: number, userId: number, description: string | null, pictures: Array<string>, price: BudgetLevel, englishName: string, georgianName: string, location: string }> };
 
 export const GetUserDocument = gql`
     query GetUser {
@@ -551,6 +548,7 @@ export const GetSalonByIdDocument = gql`
     location
     phoneNumber
     workingHours
+    description
     facebookLink
     instagramLink
     isFavoritedByCurrentUser
@@ -587,6 +585,7 @@ export const GetSalonsDocument = gql`
     georgianName
     location
     pictures
+    description
     facebookLink
     instagramLink
     userId
@@ -613,6 +612,7 @@ export const GetMySalonsDocument = gql`
   getMySalons {
     id
     userId
+    description
     pictures
     price
     englishName

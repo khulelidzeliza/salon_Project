@@ -23,8 +23,8 @@ export class SalonService {
     if (payload.facebookLink)  fd.append('FacebookLink', payload.facebookLink);
     if (payload.instagramLink) fd.append('InstagramLink', payload.instagramLink);
     if (payload.workingHours)  fd.append('WorkingHours', payload.workingHours);
+    if (payload.description)   fd.append('description', payload.description);
     pictures.forEach(file => fd.append('Pictures', file)); 
-
     return this.http.post<SalonType>(this.addSalonUrl, fd);
   }
   updateSalon(body: UpdateSalonPayload): Observable<string> {

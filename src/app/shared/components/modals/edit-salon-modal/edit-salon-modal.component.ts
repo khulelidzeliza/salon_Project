@@ -66,6 +66,7 @@ export class EditSalonModalComponent implements OnChanges {
     workingHours:  [''],
     facebookLink:  [''],
     instagramLink: [''],
+    description:   [''],
   });
 
   private get busy(): boolean {
@@ -96,6 +97,7 @@ export class EditSalonModalComponent implements OnChanges {
           location:      s.location,
           price:         s.price,
           phoneNumber:   s.phoneNumber ?? '',
+          description:   s.description ?? '',
           email:         s.email ?? '',
           workingHours:  s.workingHours ?? '',
           facebookLink:  s.facebookLink ?? '',
@@ -120,7 +122,7 @@ export class EditSalonModalComponent implements OnChanges {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
     if (!this.form.dirty) {
-      this.close(); // nothing changed — nothing to send
+      this.close(); 
       return;
     }
 
@@ -137,6 +139,7 @@ export class EditSalonModalComponent implements OnChanges {
       georgianName:  pick(c.georgianName, o.georgianName) ?? o.georgianName,
       location:      pick(c.location, o.location) ?? o.location,
       email:         pick(c.email, o.email),
+      description:   pick(c.description, o.description),
       phoneNumber:   pick(c.phoneNumber, o.phoneNumber),
       workingHours:  pick(c.workingHours, o.workingHours),
       facebookLink:  pick(c.facebookLink, o.facebookLink),

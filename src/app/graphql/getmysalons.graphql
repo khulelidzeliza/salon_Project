@@ -2,6 +2,7 @@ query  getMySalons{
   getMySalons {
     id
     userId
+    description
     pictures
     price
     englishName,

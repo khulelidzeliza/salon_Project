@@ -52,7 +52,10 @@
   gap: 14px;
   padding: 14px 0;
   border-top: 1px solid var(--color-divider);
-
+ &--readonly {
+    cursor: not-allowed;
+   
+  }
   &__icon {
     flex: none;
     width: 40px;
@@ -73,7 +76,7 @@
     color: var(--color-secondary);
   }
 
-  &__hint { font-weight: var(--fw-regular); letter-spacing: 0; text-transform: none; color: var(--color-text-muted); }
+  &__hint { font-weight: var(--fw-regular); letter-spacing: 0; text-transform: none; color: var(--color-danger); }
 
   &__input {
     height: 48px;

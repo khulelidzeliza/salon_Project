@@ -13,11 +13,12 @@ export interface SalonType {
   price: number;
   phoneNumber?: string;
   email?: string;
+  description?: string;
   facebookLink?: string;
   instagramLink?: string;
   workingHours?: string;
-  pictureUrls?: string[]; // server returns URLs for the uploaded Pictures
-  userId?: string;        // set server-side via GetUserId()
+  pictureUrls?: string[]; 
+  userId?: string;        
   createdAt?: string;
 }
 

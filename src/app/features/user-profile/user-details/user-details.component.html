@@ -6,19 +6,14 @@
     </div>
 
     @if (!editing()) {
-      <button type="button" class="btn btn-secondary details__edit" (click)="startEdit()">
-        ✎ Edit
-      </button>
+    <button type="button" class="btn btn-secondary details__edit" (click)="startEdit()">
+      ✎ Edit
+    </button>
     }
   </header>
 
   <div class="surface details__card">
-    <form
-      class="details__grid"
-      [class.details__grid--readonly]="!editing()"
-      [formGroup]="form"
-      (ngSubmit)="save()"
-    >
+    <form class="details__grid" [class.details__grid--readonly]="!editing()" [formGroup]="form" (ngSubmit)="save()">
       <!-- Full name -->
       <div class="field">
         <div class="field__icon"><lucide-icon [img]="UserIcon" [size]="18"></lucide-icon></div>
@@ -31,24 +26,24 @@
       </div>
 
       <!-- Email -->
-      <div class="field">
+      <div class="field field--readonly">
         <div class="field__icon"><lucide-icon [img]="MailIcon" [size]="18"></lucide-icon></div>
         <div class="field__body">
-          <label class="field__label" for="email">Email <span class="field__hint">— can't be changed</span></label>
-          <input id="email" type="email" class="field__input" formControlName="email"
+          <label class="field__label" for="email">Email -<span class="field__hint"> can't be changed</span></label>
+          <input id="email" type="email" class="field__input" formControlName="email" readonly
             [class.is-invalid]="isInvalid('email')" />
+
         </div>
       </div>
-
       <!-- Phone -->
       <div class="field">
         <div class="field__icon"><lucide-icon [img]="PhoneIcon" [size]="18"></lucide-icon></div>
         <div class="field__body">
           <label class="field__label" for="phone">Phone</label>
           @if (!editing() && !user()?.phoneNumber) {
-            <p class="field__static field__static--empty">Not added yet</p>
+          <p class="field__static field__static--empty">Not added yet</p>
           } @else {
-            <input id="phone" type="tel" class="field__input" formControlName="phoneNumber" />
+          <input id="phone" type="tel" class="field__input" formControlName="phoneNumber" />
           }
         </div>
       </div>
@@ -59,9 +54,9 @@
         <div class="field__body">
           <label class="field__label" for="city">City</label>
           @if (!editing() && !form.get('city')?.value) {
-            <p class="field__static field__static--empty">Not added yet</p>
+          <p class="field__static field__static--empty">Not added yet</p>
           } @else {
-            <input id="city" type="text" class="field__input" formControlName="city" />
+          <input id="city" type="text" class="field__input" formControlName="city" />
           }
         </div>
       </div>
@@ -85,10 +80,10 @@
       </div>
 
       @if (editing()) {
-        <div class="details__actions">
-          <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </div>
+      <div class="details__actions">
+        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
       }
     </form>
   </div>
