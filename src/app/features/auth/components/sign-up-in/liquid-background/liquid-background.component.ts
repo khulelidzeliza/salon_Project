@@ -111,13 +111,14 @@ private readonly platformId = inject(PLATFORM_ID);
   }
 
   ngOnDestroy(): void {
-    cancelAnimationFrame(this.rafId);
-    window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('pointermove', this.onPointer);
-    window.removeEventListener('pointerdown', this.onPointer);
-    this.gl?.getExtension('WEBGL_lose_context')?.loseContext();
-  }
+  if (!isPlatformBrowser(this.platformId)) return;
 
+  cancelAnimationFrame(this.rafId);
+  window.removeEventListener('resize', this.onResize);
+  window.removeEventListener('pointermove', this.onPointer);
+  window.removeEventListener('pointerdown', this.onPointer);
+  this.gl?.getExtension('WEBGL_lose_context')?.loseContext();
+}
   private init(): void {
     const canvas = this.canvasRef.nativeElement;
     const gl = canvas.getContext('webgl2', { antialias: false, premultipliedAlpha: false });
