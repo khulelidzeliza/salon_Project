@@ -1,4 +1,4 @@
-import { Component, computed, inject, output } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 
@@ -15,12 +15,10 @@ import { LoginUser } from '../../../../../store/user-state/user.actions';
 })
 export default class LoginComponent {
   readonly switchToRegister = output<void>();
-
   private readonly fb = inject(FormBuilder);
   private readonly store = inject(Store);
-
   readonly loading = this.store.selectSignal(UserSelectors.isLoading);
-
+  readonly forgotRequested = output<MouseEvent>();
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email, Validators.minLength(2), Validators.maxLength(500)]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(50)]],
@@ -43,4 +41,5 @@ export default class LoginComponent {
 
     this.store.dispatch(new LoginUser(request));
   }
+
 }

@@ -41,7 +41,7 @@
         <input type="checkbox" formControlName="keepSignedIn" />
         Keep me signed in
       </label>
-      <button type="button" class="link">Forgot password?</button>
+      <button type="button" class="link" (click)="forgotRequested.emit($event)">Forgot password?</button>
     </div>
 
 <button type="submit" class="submit" [disabled]="loading()">

@@ -11,6 +11,5 @@ import { LiquidBackgroundComponent } from './liquid-background/liquid-background
   imports: [BrandPanelComponent, RouterOutlet, LiquidBackgroundComponent],
 })
 export default class SignUpInComponent {
-
   readonly backgroundUrl = '/background.jpg';
 }
