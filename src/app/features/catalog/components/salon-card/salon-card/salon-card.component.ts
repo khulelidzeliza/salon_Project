@@ -41,4 +41,8 @@ export class SalonCardComponent {
     event.stopPropagation();
     this.toggleFavorite.emit(this.salon.id);
   }
+
+  truncate(text: string, limit = 40): string {
+    return text.length > limit ? text.slice(0, limit) + '...' : text;
+  }
 }

@@ -28,6 +28,7 @@
     background: var(--color-surface);
     cursor: text;
     transition: box-shadow var(--dur-fast) ease;
+    lucide-icon { display: flex; align-items: center; justify-content: center; }
 
     &:focus-within { box-shadow: var(--focus-ring); }
 
@@ -42,6 +43,7 @@
 
       &::placeholder { color: var(--color-text-muted); }
       &::-webkit-search-cancel-button { display: none; }
+      &:focus { box-shadow: none;}
     }
   }
 

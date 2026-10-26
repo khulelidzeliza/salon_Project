@@ -67,6 +67,7 @@
       transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
 
       &:hover { background: var(--color-on-accent); color: var(--color-accent); }
+      lucide-icon { display: flex; align-items: center; justify-content: center; }
     }
   }
 

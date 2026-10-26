@@ -2,7 +2,7 @@
 
 // Burgundy contact panel
 .contact {
-  margin: var(--space-section) var(--frame) 0;
+  margin: var(--space-section) var(--frame) var(--frame) var(--frame);
   padding: clamp(28px, 4vw, 56px);
   border-radius: var(--radius-hero);
   background: var(--color-accent);

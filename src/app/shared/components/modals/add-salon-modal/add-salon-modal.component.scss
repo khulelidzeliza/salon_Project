@@ -276,6 +276,7 @@
     font: var(--fw-regular) var(--fs-base) var(--font-body);
     color: var(--color-text);
     &:focus { outline: none; }
+    box-shadow: none;
   }
 }
 
